@@ -1,0 +1,51 @@
+@{
+    var activePage = ViewData["ActivePage"]?.ToString() ?? "";
+}
+<div class="card p-3">
+    <div class="d-flex align-items-center gap-3 mb-3 pb-3" style="border-bottom:1px solid var(--border)">
+        <span class="hosp-avatar hosp-avatar-lg">
+            @{
+                var fn = User.FindFirst("FullName")?.Value ?? "?";
+                @string.Join("", fn.Split(' ').Take(2).Select(p => p[0]))
+            }
+        </span>
+        <div>
+            <div class="fw-semibold" style="font-size:var(--fs-sm)">@fn</div>
+            <div class="text-muted" style="font-size:var(--fs-xs)">
+                @User.FindFirst(System.Security.Claims.ClaimTypes.Role)?.Value
+            </div>
+        </div>
+    </div>
+    <ul class="profile-nav">
+        <li>
+            <a asp-page="/Profile/AccountData" class="profile-nav-link @(activePage == "Profile.AccountData" ? "active" : "")">
+                <i class="bi bi-person-badge"></i><span>@L["Dados da conta"]</span>
+            </a>
+        </li>
+        <li>
+            <a asp-page="/Profile/PersonalData" class="profile-nav-link @(activePage == "Profile.PersonalData" ? "active" : "")">
+                <i class="bi bi-person-lines-fill"></i><span>@L["Dados pessoais"]</span>
+            </a>
+        </li>
+        <li>
+            <a asp-page="/Profile/Photo" class="profile-nav-link @(activePage == "Profile.Photo" ? "active" : "")">
+                <i class="bi bi-camera"></i><span>@L["Foto do perfil"]</span>
+            </a>
+        </li>
+        <li>
+            <a asp-page="/Profile/ChangePassword" class="profile-nav-link @(activePage == "Profile.ChangePassword" ? "active" : "")">
+                <i class="bi bi-key"></i><span>@L["Alterar senha"]</span>
+            </a>
+        </li>
+        <li>
+            <a asp-page="/Profile/MfaSetup" class="profile-nav-link @(activePage == "Profile.MfaSetup" ? "active" : "")">
+                <i class="bi bi-shield-lock"></i><span>@L["Configurar MFA"]</span>
+            </a>
+        </li>
+        <li>
+            <a asp-page="/Profile/AccessHistory" class="profile-nav-link @(activePage == "Profile.AccessHistory" ? "active" : "")">
+                <i class="bi bi-clock-history"></i><span>@L["Histórico de acessos"]</span>
+            </a>
+        </li>
+    </ul>
+</div>

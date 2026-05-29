@@ -1,0 +1,85 @@
+@page
+@model Heal.Hospital.Web.Pages.LoginModel
+@{
+    Layout = "_PublicLayout";
+    ViewData["Title"] = L["Entrar"].Value;
+}
+
+<!-- Logo -->
+<div class="d-flex align-items-center gap-3 mb-4">
+    <span class="public-logo-mark">SM</span>
+    <div>
+        <div class="fw-bold" style="color:var(--txt-primary);font-size:var(--fs-lg)">@L["St. Mungus"]</div>
+        <div class="text-muted" style="font-size:var(--fs-xs)">@L["Sistema Hospitalar"]</div>
+    </div>
+</div>
+
+<h2 class="fw-semibold mb-1" style="font-size:var(--fs-xl)">@L["Entrar"]</h2>
+<p class="text-muted mb-4" style="font-size:var(--fs-sm)">Acesse o sistema interno St. Mungus.</p>
+
+@if (!string.IsNullOrEmpty(Model.ErrorMessage))
+{
+    <div class="alert alert-danger d-flex align-items-center gap-2 py-2 mb-3" role="alert">
+        <i class="bi bi-exclamation-circle-fill"></i>
+        <span>@Model.ErrorMessage</span>
+    </div>
+}
+
+<form method="post" asp-antiforgery="true">
+    <div class="mb-3">
+        <label asp-for="Username" class="form-label fw-semibold" style="font-size:var(--fs-sm)">@L["Usuário"]</label>
+        <div class="input-group">
+            <span class="input-group-text bg-white"><i class="bi bi-person" style="color:var(--txt-muted)"></i></span>
+            <input asp-for="Username" class="form-control" autocomplete="username"
+                   placeholder="ex: gerente" autofocus />
+        </div>
+        <span asp-validation-for="Username" class="text-danger small"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Password" class="form-label fw-semibold" style="font-size:var(--fs-sm)">@L["Senha"]</label>
+        <div class="input-group">
+            <span class="input-group-text bg-white"><i class="bi bi-lock" style="color:var(--txt-muted)"></i></span>
+            <input asp-for="Password" class="form-control" type="password" autocomplete="current-password" />
+            <button class="btn btn-outline-secondary" type="button" id="toggle-password" aria-label="Mostrar senha">
+                <i class="bi bi-eye" id="eye-icon"></i>
+            </button>
+        </div>
+        <span asp-validation-for="Password" class="text-danger small"></span>
+    </div>
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div class="form-check mb-0">
+            <input class="form-check-input" type="checkbox" asp-for="RememberMe" id="rememberMe" />
+            <label class="form-check-label" for="rememberMe" style="font-size:var(--fs-sm)">@L["Lembrar-me"]</label>
+        </div>
+        <a asp-page="/ForgotPassword" style="font-size:var(--fs-sm)">@L["Esqueci minha senha"]</a>
+    </div>
+
+    <button type="submit" class="btn btn-primary w-100">
+        <i class="bi bi-box-arrow-in-right me-2"></i>@L["Entrar"]
+    </button>
+</form>
+
+<hr class="divider mt-4" />
+<p class="text-muted text-center mb-0" style="font-size:var(--fs-xs)">
+    <i class="bi bi-info-circle me-1"></i>
+    Credenciais de demonstração: <strong>gerente / Heal@2026</strong>
+</p>
+
+@section Scripts {
+<script>
+    document.getElementById('toggle-password')?.addEventListener('click', function () {
+        const input = document.querySelector('input[type="password"], input[name="Password"]');
+        const icon  = document.getElementById('eye-icon');
+        if (!input) return;
+        if (input.type === 'password') {
+            input.type = 'text';
+            icon.className = 'bi bi-eye-slash';
+        } else {
+            input.type = 'password';
+            icon.className = 'bi bi-eye';
+        }
+    });
+</script>
+}

@@ -1,0 +1,149 @@
+Usuários de acesso — St. Mungus Hospital
+Senha padrão para todos: Heal@2026
+Código MFA (mock): 123456
+
+Usuário           Perfil
+----------------  --------------------
+receptionist      Recepcionista
+tecnico.rad       Técnico de Radiologia
+gerente           Gerente Hospitalar
+financeiro        Financeiro Hospitalar
+dr.solicitante    Médico Solicitante
+dr.auxiliar       Médico Auxiliar
+digitador         Digitador / Transcricionista
+
+
+---
+
+Todas as tabelas que listam exames, devem ter paginação.
+
+Na tabela de exames na tela da recepcionista deve ter as informações:
+
+Nome do paciente,
+Nome social do paciente
+Sexo do paciente
+ID do paciente
+Data de nascimento do paciente (dd/mm/yyyy hh:mm:ss) preciso ter hora minutos e segundos também para casos de recém nascidos
+Idade no formato que vem no dicom
+
+data e hora do estudo (exame)
+data e hora do laudo
+modalidade do exame
+procedimento
+ID do estudo (não é o study UID)
+
+Nome do técnico que liberou o exame
+Nome do médico executor
+Nome do médico solicitante
+
+Situação do exame
+Tipo de exame
+Emergência
+
+Edição de dados do paciente (Corrige dados do paciente da tabela, dicom e laudo). Também permite incluir CPF, e-mail e gerar código de seis dígitos para download do laudo.
+Links para baixar/imprimir laudo
+
+
+
+Situação do Exame
+
+* **Aguardando Liberação do Exame**
+  Exame realizado, porém ainda não liberado pelo técnico de radiologia para início do laudo.
+
+* **Na Fila de Laudo (Disponível)**
+  Exame liberado pelo técnico de radiologia e disponível para que um médico inicie o laudo.
+
+* **Laudando**
+  Médico executor iniciou a elaboração do laudo.
+
+* **Pendência**
+  Médico identificou alguma inconsistência, ausência de informação ou problema técnico nas imagens. O exame retorna para o técnico de radiologia para correção ou complementação.
+
+* **Laudado Aguardando assinatura**
+  Laudo finalizado pelo médico auxiliar ou auxiliar de sala e encaminhado para revisão e assinatura do médico executor, conforme regras específicas da operação. Função deve ser habilitada por modalidade e tenant. Esse status não aparece para a recepcionista, quando aparecer esse status manter o status Laudando
+
+* **Aprovado**
+  Laudo finalizado e aprovado, estando disponível para visualização e download.
+
+* **Solicitado Revisão**
+  Laudo previamente aprovado foi contestado ou teve solicitação formal de revisão, aguardando novo parecer médico.
+
+* **Laudando Solicitação de Revisão**
+  Médico revisor iniciou a análise e elaboração da revisão do laudo solicitado.
+
+* **Aprovado com Revisão**
+  Processo de revisão concluído e laudo aprovado após reavaliação médica.
+
+* **Cancelado**
+  Exame cancelado devido a envio incorreto, baixa qualidade das imagens, inconsistências técnicas ou impossibilidade de emissão do laudo.
+
+
+Tipo do exame
+
+
+- PS (Pronto Socorro)
+- Agenda/Eletivo
+- Internação
+
+
+public enum ExamReportStatus
+{
+    /// <summary>
+    /// Exame aguardando liberação do técnico de radiologia.
+    /// </summary>
+    AwaitingRelease = 1,
+
+    /// <summary>
+    /// Exame disponível na fila para início do laudo.
+    /// </summary>
+    AvailableForReporting = 2,
+
+    /// <summary>
+    /// Médico iniciou a elaboração do laudo.
+    /// </summary>
+    Reporting = 3,
+
+    /// <summary>
+    /// Exame retornou com pendência técnica ou operacional.
+    /// </summary>
+    Pending = 4,
+
+    /// <summary>
+    /// Laudo realizado por auxiliar e aguardando assinatura do médico executor.
+    /// </summary>
+    AwaitingSignature = 5,
+
+    /// <summary>
+    /// Laudo aprovado e finalizado.
+    /// </summary>
+    Approved = 6,
+
+    /// <summary>
+    /// Laudo aprovado recebeu solicitação de revisão.
+    /// </summary>
+    RevisionRequested = 7,
+
+    /// <summary>
+    /// Médico realizando revisão do laudo.
+    /// </summary>
+    Reviewing = 8,
+
+    /// <summary>
+    /// Revisão concluída e aprovada.
+    /// </summary>
+    ApprovedAfterRevision = 9,
+
+    /// <summary>
+    /// Exame cancelado.
+    /// </summary>
+    Cancelled = 10
+}
+
+
+
+Na tabela da recepção vamos usar esse componente:
+
+<link href="https://unpkg.com/tabulator-tables@6.4.0/dist/css/tabulator.min.css" rel="stylesheet">
+<script type="text/javascript" src="https://unpkg.com/tabulator-tables@6.4.0/dist/js/tabulator.min.js"></script>
+
+<link href="/dist/css/bootstrap/tabulator_bootstrap5.min.css" rel="stylesheet">

@@ -1,0 +1,26 @@
+# Build output — never copy local artifacts into the image
+**/bin/
+**/obj/
+
+# Version control
+.git/
+.gitignore
+.gitattributes
+
+# CI/CD, docs and planning
+.github/
+README.md
+temp/
+todo.md
+
+# IDE / OS artefacts
+.vs/
+.vscode/
+*.user
+*.suo
+**/.DS_Store
+**/Thumbs.db
+
+# Docker files themselves (avoid circular COPY)
+Dockerfile
+.dockerignore

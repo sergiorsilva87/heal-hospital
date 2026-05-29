@@ -1,0 +1,46 @@
+@page
+@model Heal.Hospital.Web.Pages.Profile.PhotoModel
+@{
+    Layout = "_AuthLayout";
+    ViewData["Title"] = L["Foto do perfil"].Value;
+}
+
+<div class="row g-4 anim-fade-in">
+    <div class="col-md-3">@await Html.PartialAsync("_ProfileNav")</div>
+    <div class="col-md-9">
+        <div class="card p-4">
+            <h5 class="fw-semibold mb-4"><i class="bi bi-camera me-2" style="color:var(--clr-navy-700)"></i>@L["Foto do perfil"]</h5>
+
+            @if (Model.Success) {
+                <div class="alert alert-success mb-3"><i class="bi bi-check-circle me-2"></i>@L["Salvo com sucesso."]</div>
+            }
+
+            <div class="d-flex align-items-center gap-4 mb-4">
+                <!-- Current avatar -->
+                <div class="hosp-avatar hosp-avatar-lg" style="font-size:1.6rem">
+                    @string.Join("", Model.FullName.Split(' ').Take(2).Select(p => p[0]))
+                </div>
+                <div>
+                    <p class="fw-semibold mb-1" style="font-size:var(--fs-sm)">Foto atual</p>
+                    <p class="text-muted mb-0" style="font-size:var(--fs-xs)">Nenhuma foto personalizada. Usando iniciais.</p>
+                </div>
+            </div>
+
+            <form method="post" enctype="multipart/form-data" asp-antiforgery="true" style="max-width:400px">
+                <div class="mb-4">
+                    <label class="form-label fw-semibold" style="font-size:var(--fs-sm)">Enviar nova foto</label>
+                    <input type="file" class="form-control" accept="image/png,image/jpeg,image/webp" name="Photo" />
+                    <div class="form-text">JPG, PNG ou WEBP. Máximo 2 MB. Proporção 1:1 recomendada.</div>
+                </div>
+                <div class="d-flex gap-2">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-upload me-1"></i>Enviar foto
+                    </button>
+                    <button type="button" class="btn btn-outline-danger">
+                        <i class="bi bi-trash me-1"></i>Remover
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="@System.Globalization.CultureInfo.CurrentUICulture.Name">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] — @L["St. Mungus"]</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous" />
+    <link rel="stylesheet" href="~/css/hospital.css" asp-append-version="true" />
+</head>
+<body>
+    @{
+        var returnUrl = $"{Context.Request.Path}{Context.Request.QueryString}";
+        var currentCulture = System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;
+        var currentLanguageLabel = currentCulture switch { "en" => "EN", "es" => "ES", _ => "PT" };
+        var currentLanguageFlag  = currentCulture switch { "en" => "🇺🇸", "es" => "🇪🇸", _ => "🇧🇷" };
+    }
+
+    <div class="public-bg">
+
+        <!-- Language switcher top-right -->
+        <div style="position:absolute; top:1rem; right:1.5rem;">
+            <div class="btn-group btn-group-sm" role="group" aria-label="@L["Idioma"]">
+                <a asp-page="/Culture" asp-route-culture="pt-BR" asp-route-returnUrl="@returnUrl"
+                   class="btn btn-sm @(currentCulture == "pt" ? "btn-light" : "btn-outline-secondary" )"
+                   style="color:white; border-color:rgba(255,255,255,.3); background:rgba(255,255,255,.12)">🇧🇷 PT</a>
+                <a asp-page="/Culture" asp-route-culture="en"   asp-route-returnUrl="@returnUrl"
+                   class="btn btn-sm @(currentCulture == "en" ? "btn-light" : "btn-outline-secondary" )"
+                   style="color:white; border-color:rgba(255,255,255,.3); background:rgba(255,255,255,.12)">🇺🇸 EN</a>
+                <a asp-page="/Culture" asp-route-culture="es"   asp-route-returnUrl="@returnUrl"
+                   class="btn btn-sm @(currentCulture == "es" ? "btn-light" : "btn-outline-secondary" )"
+                   style="color:white; border-color:rgba(255,255,255,.3); background:rgba(255,255,255,.12)">🇪🇸 ES</a>
+            </div>
+        </div>
+
+        <div class="public-card anim-fade-in">
+            @RenderBody()
+        </div>
+
+        <footer class="public-footer">
+            <small>&copy; 2026 @L["St. Mungus"] — @L["Sistema Hospitalar"]</small>
+        </footer>
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

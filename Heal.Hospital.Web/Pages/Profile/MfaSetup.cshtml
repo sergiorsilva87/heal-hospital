@@ -1,0 +1,70 @@
+@page
+@model Heal.Hospital.Web.Pages.Profile.MfaSetupModel
+@{
+    Layout = "_AuthLayout";
+    ViewData["Title"] = L["Configurar MFA"].Value;
+}
+
+<div class="row g-4 anim-fade-in">
+    <div class="col-md-3">@await Html.PartialAsync("_ProfileNav")</div>
+    <div class="col-md-9">
+        <div class="card p-4">
+            <h5 class="fw-semibold mb-1"><i class="bi bi-shield-lock me-2" style="color:var(--clr-navy-700)"></i>@L["Configurar MFA"]</h5>
+            <p class="text-muted mb-4" style="font-size:var(--fs-sm)">Autenticação multifator adiciona uma camada extra de segurança ao seu acesso.</p>
+
+            @if (Model.MfaEnabled)
+            {
+                <div class="alert alert-success d-flex align-items-center gap-2 mb-4">
+                    <i class="bi bi-shield-check-fill fs-5"></i>
+                    <span>MFA está <strong>ativo</strong> em sua conta.</span>
+                </div>
+            }
+
+            <!-- QR Code placeholder -->
+            <div class="row g-4 align-items-start">
+                <div class="col-auto">
+                    <div class="p-3 border rounded" style="background:var(--bg-subtle)">
+                        <!-- Mock QR code grid -->
+                        <div style="width:140px;height:140px;display:grid;grid-template-columns:repeat(7,1fr);gap:2px;">
+                            @for (int i = 0; i < 49; i++) {
+                                var dark = ((i % 3 == 0) || (i < 7) || (i > 42) || (i % 7 == 0) || (i % 7 == 6)) ? "var(--clr-navy-900)" : "transparent";
+                                <div style="background:@dark;border-radius:1px"></div>
+                            }
+                        </div>
+                    </div>
+                    <p class="text-muted text-center mt-2 mb-0" style="font-size:var(--fs-xs)">QR Code (mock)</p>
+                </div>
+                <div class="col">
+                    <p class="fw-semibold mb-2" style="font-size:var(--fs-sm)">Como configurar:</p>
+                    <ol class="text-muted" style="font-size:var(--fs-sm);padding-left:1.2rem">
+                        <li class="mb-1">Instale Google Authenticator ou Microsoft Authenticator</li>
+                        <li class="mb-1">Escaneie o QR code ao lado</li>
+                        <li class="mb-1">Informe o código de 6 dígitos gerado para confirmar</li>
+                    </ol>
+                    <div class="mt-3">
+                        <label class="form-label fw-semibold" style="font-size:var(--fs-xs)">Chave manual (TOTP)</label>
+                        <div class="input-group input-group-sm" style="max-width:280px">
+                            <input class="form-control font-monospace" value="JBSWY3DPEHPK3PXP" readonly />
+                            <button class="btn btn-outline-secondary" type="button" title="Copiar">
+                                <i class="bi bi-clipboard"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <hr class="divider" />
+            <div class="d-flex gap-2">
+                <button class="btn btn-primary" type="button">
+                    <i class="bi bi-shield-plus me-1"></i>Reconfigurar MFA
+                </button>
+                @if (Model.MfaEnabled)
+                {
+                    <button class="btn btn-outline-danger" type="button">
+                        <i class="bi bi-shield-x me-1"></i>Desativar MFA
+                    </button>
+                }
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,83 @@
+@page
+@model Heal.Hospital.Web.Pages.Alerts.IndexModel
+@{
+    Layout = "_AuthLayout";
+    ViewData["Title"] = L["Central de Alertas"].Value;
+}
+
+<!-- Header -->
+<div class="section-header anim-fade-in mb-4">
+    <h2 class="section-title">
+        <i class="bi bi-bell me-2" style="color:var(--clr-navy-700)"></i>
+        @L["Central de Alertas"]
+        @if (Model.UnreadCount > 0)
+        {
+            <span class="badge bg-danger ms-2 badge-pulse" style="font-size:.75rem">@Model.UnreadCount</span>
+        }
+    </h2>
+    <button class="btn btn-sm btn-outline-secondary" type="button">
+        <i class="bi bi-check-all me-1"></i>@L["Marcar todos como lidos"]
+    </button>
+</div>
+
+<!-- Alert list -->
+<div class="anim-fade-in anim-delay-1">
+    @if (!Model.Alerts.Any())
+    {
+        <div class="card p-5 text-center text-muted">
+            <i class="bi bi-bell-slash" style="font-size:3rem;opacity:.4"></i>
+            <p class="mt-3 mb-0">@L["Não há alertas no momento."]</p>
+        </div>
+    }
+    else
+    {
+        @foreach (var (alert, idx) in Model.Alerts.Select((a, i) => (a, i)))
+        {
+            var sevCss    = alert.Severity == "Urgente" ? "urgent" : "";
+            var unreadCss = !alert.IsRead  ? "unread"  : "";
+            var iconClass = alert.Severity switch {
+                "Urgente"     => "bi bi-exclamation-circle-fill",
+                "Atenção"     => "bi bi-exclamation-triangle-fill",
+                _             => "bi bi-info-circle-fill"
+            };
+            var iconColor = alert.Severity switch {
+                "Urgente"  => "var(--clr-danger-700)",
+                "Atenção"  => "var(--clr-warning-700)",
+                _          => "var(--clr-info-700)"
+            };
+            var sevBadgeCss = alert.Severity switch {
+                "Urgente" => "urgent",
+                "Atenção" => "in-progress",
+                _         => "scheduled"
+            };
+
+            <div class="alert-item @sevCss @unreadCss anim-fade-in anim-delay-@(Math.Min(idx+1,4))">
+                <div class="flex-shrink-0 mt-1" style="font-size:1.25rem;color:@iconColor">
+                    <i class="@iconClass"></i>
+                </div>
+                <div class="flex-grow-1">
+                    <div class="d-flex align-items-center justify-content-between gap-2 flex-wrap mb-1">
+                        <span class="fw-semibold" style="font-size:var(--fs-sm)">@alert.Title</span>
+                        <div class="d-flex align-items-center gap-2">
+                            <span class="badge-status @sevBadgeCss" style="font-size:.65rem">@alert.Severity</span>
+                            @if (!alert.IsRead)
+                            {
+                                <span class="badge rounded-pill" style="background:var(--clr-navy-100);color:var(--clr-navy-900);font-size:.65rem">Novo</span>
+                            }
+                        </div>
+                    </div>
+                    <p class="mb-1 text-muted" style="font-size:var(--fs-xs)">@alert.Body</p>
+                    <div class="d-flex align-items-center justify-content-between">
+                        <small class="text-muted">
+                            <i class="bi bi-clock me-1"></i>
+                            @alert.Timestamp.ToLocalTime().ToString("dd/MM/yyyy HH:mm")
+                        </small>
+                        <button class="btn btn-sm btn-outline-secondary py-0 px-2" style="font-size:var(--fs-xs)">
+                            <i class="bi bi-check me-1"></i>@L["Marcar como lido"]
+                        </button>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+</div>

@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+
+  <!-- Branding -->
+  <data name="St. Mungus" xml:space="preserve"><value>St. Mungus</value></data>
+  <data name="Sistema Hospitalar" xml:space="preserve"><value>Sistema Hospitalar</value></data>
+
+  <!-- Navigation / Layout -->
+  <data name="Início" xml:space="preserve"><value>Início</value></data>
+  <data name="Dashboard" xml:space="preserve"><value>Dashboard</value></data>
+  <data name="Exames" xml:space="preserve"><value>Exames</value></data>
+  <data name="Alertas" xml:space="preserve"><value>Alertas</value></data>
+  <data name="Notificações" xml:space="preserve"><value>Notificações</value></data>
+  <data name="Sair" xml:space="preserve"><value>Sair</value></data>
+  <data name="Idioma" xml:space="preserve"><value>Idioma</value></data>
+  <data name="Perfil" xml:space="preserve"><value>Perfil</value></data>
+  <data name="Configurações" xml:space="preserve"><value>Configurações</value></data>
+  <data name="Menu" xml:space="preserve"><value>Menu</value></data>
+  <data name="Abrir menu" xml:space="preserve"><value>Abrir menu</value></data>
+  <data name="Fechar menu" xml:space="preserve"><value>Fechar menu</value></data>
+  <data name="Navegação principal" xml:space="preserve"><value>Navegação principal</value></data>
+  <data name="Pular para o conteúdo principal" xml:space="preserve"><value>Pular para o conteúdo principal</value></data>
+
+  <!-- Auth -->
+  <data name="Entrar" xml:space="preserve"><value>Entrar</value></data>
+  <data name="Usuário" xml:space="preserve"><value>Usuário</value></data>
+  <data name="Senha" xml:space="preserve"><value>Senha</value></data>
+  <data name="Lembrar-me" xml:space="preserve"><value>Lembrar-me</value></data>
+  <data name="Esqueci minha senha" xml:space="preserve"><value>Esqueci minha senha</value></data>
+  <data name="Credenciais inválidas." xml:space="preserve"><value>Credenciais inválidas.</value></data>
+  <data name="Verificação em duas etapas" xml:space="preserve"><value>Verificação em duas etapas</value></data>
+  <data name="Código de verificação" xml:space="preserve"><value>Código de verificação</value></data>
+  <data name="Verificar" xml:space="preserve"><value>Verificar</value></data>
+  <data name="Código inválido ou expirado." xml:space="preserve"><value>Código inválido ou expirado.</value></data>
+  <data name="Reenviar código" xml:space="preserve"><value>Reenviar código</value></data>
+  <data name="Informe o código de 6 dígitos enviado ao seu aplicativo autenticador." xml:space="preserve"><value>Informe o código de 6 dígitos enviado ao seu aplicativo autenticador.</value></data>
+  <data name="Recuperar senha" xml:space="preserve"><value>Recuperar senha</value></data>
+  <data name="Redefinir senha" xml:space="preserve"><value>Redefinir senha</value></data>
+  <data name="Nova senha" xml:space="preserve"><value>Nova senha</value></data>
+  <data name="Confirmar nova senha" xml:space="preserve"><value>Confirmar nova senha</value></data>
+  <data name="As senhas não coincidem." xml:space="preserve"><value>As senhas não coincidem.</value></data>
+  <data name="Senha redefinida com sucesso." xml:space="preserve"><value>Senha redefinida com sucesso.</value></data>
+  <data name="Token inválido ou expirado." xml:space="preserve"><value>Token inválido ou expirado.</value></data>
+  <data name="Enviar link de recuperação" xml:space="preserve"><value>Enviar link de recuperação</value></data>
+  <data name="Voltar ao login" xml:space="preserve"><value>Voltar ao login</value></data>
+
+  <!-- Profile -->
+  <data name="Alterar senha" xml:space="preserve"><value>Alterar senha</value></data>
+  <data name="Dados da conta" xml:space="preserve"><value>Dados da conta</value></data>
+  <data name="Configurar MFA" xml:space="preserve"><value>Configurar MFA</value></data>
+  <data name="Histórico de acessos" xml:space="preserve"><value>Histórico de acessos</value></data>
+  <data name="Foto do perfil" xml:space="preserve"><value>Foto do perfil</value></data>
+  <data name="Dados pessoais" xml:space="preserve"><value>Dados pessoais</value></data>
+  <data name="Senha atual" xml:space="preserve"><value>Senha atual</value></data>
+  <data name="Salvar" xml:space="preserve"><value>Salvar</value></data>
+  <data name="Cancelar" xml:space="preserve"><value>Cancelar</value></data>
+  <data name="Salvo com sucesso." xml:space="preserve"><value>Salvo com sucesso.</value></data>
+
+  <!-- Exams -->
+  <data name="Lista de Exames" xml:space="preserve"><value>Lista de Exames</value></data>
+  <data name="Paciente" xml:space="preserve"><value>Paciente</value></data>
+  <data name="Modalidade" xml:space="preserve"><value>Modalidade</value></data>
+  <data name="Data" xml:space="preserve"><value>Data</value></data>
+  <data name="Status" xml:space="preserve"><value>Status</value></data>
+  <data name="Ações" xml:space="preserve"><value>Ações</value></data>
+  <data name="Nenhum exame encontrado." xml:space="preserve"><value>Nenhum exame encontrado.</value></data>
+  <data name="Filtrar" xml:space="preserve"><value>Filtrar</value></data>
+  <data name="Buscar" xml:space="preserve"><value>Buscar</value></data>
+  <data name="Todos" xml:space="preserve"><value>Todos</value></data>
+  <data name="Agendado" xml:space="preserve"><value>Agendado</value></data>
+  <data name="Em andamento" xml:space="preserve"><value>Em andamento</value></data>
+  <data name="Concluído" xml:space="preserve"><value>Concluído</value></data>
+  <data name="Laudo pendente" xml:space="preserve"><value>Laudo pendente</value></data>
+  <data name="Laudo emitido" xml:space="preserve"><value>Laudo emitido</value></data>
+
+  <!-- Alerts -->
+  <data name="Central de Alertas" xml:space="preserve"><value>Central de Alertas</value></data>
+  <data name="Não há alertas no momento." xml:space="preserve"><value>Não há alertas no momento.</value></data>
+  <data name="Marcar como lido" xml:space="preserve"><value>Marcar como lido</value></data>
+  <data name="Marcar todos como lidos" xml:space="preserve"><value>Marcar todos como lidos</value></data>
+  <data name="Urgente" xml:space="preserve"><value>Urgente</value></data>
+  <data name="Atenção" xml:space="preserve"><value>Atenção</value></data>
+  <data name="Informativo" xml:space="preserve"><value>Informativo</value></data>
+
+  <!-- General -->
+  <data name="Olá, {0}" xml:space="preserve"><value>Olá, {0}</value></data>
+  <data name="Carregando…" xml:space="preserve"><value>Carregando…</value></data>
+  <data name="Erro inesperado." xml:space="preserve"><value>Erro inesperado.</value></data>
+  <data name="Tela não disponível em dispositivos móveis." xml:space="preserve"><value>Tela não disponível em dispositivos móveis. Acesse pelo computador para a melhor experiência.</value></data>
+  <data name="Links do rodapé" xml:space="preserve"><value>Links do rodapé</value></data>
+</root>

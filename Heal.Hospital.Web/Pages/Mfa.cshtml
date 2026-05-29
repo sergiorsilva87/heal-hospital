@@ -1,0 +1,52 @@
+@page
+@model Heal.Hospital.Web.Pages.MfaModel
+@{
+    Layout = "_PublicLayout";
+    ViewData["Title"] = L["Verificação em duas etapas"].Value;
+}
+
+<!-- Logo -->
+<div class="d-flex align-items-center gap-3 mb-4">
+    <span class="public-logo-mark">SM</span>
+    <div>
+        <div class="fw-bold" style="color:var(--txt-primary);font-size:var(--fs-lg)">@L["St. Mungus"]</div>
+        <div class="text-muted" style="font-size:var(--fs-xs)">@L["Sistema Hospitalar"]</div>
+    </div>
+</div>
+
+<h2 class="fw-semibold mb-1" style="font-size:var(--fs-xl)">@L["Verificação em duas etapas"]</h2>
+<p class="text-muted mb-4" style="font-size:var(--fs-sm)">@L["Informe o código de 6 dígitos enviado ao seu aplicativo autenticador."]</p>
+
+@if (!string.IsNullOrEmpty(Model.ErrorMessage))
+{
+    <div class="alert alert-danger d-flex align-items-center gap-2 py-2 mb-3" role="alert">
+        <i class="bi bi-exclamation-circle-fill"></i>
+        <span>@Model.ErrorMessage</span>
+    </div>
+}
+
+<form method="post" asp-antiforgery="true">
+    <div class="mb-4">
+        <label asp-for="Code" class="form-label fw-semibold" style="font-size:var(--fs-sm)">@L["Código de verificação"]</label>
+        <input asp-for="Code" class="form-control text-center fs-4 fw-bold letter-spacing-wide"
+               maxlength="6" inputmode="numeric" pattern="[0-9]{6}"
+               autocomplete="one-time-code" autofocus
+               style="letter-spacing:.4em; font-size:1.5rem; padding:.6rem" />
+        <span asp-validation-for="Code" class="text-danger small"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary w-100 mb-3">
+        <i class="bi bi-shield-check me-2"></i>@L["Verificar"]
+    </button>
+
+    <div class="text-center">
+        <a asp-page="/Login" class="text-muted" style="font-size:var(--fs-sm)">
+            <i class="bi bi-arrow-left me-1"></i>@L["Voltar ao login"]
+        </a>
+    </div>
+</form>
+
+<hr class="divider mt-4" />
+<p class="text-muted text-center mb-0" style="font-size:var(--fs-xs)">
+    <i class="bi bi-info-circle me-1"></i>Código mock: <strong>123456</strong>
+</p>

@@ -1,0 +1,587 @@
+@page
+@model Heal.Hospital.Web.Pages.Dashboard.IndexModel
+@{
+    Layout = "_AuthLayout";
+    ViewData["Title"] = L["Dashboard"].Value;
+}
+
+@{
+    var greeting = string.Format(L["Olá, {0}"].Value, Model.FullName);
+    var roleLabel = Model.Role switch {
+        "Receptionist"       => "Recepcionista",
+        "RadiologyTechnician"=> "Técnico de Radiologia",
+        "HospitalManager"    => "Gerente Hospitalar",
+        "HospitalFinancial"  => "Financeiro",
+        "RequestingPhysician"=> "Médico Solicitante",
+        "MedicalAuxiliary"   => "Médico Auxiliar",
+        "Transcriptionist"   => "Digitador",
+        _                    => Model.Role
+    };
+}
+
+<!-- Welcome bar -->
+<div class="d-flex align-items-center justify-content-between mb-5 anim-fade-in">
+    <div>
+        <h2 class="fw-bold mb-1" style="font-size:var(--fs-xl)">@greeting</h2>
+        <span class="badge" style="background:var(--clr-navy-100);color:var(--clr-navy-900);">
+            <i class="bi bi-person-badge me-1"></i>@roleLabel
+        </span>
+    </div>
+    <div class="text-muted" style="font-size:var(--fs-sm)">
+        <i class="bi bi-calendar3 me-1"></i>
+        @DateTime.Now.ToString("dddd, d 'de' MMMM 'de' yyyy", new System.Globalization.CultureInfo("pt-BR"))
+    </div>
+</div>
+
+<!-- Stat cards -->
+<div class="row g-3 mb-5">
+    @foreach (var (stat, idx) in Model.Stats.Select((s, i) => (s, i)))
+    {
+        <div class="col-md-3 anim-fade-in anim-delay-@(Math.Min(idx+1,4))">
+            <div class="stat-card">
+                <div class="stat-card-icon @stat.Color">
+                    <i class="bi @stat.Icon"></i>
+                </div>
+                <div>
+                    <div class="stat-card-value">@stat.Value</div>
+                    <div class="stat-card-label">@stat.Label</div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<!-- Google Chart -->
+<div class="row g-4">
+    <div class="col-lg-8 anim-fade-in anim-delay-2">
+        <div class="chart-container">
+            <div class="chart-title">
+                <i class="bi bi-bar-chart-line me-2"></i>
+                <span id="chart-title-text">Carregando…</span>
+            </div>
+            <div id="chart-area" class="chart-area"></div>
+        </div>
+    </div>
+
+    <div class="col-lg-4 anim-fade-in anim-delay-3">
+        <div class="chart-container h-100">
+            <div class="chart-title">
+                <i class="bi bi-bell me-2"></i>Alertas recentes
+            </div>
+            @foreach (var alert in MockData.Alerts.Take(3))
+            {
+                <div class="alert-item @(!alert.IsRead ? "unread" : "") @(alert.Severity == "Urgente" ? "urgent" : "")">
+                    <div class="flex-shrink-0 mt-1">
+                        @if (alert.Severity == "Urgente")
+                        {
+                            <i class="bi bi-exclamation-circle-fill" style="color:var(--clr-danger-700)"></i>
+                        }
+                        else if (alert.Severity == "Atenção")
+                        {
+                            <i class="bi bi-exclamation-triangle-fill" style="color:var(--clr-warning-700)"></i>
+                        }
+                        else
+                        {
+                            <i class="bi bi-info-circle-fill" style="color:var(--clr-info-700)"></i>
+                        }
+                    </div>
+                    <div class="flex-grow-1">
+                        <div class="fw-semibold" style="font-size:var(--fs-xs)">@alert.Title</div>
+                        <div class="text-muted" style="font-size:var(--fs-xs)">
+                            @alert.Timestamp.ToLocalTime().ToString("dd/MM HH:mm")
+                        </div>
+                    </div>
+                </div>
+            }
+            <div class="text-center mt-3">
+                <a asp-page="/Alerts/Index" class="btn btn-sm btn-outline-primary">
+                    Ver todos
+                    @if (Model.UnreadAlerts > 0)
+                    {
+                        <span class="badge bg-danger ms-1 badge-pulse" style="font-size:.65rem">@Model.UnreadAlerts</span>
+                    }
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ── ROLE-SPECIFIC SECOND ROW ─────────────────────────── -->
+@if (Model.Role == "Receptionist")
+{
+    <div class="row g-4 mt-1 anim-fade-in anim-delay-4">
+        <!-- Recent patients -->
+        <div class="col-lg-6">
+            <div class="chart-container">
+                <div class="chart-title"><i class="bi bi-people me-2"></i>Pacientes cadastrados hoje</div>
+                <table class="hosp-table w-100">
+                    <thead><tr><th>Paciente</th><th>Modalidade</th><th>Urgência</th><th>Hora</th></tr></thead>
+                    <tbody>
+                    @foreach (var p in Model.RecentPatients)
+                    {
+                        <tr>
+                            <td>@p.Name</td>
+                            <td>@p.Modality</td>
+                            <td>
+                                <span class="badge-status @(p.UrgencyLevel == "Critico" ? "urgent" : p.UrgencyLevel == "Urgente" ? "in-progress" : "scheduled")">
+                                    @p.UrgencyLevel
+                                </span>
+                            </td>
+                            <td style="font-size:var(--fs-xs)">@p.RegisteredAt.ToString("HH:mm")</td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+                @if (Model.RecentPatientsTotalPages > 1)
+                {
+                    <nav class="mt-2" aria-label="Paginação pacientes">
+                        <ul class="pagination pagination-sm justify-content-center mb-0">
+                            <li class="page-item @(Model.RecentPatientsPage == 1 ? "disabled" : "")">
+                                <a class="page-link" href="?rp=@(Model.RecentPatientsPage - 1)&wl=@Model.WorklistPage"><i class="bi bi-chevron-left"></i></a>
+                            </li>
+                            @for (int p = 1; p <= Model.RecentPatientsTotalPages; p++)
+                            {
+                                <li class="page-item @(p == Model.RecentPatientsPage ? "active" : "")">
+                                    <a class="page-link" href="?rp=@p&wl=@Model.WorklistPage">@p</a>
+                                </li>
+                            }
+                            <li class="page-item @(Model.RecentPatientsPage == Model.RecentPatientsTotalPages ? "disabled" : "")">
+                                <a class="page-link" href="?rp=@(Model.RecentPatientsPage + 1)&wl=@Model.WorklistPage"><i class="bi bi-chevron-right"></i></a>
+                            </li>
+                        </ul>
+                    </nav>
+                }
+            </div>
+        </div>
+        <!-- Scheduling queue -->
+        <div class="col-lg-6">
+            <div class="chart-container">
+                <div class="chart-title"><i class="bi bi-calendar2-x me-2"></i>Aguardando agendamento</div>
+                <table class="hosp-table w-100">
+                    <thead><tr><th>Exame</th><th>Paciente</th><th>Modalidade</th><th>Urgência</th></tr></thead>
+                    <tbody>
+                    @foreach (var w in Model.Worklist)
+                    {
+                        var isRed = w.Urgency == "Critico" || w.Urgency == "Urgente";
+                        <tr @(isRed ? "style=background:var(--clr-danger-50)" : "")>
+                            <td style="font-size:var(--fs-xs)">@w.ExamId</td>
+                            <td @(isRed ? "class=fw-semibold" : "")>@w.Patient</td>
+                            <td>@w.Modality</td>
+                            <td>
+                                <span class="badge-status @(w.Urgency == "Critico" ? "urgent" : w.Urgency == "Urgente" ? "in-progress" : "scheduled")">
+                                    @w.Urgency
+                                </span>
+                            </td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+                @if (Model.WorklistTotalPages > 1)
+                {
+                    <nav class="mt-2" aria-label="Paginação fila">
+                        <ul class="pagination pagination-sm justify-content-center mb-0">
+                            <li class="page-item @(Model.WorklistPage == 1 ? "disabled" : "")">
+                                <a class="page-link" href="?rp=@Model.RecentPatientsPage&wl=@(Model.WorklistPage - 1)"><i class="bi bi-chevron-left"></i></a>
+                            </li>
+                            @for (int p = 1; p <= Model.WorklistTotalPages; p++)
+                            {
+                                <li class="page-item @(p == Model.WorklistPage ? "active" : "")">
+                                    <a class="page-link" href="?rp=@Model.RecentPatientsPage&wl=@p">@p</a>
+                                </li>
+                            }
+                            <li class="page-item @(Model.WorklistPage == Model.WorklistTotalPages ? "disabled" : "")">
+                                <a class="page-link" href="?rp=@Model.RecentPatientsPage&wl=@(Model.WorklistPage + 1)"><i class="bi bi-chevron-right"></i></a>
+                            </li>
+                        </ul>
+                    </nav>
+                }
+            </div>
+        </div>
+    </div>
+}
+else if (Model.Role == "RadiologyTechnician")
+{
+    <div class="row g-4 mt-1 anim-fade-in anim-delay-4">
+        <!-- Second chart: storage tier -->
+        <div class="col-lg-5">
+            <div class="chart-container">
+                <div class="chart-title"><i class="bi bi-hdd-stack me-2"></i><span id="chart-title-text-2">Carregando…</span></div>
+                <div id="chart-area-2" class="chart-area"></div>
+            </div>
+        </div>
+        <!-- Worklist -->
+        <div class="col-lg-7">
+            <div class="chart-container">
+                <div class="chart-title"><i class="bi bi-list-check me-2"></i>Worklist DICOM</div>
+                <table class="hosp-table w-100">
+                    <thead><tr><th>Exame</th><th>Paciente</th><th>Modalidade</th><th>Status</th><th></th></tr></thead>
+                    <tbody>
+                    @foreach (var w in Model.Worklist)
+                    {
+                        <tr>
+                            <td style="font-size:var(--fs-xs)">@w.ExamId</td>
+                            <td>@w.Patient</td>
+                            <td>@w.Modality</td>
+                            <td><span class="badge-status @(w.DicomStatus == "Em execução" ? "in-progress" : w.DicomStatus == "Agendado" ? "scheduled" : "pending")">@w.DicomStatus</span></td>
+                            <td>
+                                @if (w.DicomStatus == "Aguardando aquisição")
+                                {
+                                    <button class="btn btn-sm btn-primary py-0">Confirmar</button>
+                                }
+                            </td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+                @if (Model.RadWorklistTotalPages > 1)
+                {
+                    <nav class="mt-2" aria-label="Paginação worklist">
+                        <ul class="pagination pagination-sm justify-content-center mb-0">
+                            <li class="page-item @(Model.RadWorklistPage == 1 ? "disabled" : "")">
+                                <a class="page-link" href="?rwl=@(Model.RadWorklistPage - 1)"><i class="bi bi-chevron-left"></i></a>
+                            </li>
+                            @for (int p = 1; p <= Model.RadWorklistTotalPages; p++)
+                            {
+                                <li class="page-item @(p == Model.RadWorklistPage ? "active" : "")">
+                                    <a class="page-link" href="?rwl=@p">@p</a>
+                                </li>
+                            }
+                            <li class="page-item @(Model.RadWorklistPage == Model.RadWorklistTotalPages ? "disabled" : "")">
+                                <a class="page-link" href="?rwl=@(Model.RadWorklistPage + 1)"><i class="bi bi-chevron-right"></i></a>
+                            </li>
+                        </ul>
+                    </nav>
+                }
+            </div>
+        </div>
+    </div>
+}
+else if (Model.Role == "HospitalManager")
+{
+    <div class="row g-4 mt-1 anim-fade-in anim-delay-4">
+        <!-- Second chart: TAT LineChart -->
+        <div class="col-lg-7">
+            <div class="chart-container">
+                <div class="chart-title"><i class="bi bi-graph-up me-2"></i><span id="chart-title-text-2">Carregando…</span></div>
+                <div id="chart-area-2" class="chart-area"></div>
+            </div>
+        </div>
+        <!-- Radiologist productivity table -->
+        <div class="col-lg-5">
+            <div class="chart-container">
+                <div class="chart-title"><i class="bi bi-person-badge me-2"></i>Produtividade — Radiologistas</div>
+                <table class="hosp-table w-100">
+                    <thead><tr><th>Radiologista</th><th>Laudos</th><th>TAT médio</th><th>Status</th></tr></thead>
+                    <tbody>
+                    @foreach (var r in Model.RadiologistStats)
+                    {
+                        <tr>
+                            <td>@r.Name</td>
+                            <td class="text-center">@r.ReportsIssued</td>
+                            <td class="text-center">@r.AvgTatMinutes min</td>
+                            <td><span class="badge-status @(r.Availability == "Ativo" ? "completed" : "pending")">@r.Availability</span></td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+                @if (Model.RadiologistsTotalPages > 1)
+                {
+                    <nav class="mt-2" aria-label="Paginação radiologistas">
+                        <ul class="pagination pagination-sm justify-content-center mb-0">
+                            <li class="page-item @(Model.RadiologistsPage == 1 ? "disabled" : "")">
+                                <a class="page-link" href="?rad=@(Model.RadiologistsPage - 1)"><i class="bi bi-chevron-left"></i></a>
+                            </li>
+                            @for (int p = 1; p <= Model.RadiologistsTotalPages; p++)
+                            {
+                                <li class="page-item @(p == Model.RadiologistsPage ? "active" : "")">
+                                    <a class="page-link" href="?rad=@p">@p</a>
+                                </li>
+                            }
+                            <li class="page-item @(Model.RadiologistsPage == Model.RadiologistsTotalPages ? "disabled" : "")">
+                                <a class="page-link" href="?rad=@(Model.RadiologistsPage + 1)"><i class="bi bi-chevron-right"></i></a>
+                            </li>
+                        </ul>
+                    </nav>
+                }
+            </div>
+        </div>
+    </div>
+}
+else if (Model.Role == "HospitalFinancial")
+{
+    <div class="row g-4 mt-1 anim-fade-in anim-delay-4">
+        <!-- Second chart: PieChart by insurer -->
+        <div class="col-lg-5">
+            <div class="chart-container">
+                <div class="chart-title"><i class="bi bi-pie-chart me-2"></i><span id="chart-title-text-2">Carregando…</span></div>
+                <div id="chart-area-2" class="chart-area"></div>
+            </div>
+        </div>
+        <!-- Billing batches table -->
+        <div class="col-lg-7">
+            <div class="chart-container">
+                <div class="chart-title"><i class="bi bi-receipt me-2"></i>Lotes mensais</div>
+                <table class="hosp-table w-100">
+                    <thead><tr><th>Lote</th><th>Período</th><th>Exames</th><th>Bruto</th><th>Líquido</th><th>Status</th></tr></thead>
+                    <tbody>
+                    @foreach (var b in Model.BillingBatches)
+                    {
+                        var statusCss = b.BatchStatus switch {
+                            "Open" => "pending", "Submitted" => "in-progress", "Paid" => "completed", _ => "scheduled"
+                        };
+                        <tr>
+                            <td style="font-size:var(--fs-xs)">@b.BatchId</td>
+                            <td>@b.Period</td>
+                            <td class="text-center">@b.ExamCount</td>
+                            <td>R$ @b.GrossValue.ToString("N0")</td>
+                            <td>R$ @b.NetValue.ToString("N0")</td>
+                            <td><span class="badge-status @statusCss">@b.BatchStatus</span></td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+                @if (Model.BillingTotalPages > 1)
+                {
+                    <nav class="mt-2" aria-label="Paginação lotes">
+                        <ul class="pagination pagination-sm justify-content-center mb-0">
+                            <li class="page-item @(Model.BillingPage == 1 ? "disabled" : "")">
+                                <a class="page-link" href="?bil=@(Model.BillingPage - 1)"><i class="bi bi-chevron-left"></i></a>
+                            </li>
+                            @for (int p = 1; p <= Model.BillingTotalPages; p++)
+                            {
+                                <li class="page-item @(p == Model.BillingPage ? "active" : "")">
+                                    <a class="page-link" href="?bil=@p">@p</a>
+                                </li>
+                            }
+                            <li class="page-item @(Model.BillingPage == Model.BillingTotalPages ? "disabled" : "")">
+                                <a class="page-link" href="?bil=@(Model.BillingPage + 1)"><i class="bi bi-chevron-right"></i></a>
+                            </li>
+                        </ul>
+                    </nav>
+                }
+            </div>
+        </div>
+    </div>
+}
+else if (Model.Role == "RequestingPhysician")
+{
+    <div class="row g-4 mt-1 anim-fade-in anim-delay-4">
+        <!-- Critical findings -->
+        <div class="col-lg-6">
+            <div class="chart-container">
+                <div class="chart-title"><i class="bi bi-exclamation-diamond me-2" style="color:var(--clr-danger-700)"></i>Achados críticos — pendentes de confirmação</div>
+                @foreach (var f in Model.CriticalFindings.Where(f => !f.IsAcknowledged))
+                {
+                    <div class="alert-item unread urgent mb-2">
+                        <div class="flex-shrink-0"><i class="bi bi-exclamation-circle-fill" style="color:var(--clr-danger-700)"></i></div>
+                        <div class="flex-grow-1">
+                            <div class="fw-semibold" style="font-size:var(--fs-xs)">@f.Patient — @f.Modality (@f.ExamId)</div>
+                            <div class="text-muted mt-1" style="font-size:var(--fs-xs)">@f.FindingText</div>
+                            <div class="mt-2">
+                                <button class="btn btn-sm btn-outline-danger py-0">
+                                    <i class="bi bi-check2 me-1"></i>Confirmar recebimento
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                }
+                @if (!Model.CriticalFindings.Any(f => !f.IsAcknowledged))
+                {
+                    <p class="text-muted" style="font-size:var(--fs-sm)">Nenhum achado crítico pendente.</p>
+                }
+            </div>
+        </div>
+        <!-- Recent reports -->
+        <div class="col-lg-6">
+            <div class="chart-container">
+                <div class="chart-title"><i class="bi bi-file-earmark-text me-2"></i>Laudos recentes — meus pacientes</div>
+                <table class="hosp-table w-100">
+                    <thead><tr><th>Exame</th><th>Paciente</th><th>Modalidade</th><th>Status</th><th></th></tr></thead>
+                    <tbody>
+                    @foreach (var e in Model.RecentReports)
+                    {
+                        <tr>
+                            <td style="font-size:var(--fs-xs)">@e.Id</td>
+                            <td>@e.Patient</td>
+                            <td>@e.Modality</td>
+                            <td><span class="badge-status @(e.Status == "Laudo emitido" ? "issued" : e.Status == "Concluído" ? "completed" : e.Status == "Em andamento" ? "in-progress" : "pending")">@e.Status</span></td>
+                            <td>@if (e.ReportUrl != null) { <a href="@e.ReportUrl" class="btn btn-sm btn-outline-primary py-0">Ver</a> }</td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+                @if (Model.ReportsTotalPages > 1)
+                {
+                    <nav class="mt-2" aria-label="Paginação laudos">
+                        <ul class="pagination pagination-sm justify-content-center mb-0">
+                            <li class="page-item @(Model.ReportsPage == 1 ? "disabled" : "")">
+                                <a class="page-link" href="?rph=@(Model.ReportsPage - 1)"><i class="bi bi-chevron-left"></i></a>
+                            </li>
+                            @for (int p = 1; p <= Model.ReportsTotalPages; p++)
+                            {
+                                <li class="page-item @(p == Model.ReportsPage ? "active" : "")">
+                                    <a class="page-link" href="?rph=@p">@p</a>
+                                </li>
+                            }
+                            <li class="page-item @(Model.ReportsPage == Model.ReportsTotalPages ? "disabled" : "")">
+                                <a class="page-link" href="?rph=@(Model.ReportsPage + 1)"><i class="bi bi-chevron-right"></i></a>
+                            </li>
+                        </ul>
+                    </nav>
+                }
+            </div>
+        </div>
+    </div>
+}
+else if (Model.Role == "MedicalAuxiliary")
+{
+    <div class="row g-4 mt-1 anim-fade-in anim-delay-4">
+        <div class="col-12">
+            <div class="alert" style="background:var(--clr-warning-50);border:1px solid var(--clr-warning-200);color:var(--clr-warning-900)">
+                <i class="bi bi-info-circle me-2"></i>
+                Laudos só são visíveis ao paciente após assinatura pelo Radiologista Laudador responsável.
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="chart-container">
+                <div class="chart-title"><i class="bi bi-pencil-square me-2"></i>Meus rascunhos</div>
+                <table class="hosp-table w-100">
+                    <thead><tr><th>Exame</th><th>Paciente</th><th>Modalidade</th><th>Status</th><th>Atualizado</th><th></th></tr></thead>
+                    <tbody>
+                    @foreach (var d in Model.ReportDrafts)
+                    {
+                        <tr>
+                            <td style="font-size:var(--fs-xs)">@d.ExamId</td>
+                            <td>@d.Patient</td>
+                            <td>@d.Modality</td>
+                            <td><span class="badge-status @(d.ReportStatus == "InProgress" ? "in-progress" : "pending")">@d.ReportStatus</span></td>
+                            <td style="font-size:var(--fs-xs)">@d.LastUpdated.ToLocalTime().ToString("dd/MM HH:mm")</td>
+                            <td><button class="btn btn-sm btn-outline-primary py-0">Editar</button></td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+                @if (Model.DraftsTotalPages > 1)
+                {
+                    <nav class="mt-2" aria-label="Paginação rascunhos">
+                        <ul class="pagination pagination-sm justify-content-center mb-0">
+                            <li class="page-item @(Model.DraftsPage == 1 ? "disabled" : "")">
+                                <a class="page-link" href="?drft=@(Model.DraftsPage - 1)"><i class="bi bi-chevron-left"></i></a>
+                            </li>
+                            @for (int p = 1; p <= Model.DraftsTotalPages; p++)
+                            {
+                                <li class="page-item @(p == Model.DraftsPage ? "active" : "")">
+                                    <a class="page-link" href="?drft=@p">@p</a>
+                                </li>
+                            }
+                            <li class="page-item @(Model.DraftsPage == Model.DraftsTotalPages ? "disabled" : "")">
+                                <a class="page-link" href="?drft=@(Model.DraftsPage + 1)"><i class="bi bi-chevron-right"></i></a>
+                            </li>
+                        </ul>
+                    </nav>
+                }
+            </div>
+        </div>
+    </div>
+}
+else if (Model.Role == "Transcriptionist")
+{
+    <div class="row g-4 mt-1 anim-fade-in anim-delay-4">
+        <div class="col-12">
+            <div class="alert" style="background:var(--clr-warning-50);border:1px solid var(--clr-warning-200);color:var(--clr-warning-900)">
+                <i class="bi bi-info-circle me-2"></i>
+                Laudos digitados ficam pendentes de assinatura pelo médico responsável.
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="chart-container">
+                <div class="chart-title"><i class="bi bi-mic me-2"></i>Laudos digitados por mim</div>
+                <table class="hosp-table w-100">
+                    <thead><tr><th>Exame</th><th>Paciente</th><th>Modalidade</th><th>Digitado por</th><th>Status</th><th>Atualizado</th></tr></thead>
+                    <tbody>
+                    @foreach (var d in Model.ReportDrafts)
+                    {
+                        <tr>
+                            <td style="font-size:var(--fs-xs)">@d.ExamId</td>
+                            <td>@d.Patient</td>
+                            <td>@d.Modality</td>
+                            <td>@d.AuthoredBy</td>
+                            <td><span class="badge-status pending">Aguardando assinatura</span></td>
+                            <td style="font-size:var(--fs-xs)">@d.LastUpdated.ToLocalTime().ToString("dd/MM HH:mm")</td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+                @if (Model.DraftsTotalPages > 1)
+                {
+                    <nav class="mt-2" aria-label="Paginação transcrições">
+                        <ul class="pagination pagination-sm justify-content-center mb-0">
+                            <li class="page-item @(Model.DraftsPage == 1 ? "disabled" : "")">
+                                <a class="page-link" href="?drft=@(Model.DraftsPage - 1)"><i class="bi bi-chevron-left"></i></a>
+                            </li>
+                            @for (int p = 1; p <= Model.DraftsTotalPages; p++)
+                            {
+                                <li class="page-item @(p == Model.DraftsPage ? "active" : "")">
+                                    <a class="page-link" href="?drft=@p">@p</a>
+                                </li>
+                            }
+                            <li class="page-item @(Model.DraftsPage == Model.DraftsTotalPages ? "disabled" : "")">
+                                <a class="page-link" href="?drft=@(Model.DraftsPage + 1)"><i class="bi bi-chevron-right"></i></a>
+                            </li>
+                        </ul>
+                    </nav>
+                }
+            </div>
+        </div>
+    </div>
+}
+
+@section Scripts {
+<script>
+    const _chartData       = @Html.Raw(Model.ChartDataJson);
+    const _chartData2      = @Html.Raw(Model.SecondChartDataJson);
+    const _hasSecondChart  = _chartData2 && _chartData2.cols;
+
+    function buildChart(data, container, type) {
+        const opts = {
+            legend:     { position: 'bottom' },
+            colors:     ['#1e3a5f', '#0f6e7a', '#2d5f9e'],
+            fontName:   'Inter',
+            fontSize:   13,
+            chartArea:  { width: '85%', height: '72%' },
+            backgroundColor: 'transparent',
+            hAxis: { textStyle: { color: '#2e4265' } },
+            vAxis: { textStyle: { color: '#2e4265' }, gridlines: { color: '#dde3ed' } }
+        };
+        let chart;
+        switch (type) {
+            case 'LineChart': chart = new google.visualization.LineChart(container); break;
+            case 'PieChart':  chart = new google.visualization.PieChart(container); opts.pieHole = 0.4; break;
+            case 'BarChart':  chart = new google.visualization.BarChart(container); break;
+            default:          chart = new google.visualization.ColumnChart(container); break;
+        }
+        chart.draw(data, opts);
+    }
+
+    google.charts.load('current', { packages: ['corechart', 'bar'] });
+    google.charts.setOnLoadCallback(function () {
+        if (_chartData && _chartData.rows && _chartData.rows.length > 0) {
+            document.getElementById('chart-title-text').textContent = _chartData.title || '';
+            const dt = new google.visualization.DataTable();
+            _chartData.cols.forEach(c => dt.addColumn(c[1], c[0]));
+            dt.addRows(_chartData.rows);
+            buildChart(dt, document.getElementById('chart-area'), _chartData.type);
+        }
+        if (_hasSecondChart && _chartData2.rows && _chartData2.rows.length > 0) {
+            const el2 = document.getElementById('chart-area-2');
+            if (el2) {
+                document.getElementById('chart-title-text-2').textContent = _chartData2.title || '';
+                const dt2 = new google.visualization.DataTable();
+                _chartData2.cols.forEach(c => dt2.addColumn(c[1], c[0]));
+                dt2.addRows(_chartData2.rows);
+                buildChart(dt2, el2, _chartData2.type);
+            }
+        }
+    });
+</script>
+}

@@ -1,0 +1,457 @@
+@page
+@model Heal.Hospital.Web.Pages.Exams.IndexModel
+@using Heal.Hospital.Web.Services
+@{
+    Layout = "_AuthLayout";
+    ViewData["Title"] = L["Lista de Exames"].Value;
+}
+
+@functions {
+    string PageLink(int page) =>
+        Url.Page(null, new { Search = Model.Search, StatusFilter = Model.StatusFilter, page })!;
+}
+
+<!-- Toolbar -->
+<div class="section-header anim-fade-in mb-4">
+    <h2 class="section-title">
+        <i class="bi bi-file-medical me-2" style="color:var(--clr-navy-700)"></i>
+        @L["Lista de Exames"]
+        <span class="badge ms-2" style="background:var(--clr-navy-100);color:var(--clr-navy-900);font-size:.75rem;">
+            @Model.TotalCount
+        </span>
+    </h2>
+</div>
+
+<!-- Filters -->
+<form method="get" class="card p-3 mb-4 anim-fade-in anim-delay-1">
+    <div class="row g-2 align-items-end">
+        <div class="col-md-5">
+            <label class="form-label fw-semibold" style="font-size:var(--fs-xs)">@L["Buscar"]</label>
+            <div class="input-group input-group-sm">
+                <span class="input-group-text"><i class="bi bi-search"></i></span>
+                <input name="Search" value="@Model.Search" class="form-control"
+                       placeholder="@(Model.IsReceptionist ? "Paciente, nome social, CPF, ID..." : "Paciente ou nº do exame…")" />
+            </div>
+        </div>
+        <div class="col-md-4">
+            <label class="form-label fw-semibold" style="font-size:var(--fs-xs)">@L["Status"]</label>
+            <select name="StatusFilter" class="form-select form-select-sm">
+                <option value="">@L["Todos"]</option>
+                @if (Model.IsReceptionist)
+                {
+                    @foreach (var st in Enum.GetValues<MockData.ExamReportStatus>()
+                                        .Where(s => s != MockData.ExamReportStatus.AwaitingSignature))
+                    {
+                        <option value="@st" selected="@(Model.StatusFilter == st.ToString())">
+                            @MockData.GetReceptionStatusLabel(st)
+                        </option>
+                    }
+                }
+                else
+                {
+                    @foreach (var s in new[] { "Agendado", "Em andamento", "Concluído", "Laudo pendente", "Laudo emitido" })
+                    {
+                        <option value="@s" selected="@(Model.StatusFilter == s)">@s</option>
+                    }
+                }
+            </select>
+        </div>
+        <div class="col-md-3">
+            <button type="submit" class="btn btn-primary btn-sm w-100">
+                <i class="bi bi-funnel me-1"></i>@L["Filtrar"]
+            </button>
+        </div>
+    </div>
+</form>
+
+@* ─────────────────────────────────────────────────────────
+   RECEPTIONIST — Tabulator nested-tree table
+   ───────────────────────────────────────────────────────── *@
+@if (Model.IsReceptionist)
+{
+    var _loc = System.Globalization.CultureInfo.CurrentUICulture.Name;
+    var _tabLoc = _loc.StartsWith("es") ? "es" : _loc.StartsWith("en") ? "en" : "pt-br";
+
+    <link href="https://unpkg.com/tabulator-tables@6.4.0/dist/css/tabulator_bootstrap5.min.css" rel="stylesheet">
+
+    <div class="card anim-fade-in anim-delay-2 p-2">
+        <div id="reception-table-wrap">
+            <div id="reception-table"></div>
+        </div>
+    </div>
+
+    @* Edit patient modal *@
+    <div class="modal fade" id="editPatientModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <i class="bi bi-pencil-square me-2"></i>Editar dados do paciente
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                </div>
+                <form method="post" asp-antiforgery="true">
+                    <div class="modal-body">
+                        <p class="text-muted mb-3" style="font-size:var(--fs-xs)">
+                            <i class="bi bi-info-circle me-1"></i>
+                            Alterações são propagadas para os dados do paciente, tags DICOM e cabeçalho do laudo.
+                        </p>
+                        <input type="hidden" id="ep-patient-id" name="PatientId" />
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Nome completo</label>
+                                <input type="text" id="ep-name" name="PatientName" class="form-control" />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Nome social</label>
+                                <input type="text" id="ep-social" name="SocialName" class="form-control" />
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">Sexo</label>
+                                <select id="ep-sex" name="Sex" class="form-select">
+                                    <option value="M">M</option>
+                                    <option value="F">F</option>
+                                    <option value="O">Outro</option>
+                                </select>
+                            </div>
+                            <div class="col-md-5">
+                                <label class="form-label">Nascimento (data/hora)</label>
+                                <input type="datetime-local" step="1" id="ep-birth" name="BirthDateTime" class="form-control" />
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">CPF</label>
+                                <input type="text" id="ep-cpf" name="Cpf" class="form-control" placeholder="000.000.000-00" />
+                            </div>
+                            <div class="col-md-8">
+                                <label class="form-label">E-mail</label>
+                                <input type="email" id="ep-email" name="Email" class="form-control" />
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Código de download do laudo</label>
+                                <div class="input-group">
+                                    <input type="text" id="ep-access-code" name="DownloadAccessCode"
+                                           class="form-control" maxlength="6" readonly />
+                                    <button type="button" id="ep-gen-code" class="btn btn-outline-primary"
+                                            title="Gerar novo código de 6 dígitos">
+                                        <i class="bi bi-key"></i> Gerar
+                                    </button>
+                                </div>
+                                <div class="form-text" style="font-size:var(--fs-xs)">
+                                    Código de 6 dígitos para o paciente baixar o laudo no portal.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-check2 me-1"></i>Salvar alterações
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    @section Scripts {
+        <script src="https://unpkg.com/tabulator-tables@6.4.0/dist/js/tabulator.min.js"></script>
+        <script>
+            (function () {
+                var tableData = @Html.Raw(Model.ReceptionExamsJson);
+
+                /* HTML-escape helper for formatter output */
+                function escH(s) {
+                    return String(s == null ? '' : s)
+                        .replace(/&/g, '&amp;').replace(/</g, '&lt;')
+                        .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+                }
+
+                new Tabulator("#reception-table", {
+                    data: tableData,
+                    layout: "fitData",
+                    height: "620px",
+                    dataTree: true,
+                    dataTreeStartExpanded: false,
+                    dataTreeChildField: "_children",
+                    pagination: true,
+                    paginationMode: "local",
+                    paginationSize: 15,
+                    paginationSizeSelector: [10, 15, 25, 50],
+                    locale: "@_tabLoc",
+                    langs: {
+                        "pt-br": {
+                            pagination: {
+                                first: "Primeira", first_title: "Primeira página",
+                                last: "Última",    last_title: "Última página",
+                                prev: "Anterior",  prev_title: "Página anterior",
+                                next: "Próxima",   next_title: "Próxima página",
+                                all: "Todos",
+                                counter: { showing: "Exibindo", of: "de", rows: "registros", pages: "páginas" }
+                            }
+                        },
+                        "en": {
+                            pagination: {
+                                first: "First", first_title: "First Page",
+                                last: "Last",   last_title: "Last Page",
+                                prev: "Prev",   prev_title: "Previous Page",
+                                next: "Next",   next_title: "Next Page",
+                                all: "All",
+                                counter: { showing: "Showing", of: "of", rows: "rows", pages: "pages" }
+                            }
+                        },
+                        "es": {
+                            pagination: {
+                                first: "Primera",   first_title: "Primera página",
+                                last: "Última",     last_title: "Última página",
+                                prev: "Anterior",   prev_title: "Página anterior",
+                                next: "Siguiente",  next_title: "Página siguiente",
+                                all: "Todos",
+                                counter: { showing: "Mostrando", of: "de", rows: "registros", pages: "páginas" }
+                            }
+                        }
+                    },
+                    columns: [
+                        /* ── Col 1: ID Paciente (pai) | vazio (filho) ───────── */
+                        {
+                            title: "ID Paciente", field: "patientId", width: 115,
+                            formatter: function (cell) {
+                                var d = cell.getRow().getData();
+                                if (d._isChild) return '';
+                                return '<code style="font-size:.74rem;color:var(--clr-navy-700)">' + escH(d.patientId) + '</code>';
+                            }
+                        },
+                        /* ── Col 2: Paciente (pai) | Nome social+sexo+nasc+idade (filho) */
+                        {
+                            title: "Paciente / Dados pessoais", field: "patientName", minWidth: 230,
+                            formatter: function (cell) {
+                                var d = cell.getRow().getData();
+                                if (d._isChild) {
+                                    var s = '<span style="font-size:.74rem;color:var(--clr-navy-800)">';
+                                    if (d.socialName && d.socialName !== '\u2014')
+                                        s += '<b>Nome social:</b> ' + escH(d.socialName) + '&ensp;';
+                                    s += '<b>Sexo:</b> ' + escH(d.sex) + '&ensp;';
+                                    s += '<b>Nasc.:</b> ' + escH(d.birthStr) + '&ensp;';
+                                    s += '<b>Idade:</b> <code style="font-size:.74rem">' + escH(d.ageFormatted) + '</code>';
+                                    return s + '</span>';
+                                }
+                                return '<span class="fw-semibold">' + escH(d.patientName) + '</span>';
+                            }
+                        },
+                        /* ── Col 3: Modalidade (pai) | ID Estudo (filho) ─────── */
+                        {
+                            title: "Modalidade", field: "modality", width: 105,
+                            formatter: function (cell) {
+                                var d = cell.getRow().getData();
+                                if (d._isChild)
+                                    return '<span style="font-size:.74rem;color:var(--clr-navy-800)"><b>ID Estudo:</b> <code style="font-size:.74rem">' + escH(d.studyId) + '</code></span>';
+                                return escH(d.modality);
+                            }
+                        },
+                        /* ── Col 4: Procedimento (pai) | Dt. Laudo (filho) ───── */
+                        {
+                            title: "Procedimento", field: "procedure", minWidth: 170,
+                            formatter: function (cell) {
+                                var d = cell.getRow().getData();
+                                if (d._isChild)
+                                    return '<span style="font-size:.74rem;color:var(--clr-navy-800)"><b>Dt. Laudo:</b> ' + escH(d.reportDateTimeStr) + '</span>';
+                                return escH(d.procedure);
+                            }
+                        },
+                        /* ── Col 5: Data/Hora Estudo (pai) | Técnico (filho) ─── */
+                        {
+                            title: "Data/Hora Estudo", field: "studyDateTime", width: 145,
+                            formatter: function (cell) {
+                                var d = cell.getRow().getData();
+                                if (d._isChild)
+                                    return '<span style="font-size:.74rem;color:var(--clr-navy-800)"><b>Técnico:</b> ' + escH(d.technicianName) + '</span>';
+                                return '<span style="white-space:nowrap;font-size:.8rem">' + escH(d.studyDateTime) + '</span>';
+                            }
+                        },
+                        /* ── Col 6: Situação (pai) | Médico Executor (filho) ─── */
+                        {
+                            title: "Situação", field: "statusLabel", width: 170,
+                            formatter: function (cell) {
+                                var d = cell.getRow().getData();
+                                if (d._isChild)
+                                    return '<span style="font-size:.74rem;color:var(--clr-navy-800)"><b>Executor:</b> ' + escH(d.executingPhysician) + '</span>';
+                                return '<span class="badge-status ' + escH(d.statusCss) + '">' + escH(d.statusLabel) + '</span>';
+                            }
+                        },
+                        /* ── Col 7: Tipo (pai) | Médico Solicitante (filho) ──── */
+                        {
+                            title: "Tipo", field: "typeLabel", width: 110,
+                            formatter: function (cell) {
+                                var d = cell.getRow().getData();
+                                if (d._isChild)
+                                    return '<span style="font-size:.74rem;color:var(--clr-navy-800)"><b>Solicitante:</b> ' + escH(d.requestingPhysician) + '</span>';
+                                return '<span class="badge" style="background:var(--clr-navy-100);color:var(--clr-navy-900)">' + escH(d.typeLabel) + '</span>';
+                            }
+                        },
+                        /* ── Col 8: Emerg. (pai) | CPF · E-mail · Código (filho) */
+                        {
+                            title: "Emerg.", field: "isEmergency", width: 70, hozAlign: "center",
+                            formatter: function (cell) {
+                                var d = cell.getRow().getData();
+                                if (d._isChild) {
+                                    var s = '<span style="font-size:.74rem;color:var(--clr-navy-800)">';
+                                    s += '<b>CPF:</b> ' + escH(d.cpfDisplay) + '&ensp;';
+                                    s += '<b>E-mail:</b> ' + escH(d.emailDisplay) + '&ensp;';
+                                    s += '<b>Cód.:</b> <code style="font-size:.74rem">' + escH(d.accessCodeDisplay) + '</code>';
+                                    return s + '</span>';
+                                }
+                                return d.isEmergency
+                                    ? '<i class="bi bi-exclamation-octagon-fill" style="color:var(--clr-danger-700)" title="Emergência"></i>'
+                                    : '<span class="text-muted">—</span>';
+                            }
+                        },
+                        /* ── Col 9: Ações (pai) | vazio (filho) ─────────────── */
+                        {
+                            title: "Ações", field: "hasReport", width: 108, hozAlign: "right",
+                            headerSort: false,
+                            formatter: function (cell) {
+                                var d = cell.getRow().getData();
+                                if (d._isChild) return '';
+                                var html = '<div class="d-flex gap-1 justify-content-end">';
+                                html += '<button class="btn btn-sm btn-outline-secondary btn-edit-patient py-0"'
+                                      + ' data-id="'     + escH(d.patientId)     + '"'
+                                      + ' data-name="'   + escH(d.patientName)   + '"'
+                                      + ' data-social="' + escH(d.socialNameRaw) + '"'
+                                      + ' data-sex="'    + escH(d.sexRaw)        + '"'
+                                      + ' data-birth="'  + escH(d.birthForInput) + '"'
+                                      + ' data-cpf="'    + escH(d.cpfRaw)        + '"'
+                                      + ' data-email="'  + escH(d.emailRaw)      + '"'
+                                      + ' data-code="'   + escH(d.accessCodeRaw) + '"'
+                                      + ' title="Editar dados do paciente">'
+                                      + '<i class="bi bi-pencil-square"></i></button>';
+                                if (d.hasReport) {
+                                    html += '<a href="#" class="btn btn-sm btn-outline-primary py-0" title="Baixar laudo (PDF)"><i class="bi bi-download"></i></a>';
+                                    html += '<a href="#" class="btn btn-sm btn-outline-primary py-0" title="Imprimir laudo" target="_blank"><i class="bi bi-printer"></i></a>';
+                                }
+                                html += '</div>';
+                                return html;
+                            }
+                        }
+                    ]
+                });
+
+                /* ── Edit modal — delegated click on table wrapper ── */
+                document.getElementById('reception-table-wrap').addEventListener('click', function (e) {
+                    var btn = e.target.closest('.btn-edit-patient');
+                    if (!btn) return;
+                    var modal = document.getElementById('editPatientModal');
+                    modal.querySelector('#ep-patient-id').value  = btn.dataset.id     || '';
+                    modal.querySelector('#ep-name').value        = btn.dataset.name   || '';
+                    modal.querySelector('#ep-social').value      = btn.dataset.social || '';
+                    modal.querySelector('#ep-sex').value         = btn.dataset.sex    || 'M';
+                    modal.querySelector('#ep-birth').value       = btn.dataset.birth  || '';
+                    modal.querySelector('#ep-cpf').value         = btn.dataset.cpf    || '';
+                    modal.querySelector('#ep-email').value       = btn.dataset.email  || '';
+                    modal.querySelector('#ep-access-code').value = btn.dataset.code   || '';
+                    bootstrap.Modal.getOrCreateInstance(modal).show();
+                });
+
+                document.getElementById('ep-gen-code').addEventListener('click', function () {
+                    document.getElementById('ep-access-code').value =
+                        Math.floor(100000 + Math.random() * 900000).toString();
+                });
+            })();
+        </script>
+    }
+}
+@* ─────────────────────────────────────────────────────────
+   OTHER ROLES — Simple legacy table
+   ───────────────────────────────────────────────────────── *@
+else
+{
+    <div class="card anim-fade-in anim-delay-2">
+        @if (Model.FilteredExams.Length == 0)
+        {
+            <div class="p-5 text-center text-muted">
+                <i class="bi bi-inbox" style="font-size:3rem;opacity:.4"></i>
+                <p class="mt-3 mb-0">@L["Nenhum exame encontrado."]</p>
+            </div>
+        }
+        else
+        {
+            <div class="table-responsive">
+                <table class="hosp-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>@L["Paciente"]</th>
+                            <th>@L["Modalidade"]</th>
+                            <th>Médico</th>
+                            <th>@L["Data"]</th>
+                            <th>@L["Status"]</th>
+                            <th>@L["Ações"]</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var exam in Model.FilteredExams)
+                        {
+                            var statusCss = exam.Status switch {
+                                "Agendado"       => "scheduled",
+                                "Em andamento"   => "in-progress",
+                                "Concluído"      => "completed",
+                                "Laudo pendente" => "pending",
+                                "Laudo emitido"  => "issued",
+                                _                => "completed"
+                            };
+                            <tr>
+                                <td><code style="font-size:var(--fs-xs);color:var(--clr-navy-700)">@exam.Id</code></td>
+                                <td>
+                                    <div class="d-flex align-items-center gap-2">
+                                        <span class="hosp-avatar" style="width:28px;height:28px;font-size:.65rem;">
+                                            @string.Join("", exam.Patient.Split(' ').Take(2).Select(p => p[0]))
+                                        </span>
+                                        @exam.Patient
+                                    </div>
+                                </td>
+                                <td>@exam.Modality</td>
+                                <td class="text-muted" style="font-size:var(--fs-xs)">@exam.Physician</td>
+                                <td style="white-space:nowrap">@exam.Date.ToString("dd/MM/yyyy")</td>
+                                <td><span class="badge-status @statusCss">@exam.Status</span></td>
+                                <td>
+                                    <div class="d-flex gap-1">
+                                        <button class="btn btn-sm btn-outline-secondary" title="Ver detalhes">
+                                            <i class="bi bi-eye"></i>
+                                        </button>
+                                        @if (exam.ReportUrl is not null)
+                                        {
+                                            <a href="@exam.ReportUrl" class="btn btn-sm btn-outline-primary" title="Ver laudo">
+                                                <i class="bi bi-file-earmark-text"></i>
+                                            </a>
+                                        }
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </div>
+
+    @if (Model.TotalPages > 1)
+    {
+        <nav class="mt-3 anim-fade-in anim-delay-3" aria-label="Paginação de exames">
+            <ul class="pagination pagination-sm justify-content-center mb-0">
+                <li class="page-item @(Model.PageIndex == 1 ? "disabled" : "")">
+                    <a class="page-link" href="@PageLink(Math.Max(1, Model.PageIndex - 1))"><i class="bi bi-chevron-left"></i></a>
+                </li>
+                @for (int p = 1; p <= Model.TotalPages; p++)
+                {
+                    <li class="page-item @(p == Model.PageIndex ? "active" : "")">
+                        <a class="page-link" href="@PageLink(p)">@p</a>
+                    </li>
+                }
+                <li class="page-item @(Model.PageIndex == Model.TotalPages ? "disabled" : "")">
+                    <a class="page-link" href="@PageLink(Math.Min(Model.TotalPages, Model.PageIndex + 1))"><i class="bi bi-chevron-right"></i></a>
+                </li>
+            </ul>
+            <p class="text-center text-muted mt-2 mb-0" style="font-size:var(--fs-xs)">
+                Página @Model.PageIndex de @Model.TotalPages · @Model.TotalCount exames
+            </p>
+        </nav>
+    }
+}

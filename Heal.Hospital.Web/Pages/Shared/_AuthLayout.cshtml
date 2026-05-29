@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="@System.Globalization.CultureInfo.CurrentUICulture.Name">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] — @L["St. Mungus"]</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous" />
+    <link rel="stylesheet" href="~/css/hospital.css" asp-append-version="true" />
+    <!-- Google Charts -->
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+</head>
+
+<body>
+    @{
+        var returnUrl = $"{Context.Request.Path}{Context.Request.QueryString}";
+        var currentCulture = System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;
+        var currentLanguageLabel = currentCulture switch { "en" => "EN", "es" => "ES", _ => "PT" };
+        var currentLanguageFlag = currentCulture switch { "en" => "🇺🇸", "es" => "🇪🇸", _ => "🇧🇷" };
+        var fullName = User.FindFirst("FullName")?.Value ?? User.Identity?.Name ?? "";
+        var role = User.FindFirst(System.Security.Claims.ClaimTypes.Role)?.Value ?? "";
+        var initials = string.IsNullOrEmpty(fullName) ? "?" :
+                         string.Join("", fullName.Split(' ', System.StringSplitOptions.RemoveEmptyEntries)
+                             .Take(2).Select(p => p[0].ToString().ToUpperInvariant()));
+        var activePage = ViewData["ActivePage"]?.ToString() ?? "";
+    }
+
+    <!-- Mobile / small screen overlay -->
+    <div class="hosp-small-screen-overlay" aria-hidden="true">
+        <div class="overlay-icon"><i class="bi bi-display"></i></div>
+        <h2>@L["Tela não disponível em dispositivos móveis."]</h2>
+        <p>Acesse pelo computador (mínimo 1024px) para a melhor experiência.</p>
+    </div>
+
+    <a class="skip-link" href="#main-content">@L["Pular para o conteúdo principal"]</a>
+
+    <div class="hosp-shell">
+
+        <!-- ── SIDEBAR ────────────────────────────────────────── -->
+        <nav class="hosp-sidebar" aria-label="@L["Navegação principal"]">
+
+            <a class="hosp-sidebar-brand" asp-page="/Dashboard/Index">
+                <span class="hosp-logo-mark">SM</span>
+                <span class="hosp-sidebar-brand-name">@L["St. Mungus"]</span>
+            </a>
+
+            <ul class="hosp-sidebar-nav">
+
+                <li>
+                    <a class="hosp-sidebar-link @(activePage == "Dashboard" ? "active" : "")"
+                       asp-page="/Dashboard/Index">
+                        <i class="bi bi-speedometer2"></i>
+                        <span>@L["Dashboard"]</span>
+                    </a>
+                </li>
+
+                @if (role != "HospitalFinancial")
+                {
+                    <li>
+                        <a class="hosp-sidebar-link @(activePage == "Exams" ? "active" : "")" asp-page="/Exams/Index">
+                            <i class="bi bi-file-medical"></i>
+                            <span>@L["Exames"]</span>
+                        </a>
+                    </li>
+                }
+
+                <li>
+                    <a class="hosp-sidebar-link @(activePage == "Alerts" ? "active" : "")" asp-page="/Alerts/Index">
+                        <i class="bi bi-bell"></i>
+                        <span>
+                            @L["Alertas"]
+                            @if ((int?)ViewData["AlertCount"] > 0)
+                            {
+                                <span class="badge bg-danger ms-auto badge-pulse"
+                                      style="font-size:.65rem; padding:2px 6px;">@ViewData["AlertCount"]</span>
+                            }
+                        </span>
+                    </a>
+                </li>
+
+                <li class="hosp-sidebar-section">@L["Perfil"]</li>
+
+                <li>
+                    <a class="hosp-sidebar-link @(activePage == "Profile.ChangePassword" ? "active" : "")"
+                       asp-page="/Profile/ChangePassword">
+                        <i class="bi bi-key"></i>
+                        <span>@L["Alterar senha"]</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a class="hosp-sidebar-link @(activePage == "Profile.AccountData" ? "active" : "")"
+                       asp-page="/Profile/AccountData">
+                        <i class="bi bi-person-badge"></i>
+                        <span>@L["Dados da conta"]</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a class="hosp-sidebar-link @(activePage == "Profile.MfaSetup" ? "active" : "")"
+                       asp-page="/Profile/MfaSetup">
+                        <i class="bi bi-shield-lock"></i>
+                        <span>@L["Configurar MFA"]</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a class="hosp-sidebar-link @(activePage == "Profile.AccessHistory" ? "active" : "")"
+                       asp-page="/Profile/AccessHistory">
+                        <i class="bi bi-clock-history"></i>
+                        <span>@L["Histórico de acessos"]</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a class="hosp-sidebar-link @(activePage == "Profile.Photo" ? "active" : "")"
+                       asp-page="/Profile/Photo">
+                        <i class="bi bi-camera"></i>
+                        <span>@L["Foto do perfil"]</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a class="hosp-sidebar-link @(activePage == "Profile.PersonalData" ? "active" : "")"
+                       asp-page="/Profile/PersonalData">
+                        <i class="bi bi-person-lines-fill"></i>
+                        <span>@L["Dados pessoais"]</span>
+                    </a>
+                </li>
+
+            </ul>
+
+            <div class="hosp-sidebar-footer">
+                <form method="post" asp-page="/Auth/Logoff">
+                    <button type="submit" class="hosp-sidebar-link w-100 border-0 bg-transparent text-start"
+                            style="cursor:pointer;">
+                        <i class="bi bi-box-arrow-left"></i>
+                        <span>@L["Sair"]</span>
+                    </button>
+                </form>
+            </div>
+
+        </nav>
+
+        <!-- ── TOPBAR ─────────────────────────────────────────── -->
+        <header class="hosp-topbar">
+            <div class="hosp-topbar-left">
+                <h1 class="hosp-page-title">@(ViewData["Title"]?.ToString() ?? "")</h1>
+            </div>
+            <div class="hosp-topbar-right">
+
+                <!-- Font scale -->
+                <div class="btn-group btn-group-sm" role="group" aria-label="Ajuste de fonte">
+                    <button id="font-decrease" class="btn btn-sm btn-outline-secondary" type="button"
+                            aria-label="Diminuir fonte">A<sup>−</sup></button>
+                    <button id="font-increase" class="btn btn-sm btn-outline-secondary" type="button"
+                            aria-label="Aumentar fonte">A<sup>+</sup></button>
+                </div>
+
+                <!-- Language -->
+                <div class="dropdown">
+                    <button class="btn btn-sm btn-outline-secondary dropdown-toggle d-flex align-items-center gap-1"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                        <span>@currentLanguageFlag</span>
+                        <span>@currentLanguageLabel</span>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li><a class="dropdown-item" asp-page="/Culture" asp-route-culture="pt-BR"
+                                   asp-route-returnUrl="@returnUrl">🇧🇷 Português (BR)</a></li>
+                            <li><a class="dropdown-item" asp-page="/Culture" asp-route-culture="en"
+                                       asp-route-returnUrl="@returnUrl">🇺🇸 English</a></li>
+                                <li><a class="dropdown-item" asp-page="/Culture" asp-route-culture="es"
+                                           asp-route-returnUrl="@returnUrl">🇪🇸 Español</a></li>
+                                </ul>
+                            </div>
+
+                            <!-- User menu -->
+                            <div class="dropdown">
+                                <button class="btn btn-sm btn-outline-secondary dropdown-toggle d-flex align-items-center gap-2"
+                                        data-bs-toggle="dropdown" aria-expanded="false">
+                                    <span class="hosp-avatar" style="width:28px;height:28px;font-size:.7rem;">@initials</span>
+                                    <span class="d-none d-md-inline">@fullName</span>
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-end">
+                                    <li>
+                                        <h6 class="dropdown-header">@role</h6>
+                                    </li>
+                                    <li>
+                                        <hr class="dropdown-divider" />
+                                    </li>
+                                    <li><a class="dropdown-item" asp-page="/Profile/AccountData"><i
+                                        class="bi bi-person me-2"></i>@L["Dados da conta"]</a></li>
+                                        <li><a class="dropdown-item" asp-page="/Profile/ChangePassword"><i
+                                            class="bi bi-key me-2"></i>@L["Alterar senha"]</a></li>
+                                            <li>
+                                                <hr class="dropdown-divider" />
+                                            </li>
+                                            <li>
+                                                <form method="post" asp-page="/Auth/Logoff">
+                                                    <button type="submit" class="dropdown-item text-danger">
+                                                        <i class="bi bi-box-arrow-right me-2"></i>@L["Sair"]
+                                                    </button>
+                                                </form>
+                                            </li>
+                                        </ul>
+                                    </div>
+
+                                </div>
+                            </header>
+
+                            <!-- ── MAIN CONTENT ───────────────────────────────────── -->
+                            <main id="main-content" class="hosp-main anim-fade-in" tabindex="-1">
+                                @RenderBody()
+                            </main>
+
+                        </div>
+
+                        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+                        <script src="~/js/site.js" asp-append-version="true"></script>
+                        @await RenderSectionAsync("Scripts", required: false)
+                    </body>
+
+                </html>
