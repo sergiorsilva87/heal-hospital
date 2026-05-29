@@ -80,26 +80,18 @@ public class IndexModel : PageModel
                     birthForInput = e.BirthDateTime.ToString("yyyy-MM-ddTHH:mm:ss"),
                     cpfRaw        = e.Cpf,
                     emailRaw      = e.Email ?? "",
-                    accessCodeRaw = e.DownloadAccessCode ?? "",
-                    _children     = new[]
-                    {
-                        new
-                        {
-                            _isChild            = true,
-                            socialName          = e.SocialName ?? "\u2014",
-                            sex                 = e.Sex,
-                            birthStr            = e.BirthDateTime.ToString("dd/MM/yyyy HH:mm:ss"),
-                            ageFormatted        = MockData.FormatDicomAge(e.BirthDateTime, e.StudyDateTime),
-                            studyId             = e.StudyId,
-                            reportDateTimeStr   = e.ReportDateTime?.ToString("dd/MM/yyyy HH:mm") ?? "\u2014",
-                            technicianName      = e.TechnicianName,
-                            executingPhysician  = e.ExecutingPhysician ?? "\u2014",
-                            requestingPhysician = e.RequestingPhysician,
-                            cpfDisplay          = e.Cpf,
-                            emailDisplay        = e.Email ?? "\u2014",
-                            accessCodeDisplay   = e.DownloadAccessCode ?? "\u2014"
-                        }
-                    }
+                    accessCodeRaw       = e.DownloadAccessCode ?? "",
+                    unit                = e.Unit,
+                    birthStr            = e.BirthDateTime.ToString("dd/MM/yyyy HH:mm:ss"),
+                    ageFormatted        = MockData.FormatDicomAge(e.BirthDateTime, e.StudyDateTime),
+                    studyId             = e.StudyId,
+                    reportDateTimeStr   = e.ReportDateTime?.ToString("dd/MM/yyyy HH:mm") ?? "\u2014",
+                    liberationDateStr   = e.LiberationDateTime?.ToString("dd/MM/yyyy HH:mm") ?? "\u2014",
+                    criticalFinding     = e.CriticalFinding,
+                    hasPendency         = e.HasPendency,
+                    technicianName      = e.TechnicianName,
+                    executingPhysician  = e.ExecutingPhysician ?? "\u2014",
+                    requestingPhysician = e.RequestingPhysician
                 })
             );
         }

@@ -73,10 +73,98 @@
     var _tabLoc = _loc.StartsWith("es") ? "es" : _loc.StartsWith("en") ? "en" : "pt-br";
 
     <link href="https://unpkg.com/tabulator-tables@6.4.0/dist/css/tabulator_bootstrap5.min.css" rel="stylesheet">
+    <style>
+        #reception-table .tabulator-col-title  { font-size: .79rem; font-weight: 600; }
+        #reception-table .tabulator-cell       { font-size: .8rem; }
+        /* emergency row highlight */
+        #reception-table .tabulator-row.row-emergency { background-color: #fff5f5 !important; }
+        #reception-table .tabulator-row.row-emergency .tabulator-cell { color: #7f1d1d; }
+        /* Ações cell must not clip buttons */
+        #reception-table .tabulator-cell { overflow: visible; }
+        /* normalize code elements — same face as surrounding text */
+        #reception-table .tabulator-cell code { font-family: inherit; font-weight: 600; }
+        /* uniform row font weight */
+        #reception-table .tabulator-cell { font-weight: 400; }
+        /* flex-wrap on rows allows inline detail panel below cells */
+        #reception-table .tabulator-row { flex-wrap: wrap !important; }
+        #reception-table .rx-detail { flex: 0 0 100%; width: 100%; display: none; flex-wrap: wrap; }
+        #reception-table .rx-detail.open { display: flex; }
+        #reception-table .rx-detail-row {
+            flex: 0 0 100%; width: 100%;
+            display: flex; flex-wrap: wrap; align-items: center;
+            gap: 0 1.5rem; padding: 4px 12px 4px 40px;
+            font-size: .75rem; color: var(--clr-navy-800); background: #f0f4fa;
+        }
+        #reception-table .rx-detail-row + .rx-detail-row { border-top: 1px dashed #d0d7e2; }
+        #reception-table .rx-detail b { font-weight: 600; }
+        /* expand toggle chevron */
+        #reception-table .rx-toggle-icon {
+            display: inline-block; margin-right: 8px; cursor: pointer;
+            font-size: .85rem; color: var(--clr-navy-600); transition: transform .15s;
+        }
+        #reception-table .row-open .rx-toggle-icon { transform: rotate(90deg); }
+        /* pagination: compact size */
+        #reception-table .tabulator-footer { font-size: .78rem; }
+        #reception-table .tabulator-footer .tabulator-paginator label { font-size: .78rem; }
+        #reception-table .tabulator-footer .tabulator-page-size { font-size: .78rem; padding: 1px 4px; height: auto; }
+        #reception-table .tabulator-footer .tabulator-page { padding: 2px 8px; font-size: .78rem; line-height: 1.4; }
+        /* flag icons: critical finding + pendency */
+        .rx-flags-slot {
+            display: inline-flex; align-items: center; gap: 3px;
+            width: 2.6rem; min-width: 2.6rem;
+            vertical-align: middle; margin-right: 2px;
+        }
+        .rx-flag-critical-unnotified { color: #c62828; font-size: .95rem; cursor: default; }
+        .rx-flag-critical-notified   { color: #2e7d32; font-size: .95rem; cursor: default; }
+        .rx-flag-pendency            { color: #e65100; font-size: .95rem; cursor: default; }
+        #reception-table .tabulator-cell .rx-flags { display: inline-flex; gap: 5px; align-items: center; }
+        /* external loading overlay */
+        #rx-loading-overlay {
+            position: absolute; inset: 0; z-index: 10;
+            background: rgba(255,255,255,.88);
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center; gap: .6rem;
+            font-size: .83rem; font-weight: 500; color: var(--clr-navy-700);
+        }
+        #rx-loading-overlay.rx-op {
+            flex-direction: row; justify-content: flex-start;
+            padding: .5rem .75rem; inset: auto 0 0 0;
+            height: 2.4rem; background: rgba(240,244,250,.95);
+            border-top: 1px solid #d0d7e2; font-size: .8rem; font-weight: 400;
+        }
+        #rx-loading-overlay.hidden { display: none; }
+        /* block column resize handles */
+        #reception-table .tabulator-col-resize-handle { display: none !important; pointer-events: none !important; }
+        /* legend: distinct color per status group */
+        #reception-legend .badge-status.scheduled   { background: #e3f2fd; color: #0d47a1; }
+        #reception-legend .badge-status.in-progress { background: #fff3e0; color: #bf360c; }
+        #reception-legend .badge-status.pending     { background: #f3e5f5; color: #6a1b9a; }
+        #reception-legend .badge-status.issued      { background: #e8f5e9; color: #1b5e20; }
+        #reception-legend .badge-status.cancelled   { background: #f0f0f0; color: #6c757d; }
+    </style>
+
+    @* Status legend *@
+    <div id="reception-legend" class="d-flex flex-wrap gap-2 align-items-center mb-2" style="font-size:.72rem">
+        <span class="text-muted fw-semibold me-1">Legenda:</span>
+        <span class="badge-status scheduled">Ag. Liberação</span>
+        <span class="badge-status scheduled">Na Fila (Disponível)</span>
+        <span class="badge-status in-progress">Laudando</span>
+        <span class="badge-status pending">Pendência</span>
+        <span class="badge-status pending">Revisão Solicitada</span>
+        <span class="badge-status issued">Aprovado</span>
+        <span class="badge-status issued">Aprovado c/ Revisão</span>
+        <span class="badge-status cancelled">Cancelado</span>
+    </div>
 
     <div class="card anim-fade-in anim-delay-2 p-2">
-        <div id="reception-table-wrap">
+        <div id="reception-table-wrap" style="overflow-x:auto;position:relative">
             <div id="reception-table"></div>
+            <div id="rx-loading-overlay">
+                <div class="spinner-border" role="status" style="width:2.25rem;height:2.25rem;color:var(--clr-navy-600)">
+                    <span class="visually-hidden">Carregando...</span>
+                </div>
+                <span>Carregando dados do servidor&hellip;</span>
+            </div>
         </div>
     </div>
 
@@ -166,21 +254,106 @@
                         .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
                 }
 
-                new Tabulator("#reception-table", {
-                    data: tableData,
-                    layout: "fitData",
-                    height: "620px",
-                    dataTree: true,
-                    dataTreeStartExpanded: false,
-                    dataTreeChildField: "_children",
+                /* ── Modality abbreviation & badge colors (non-retired DICOM codes) ── */
+                var _modAbbr = {
+                    'Radiografia': 'DX', 'Tomografia': 'CT', 'Ressonância': 'MR',
+                    'Ultrassonografia': 'US', 'Mamografia': 'MG', 'PET-CT': 'PT',
+                    'Fluoroscopia': 'RF', 'Cintilografia': 'NM', 'Angiografia': 'XA',
+                    'Densitometria': 'BDUS', 'Eletrocardiograma': 'ECG'
+                };
+                var _modClr = {
+                    CT:   { bg: '#fff3e0', c: '#bf360c' },
+                    MR:   { bg: '#f3e5f5', c: '#6a1b9a' },
+                    US:   { bg: '#e0f7fa', c: '#006064' },
+                    MG:   { bg: '#fce4ec', c: '#880e4f' },
+                    PT:   { bg: '#e8f5e9', c: '#1b5e20' },
+                    DX:   { bg: '#e3f2fd', c: '#0d47a1' },
+                    CR:   { bg: '#e8eaf6', c: '#1a237e' },
+                    NM:   { bg: '#f9fbe7', c: '#33691e' },
+                    RF:   { bg: '#e0f2f1', c: '#004d40' },
+                    XA:   { bg: '#fbe9e7', c: '#b71c1c' },
+                    ECG:  { bg: '#fff8e1', c: '#e65100' },
+                    BDUS: { bg: '#f1f8e9', c: '#558b2f' }
+                };
+
+                /* ── Status dot colors (must match #reception-legend CSS) ── */
+                var _statusDotClr = {
+                    'scheduled':   '#0d47a1',
+                    'in-progress': '#bf360c',
+                    'pending':     '#6a1b9a',
+                    'issued':      '#1b5e20',
+                    'urgent':      '#b71c1c',
+                    'cancelled':   '#9e9e9e'
+                };
+
+                /* ── Loading overlay (external div, immune to Tabulator lifecycle) ── */
+                var _overlay = document.getElementById('rx-loading-overlay');
+                var _spinnerSmHtml =
+                    '<div class="spinner-border spinner-border-sm" role="status" style="color:var(--clr-navy-600)">'
+                    + '<span class="visually-hidden">Processando...</span></div>'
+                    + '<span>Processando…</span>';
+
+                var _initialLoading = true;
+                var _opTimer = null;
+
+                function _showOpOverlay() {
+                    if (_initialLoading) return;
+                    if (_opTimer) { clearTimeout(_opTimer); _opTimer = null; }
+                    _overlay.innerHTML = _spinnerSmHtml;
+                    _overlay.classList.add('rx-op');
+                    _overlay.classList.remove('hidden');
+                }
+                function _hideOpOverlay() {
+                    if (_initialLoading) return;
+                    if (_opTimer) clearTimeout(_opTimer);
+                    _opTimer = setTimeout(function () {
+                        _overlay.classList.add('hidden');
+                        _opTimer = null;
+                    }, 120);
+                }
+
+                var table = new Tabulator("#reception-table", {
+                    data: [],
+                    layout: "fitColumns",
+                    resizableColumns: false,
+                    rowFormatter: function (row) {
+                        var d  = row.getData();
+                        var el = row.getElement();
+                        if (d.isEmergency) el.classList.add('row-emergency');
+                        if (el.querySelector('.rx-detail')) return;
+
+                        var detail = document.createElement('div');
+                        detail.className = 'rx-detail';
+
+                        var r1 = '<div class="rx-detail-row">';
+                        if (d.socialNameRaw) r1 += '<span><b>Nome social:</b> ' + escH(d.socialNameRaw) + '</span>';
+                        r1 += '<span><b>Nasc.:</b> '      + escH(d.birthStr)          + '</span>';
+                        r1 += '<span><b>Idade:</b> '       + escH(d.ageFormatted)      + '</span>';
+                        r1 += '<span><b>ID Estudo:</b> '   + escH(d.studyId)           + '</span>';
+                        r1 += '<span><b>Data Estudo:</b> '   + escH(d.studyDateTime)     + '</span>';
+                        r1 += '<span><b>Liberação:</b> '        + escH(d.liberationDateStr) + '</span>';
+                        r1 += '<span><b>Data Laudo:</b> '    + escH(d.reportDateTimeStr) + '</span>';
+                        r1 += '</div>';
+
+                        var r2 = '<div class="rx-detail-row">';
+                        r2 += '<span><b>Unidade:</b> '     + escH(d.unit)               + '</span>';
+                        r2 += '<span><b>T\u00e9cnico:</b> '   + escH(d.technicianName)     + '</span>';
+                        r2 += '<span><b>Executor:</b> '    + escH(d.executingPhysician)  + '</span>';
+                        r2 += '<span><b>Solicitante:</b> ' + escH(d.requestingPhysician) + '</span>';
+                        r2 += '</div>';
+
+                        detail.innerHTML = r1 + r2;
+                        el.appendChild(detail);
+                    },
                     pagination: true,
                     paginationMode: "local",
-                    paginationSize: 15,
+                    paginationSize: 10,
                     paginationSizeSelector: [10, 15, 25, 50],
                     locale: "@_tabLoc",
                     langs: {
                         "pt-br": {
                             pagination: {
+                                page_size: "Itens por página",
                                 first: "Primeira", first_title: "Primeira página",
                                 last: "Última",    last_title: "Última página",
                                 prev: "Anterior",  prev_title: "Página anterior",
@@ -191,6 +364,7 @@
                         },
                         "en": {
                             pagination: {
+                                page_size: "Page size:",
                                 first: "First", first_title: "First Page",
                                 last: "Last",   last_title: "Last Page",
                                 prev: "Prev",   prev_title: "Previous Page",
@@ -201,6 +375,7 @@
                         },
                         "es": {
                             pagination: {
+                                page_size: "Por pág.:",
                                 first: "Primera",   first_title: "Primera página",
                                 last: "Última",     last_title: "Última página",
                                 prev: "Anterior",   prev_title: "Página anterior",
@@ -211,108 +386,105 @@
                         }
                     },
                     columns: [
-                        /* ── Col 1: ID Paciente (pai) | vazio (filho) ───────── */
+                        /* ── Col 1: ID Paciente ─────────────────────────────── */
                         {
-                            title: "ID Paciente", field: "patientId", width: 115,
+                            title: "ID Paciente", field: "patientId", widthGrow: 1, minWidth: 130,
+                            formatter: function (cell) {
+                                var d = cell.getRow().getData();
+                                var flags = '';
+                                if (d.criticalFinding === 'unnotified')
+                                    flags += '<i class="bi bi-exclamation-triangle-fill rx-flag-critical-unnotified" title="Achado crítico não resolvido"></i>';
+                                else if (d.criticalFinding === 'notified')
+                                    flags += '<i class="bi bi-patch-check-fill rx-flag-critical-notified" title="Achado crítico resolvido"></i>';
+                                if (d.hasPendency)
+                                    flags += '<i class="bi bi-paperclip rx-flag-pendency" title="Exame com pendências"></i>';
+                                return '<span class="rx-flags-slot">' + flags + '</span>'
+                                     + '<i class="bi bi-chevron-right rx-toggle-icon" title="Detalhes"></i>'
+                                     + '<code style="color:var(--clr-navy-700)">' + escH(d.patientId) + '</code>';
+                            },
+                            cellClick: function (e, cell) {
+                                var rowEl  = cell.getRow().getElement();
+                                var detail = rowEl.querySelector('.rx-detail');
+                                if (!detail) return;
+                                var isOpen = detail.classList.toggle('open');
+                                rowEl.classList.toggle('row-open', isOpen);
+                            }
+                        },
+                        /* ── Col 2: Paciente (pai) | child: handled by rowFormatter */
+                        {
+                            title: "Paciente", field: "patientName", widthGrow: 2, minWidth: 140,
                             formatter: function (cell) {
                                 var d = cell.getRow().getData();
                                 if (d._isChild) return '';
-                                return '<code style="font-size:.74rem;color:var(--clr-navy-700)">' + escH(d.patientId) + '</code>';
+                                return escH(d.patientName);
                             }
                         },
-                        /* ── Col 2: Paciente (pai) | Nome social+sexo+nasc+idade (filho) */
+                        /* ── Col 3: Gênero (pai) | vazio (filho) ────────────── */
                         {
-                            title: "Paciente / Dados pessoais", field: "patientName", minWidth: 230,
+                            title: "Gênero", field: "sexRaw", width: 72, hozAlign: "center",
                             formatter: function (cell) {
                                 var d = cell.getRow().getData();
-                                if (d._isChild) {
-                                    var s = '<span style="font-size:.74rem;color:var(--clr-navy-800)">';
-                                    if (d.socialName && d.socialName !== '\u2014')
-                                        s += '<b>Nome social:</b> ' + escH(d.socialName) + '&ensp;';
-                                    s += '<b>Sexo:</b> ' + escH(d.sex) + '&ensp;';
-                                    s += '<b>Nasc.:</b> ' + escH(d.birthStr) + '&ensp;';
-                                    s += '<b>Idade:</b> <code style="font-size:.74rem">' + escH(d.ageFormatted) + '</code>';
-                                    return s + '</span>';
-                                }
-                                return '<span class="fw-semibold">' + escH(d.patientName) + '</span>';
+                                if (d._isChild) return '';
+                                return escH(d.sexRaw);
                             }
                         },
-                        /* ── Col 3: Modalidade (pai) | ID Estudo (filho) ─────── */
+                        /* ── Col 4: AN = Nº Acesso (pai) | vazio (filho) ───────── */
                         {
-                            title: "Modalidade", field: "modality", width: 105,
+                            title: "AN", field: "accessCodeRaw", width: 82, headerTooltip: "Número de Acesso",
                             formatter: function (cell) {
                                 var d = cell.getRow().getData();
-                                if (d._isChild)
-                                    return '<span style="font-size:.74rem;color:var(--clr-navy-800)"><b>ID Estudo:</b> <code style="font-size:.74rem">' + escH(d.studyId) + '</code></span>';
-                                return escH(d.modality);
+                                if (d._isChild) return '';
+                                return '<code style="color:var(--clr-navy-700)">' + escH(d.accessCodeRaw) + '</code>';
                             }
                         },
-                        /* ── Col 4: Procedimento (pai) | Dt. Laudo (filho) ───── */
+                        /* ── Col 5: Mod. (pai) | child: handled by rowFormatter */
                         {
-                            title: "Procedimento", field: "procedure", minWidth: 170,
+                            title: "Mod.", field: "modality", width: 82,
                             formatter: function (cell) {
                                 var d = cell.getRow().getData();
-                                if (d._isChild)
-                                    return '<span style="font-size:.74rem;color:var(--clr-navy-800)"><b>Dt. Laudo:</b> ' + escH(d.reportDateTimeStr) + '</span>';
+                                if (d._isChild) return '';
+                                var abbr = _modAbbr[d.modality] || d.modality;
+                                var clr  = _modClr[abbr] || { bg: '#f0f0f0', c: '#444' };
+                                return '<span style="display:inline-block;padding:1px 9px;border-radius:20px;font-weight:600;white-space:nowrap;background:' + clr.bg + ';color:' + clr.c + '">' + escH(abbr) + '</span>';
+                            }
+                        },
+                        /* ── Col 6: Procedimento (pai) | child: handled by rowFormatter */
+                        {
+                            title: "Procedimento", field: "procedure", widthGrow: 2, minWidth: 155,
+                            formatter: function (cell) {
+                                var d = cell.getRow().getData();
+                                if (d._isChild) return '';
                                 return escH(d.procedure);
                             }
                         },
-                        /* ── Col 5: Data/Hora Estudo (pai) | Técnico (filho) ─── */
+                        /* ── Col 7: Situação (pai) | child: handled by rowFormatter */
                         {
-                            title: "Data/Hora Estudo", field: "studyDateTime", width: 145,
+                            title: "Situação", field: "statusLabel", widthGrow: 1, minWidth: 80,
                             formatter: function (cell) {
                                 var d = cell.getRow().getData();
-                                if (d._isChild)
-                                    return '<span style="font-size:.74rem;color:var(--clr-navy-800)"><b>Técnico:</b> ' + escH(d.technicianName) + '</span>';
-                                return '<span style="white-space:nowrap;font-size:.8rem">' + escH(d.studyDateTime) + '</span>';
+                                if (d._isChild) return '';
+                                var clr = _statusDotClr[d.statusCss] || '#666';
+                                return '<span style="display:inline-block;width:14px;height:14px;border-radius:50%;background:' + clr + ';vertical-align:middle;cursor:default" title="' + escH(d.statusLabel) + '"></span>';
                             }
                         },
-                        /* ── Col 6: Situação (pai) | Médico Executor (filho) ─── */
+                        /* ── Col 8: Tipo (pai) | child: handled by rowFormatter */
                         {
-                            title: "Situação", field: "statusLabel", width: 170,
+                            title: "Tipo", field: "typeLabel", widthGrow: 1, minWidth: 92,
                             formatter: function (cell) {
                                 var d = cell.getRow().getData();
-                                if (d._isChild)
-                                    return '<span style="font-size:.74rem;color:var(--clr-navy-800)"><b>Executor:</b> ' + escH(d.executingPhysician) + '</span>';
-                                return '<span class="badge-status ' + escH(d.statusCss) + '">' + escH(d.statusLabel) + '</span>';
-                            }
-                        },
-                        /* ── Col 7: Tipo (pai) | Médico Solicitante (filho) ──── */
-                        {
-                            title: "Tipo", field: "typeLabel", width: 110,
-                            formatter: function (cell) {
-                                var d = cell.getRow().getData();
-                                if (d._isChild)
-                                    return '<span style="font-size:.74rem;color:var(--clr-navy-800)"><b>Solicitante:</b> ' + escH(d.requestingPhysician) + '</span>';
+                                if (d._isChild) return '';
                                 return '<span class="badge" style="background:var(--clr-navy-100);color:var(--clr-navy-900)">' + escH(d.typeLabel) + '</span>';
                             }
                         },
-                        /* ── Col 8: Emerg. (pai) | CPF · E-mail · Código (filho) */
+                        /* ── Col: Ações ───────────────────────────────── */
                         {
-                            title: "Emerg.", field: "isEmergency", width: 70, hozAlign: "center",
-                            formatter: function (cell) {
-                                var d = cell.getRow().getData();
-                                if (d._isChild) {
-                                    var s = '<span style="font-size:.74rem;color:var(--clr-navy-800)">';
-                                    s += '<b>CPF:</b> ' + escH(d.cpfDisplay) + '&ensp;';
-                                    s += '<b>E-mail:</b> ' + escH(d.emailDisplay) + '&ensp;';
-                                    s += '<b>Cód.:</b> <code style="font-size:.74rem">' + escH(d.accessCodeDisplay) + '</code>';
-                                    return s + '</span>';
-                                }
-                                return d.isEmergency
-                                    ? '<i class="bi bi-exclamation-octagon-fill" style="color:var(--clr-danger-700)" title="Emergência"></i>'
-                                    : '<span class="text-muted">—</span>';
-                            }
-                        },
-                        /* ── Col 9: Ações (pai) | vazio (filho) ─────────────── */
-                        {
-                            title: "Ações", field: "hasReport", width: 108, hozAlign: "right",
+                            title: "Ações", field: "hasReport", width: 140, hozAlign: "right",
                             headerSort: false,
                             formatter: function (cell) {
                                 var d = cell.getRow().getData();
                                 if (d._isChild) return '';
                                 var html = '<div class="d-flex gap-1 justify-content-end">';
-                                html += '<button class="btn btn-sm btn-outline-secondary btn-edit-patient py-0"'
+                                html += '<button class="btn btn-sm btn-outline-primary btn-edit-patient py-0"'
                                       + ' data-id="'     + escH(d.patientId)     + '"'
                                       + ' data-name="'   + escH(d.patientName)   + '"'
                                       + ' data-social="' + escH(d.socialNameRaw) + '"'
@@ -333,6 +505,22 @@
                         }
                     ]
                 });
+
+                /* ── Initial load: overlay visible until data renders ── */
+                setTimeout(function () {
+                    table.setData(tableData).then(function () {
+                        _initialLoading = false;
+                        _overlay.classList.add('hidden');
+                    });
+                }, 3000 + Math.floor(Math.random() * 2001));
+
+                /* ── Brief loader on sort, filter and page change ────── */
+                table.on('dataSorting',   _showOpOverlay);
+                table.on('dataSorted',    _hideOpOverlay);
+                table.on('dataFiltering', _showOpOverlay);
+                table.on('dataFiltered',  _hideOpOverlay);
+                table.on('pageLoading',   _showOpOverlay);
+                table.on('pageLoaded',    _hideOpOverlay);
 
                 /* ── Edit modal — delegated click on table wrapper ── */
                 document.getElementById('reception-table-wrap').addEventListener('click', function (e) {
