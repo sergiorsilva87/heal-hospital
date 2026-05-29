@@ -22,47 +22,169 @@
     </h2>
 </div>
 
-<!-- Filters -->
-<form method="get" class="card p-3 mb-4 anim-fade-in anim-delay-1">
-    <div class="row g-2 align-items-end">
-        <div class="col-md-5">
-            <label class="form-label fw-semibold" style="font-size:var(--fs-xs)">@L["Buscar"]</label>
-            <div class="input-group input-group-sm">
-                <span class="input-group-text"><i class="bi bi-search"></i></span>
-                <input name="Search" value="@Model.Search" class="form-control"
-                       placeholder="@(Model.IsReceptionist ? "Paciente, nome social, CPF, ID..." : "Paciente ou nº do exame…")" />
+@if (Model.IsReceptionist)
+{
+    <div id="rx-filter-card" class="card mb-3 anim-fade-in anim-delay-1">
+        <div class="d-flex align-items-center px-3 py-2" id="rx-filter-header"
+             data-bs-toggle="collapse" data-bs-target="#rx-filter-body"
+             aria-expanded="false" aria-controls="rx-filter-body"
+             style="cursor:pointer;user-select:none">
+            <i class="bi bi-funnel me-2" style="font-size:.82rem;color:var(--clr-navy-700)"></i>
+            <span class="fw-semibold" style="font-size:.82rem;color:var(--clr-navy-900)">Filtros</span>
+            <span id="rx-filter-badge" class="badge rounded-pill ms-2 d-none"
+                  style="background:var(--clr-navy-600);font-size:.6rem;padding:2px 7px">0 aplicados</span>
+            <i class="bi bi-chevron-down ms-auto rx-filter-chevron"></i>
+        </div>
+        <div id="rx-filter-body" class="collapse">
+            <div class="px-3 pb-3 pt-1" id="rx-filter-panel">
+                <div class="row g-2 mb-2">
+                    <div class="col-md-2">
+                        <label class="form-label fw-semibold" style="font-size:var(--fs-xs)">ID Paciente</label>
+                        <input type="text" id="f-patient-id" class="form-control form-control-sm" placeholder="PAC-00012">
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label fw-semibold" style="font-size:var(--fs-xs)">Nome do paciente</label>
+                        <input type="text" id="f-patient-name" class="form-control form-control-sm" placeholder="Digite o nome...">
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label fw-semibold" style="font-size:var(--fs-xs)">Nº Acesso</label>
+                        <input type="text" id="f-access-code" class="form-control form-control-sm" placeholder="847291">
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label fw-semibold" style="font-size:var(--fs-xs)">Médico executor</label>
+                        <select id="f-executor" class="form-select form-select-sm">
+                            <option value="">Todos</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label fw-semibold" style="font-size:var(--fs-xs)">Unidade</label>
+                        <select id="f-unit" class="form-select form-select-sm">
+                            <option value="">Todas</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row g-2 mb-2">
+                    <div class="col-md-2">
+                        <label class="form-label fw-semibold" style="font-size:var(--fs-xs)">Modalidade</label>
+                        <select id="f-modality" class="form-select form-select-sm">
+                            <option value="">Todas</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label fw-semibold" style="font-size:var(--fs-xs)">Procedimento</label>
+                        <select id="f-procedure" class="form-select form-select-sm" disabled>
+                            <option value="">Todos</option>
+                        </select>
+                    </div>
+                    <div class="col-md-1">
+                        <label class="form-label fw-semibold" style="font-size:var(--fs-xs)">Tipo</label>
+                        <select id="f-type" class="form-select form-select-sm">
+                            <option value="">Todos</option>
+                            <option value="PS">PS</option>
+                            <option value="Int.">Int.</option>
+                            <option value="Eletivo">Eletivo</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label fw-semibold" style="font-size:var(--fs-xs)">Situação</label>
+                        <select id="f-status" class="form-select form-select-sm">
+                            <option value="">Todas</option>
+                            <option value="Liberação">Liberação</option>
+                            <option value="Disponível">Disponível</option>
+                            <option value="Laudando">Laudando</option>
+                            <option value="Pendência">Pendência</option>
+                            <option value="Assinatura">Assinatura</option>
+                            <option value="Revisão">Revisão</option>
+                            <option value="Aprovado">Aprovado</option>
+                            <option value="Cancelado">Cancelado</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row g-2 mb-2">
+                    <div class="col-auto">
+                        <label class="form-label fw-semibold" style="font-size:var(--fs-xs)">Estudo &mdash; início</label>
+                        <input type="date" id="f-study-from" class="form-control form-control-sm">
+                    </div>
+                    <div class="col-auto">
+                        <label class="form-label fw-semibold" style="font-size:var(--fs-xs)">Estudo &mdash; fim</label>
+                        <input type="date" id="f-study-to" class="form-control form-control-sm">
+                    </div>
+                    <div class="col-auto" style="border-left:1px solid #d0d7e2;padding-left:1rem">
+                        <label class="form-label fw-semibold" style="font-size:var(--fs-xs)">Finalização &mdash; início</label>
+                        <input type="date" id="f-date-from" class="form-control form-control-sm">
+                    </div>
+                    <div class="col-auto">
+                        <label class="form-label fw-semibold" style="font-size:var(--fs-xs)">Finalização &mdash; fim</label>
+                        <input type="date" id="f-date-to" class="form-control form-control-sm">
+                    </div>
+                </div>
+                <div class="row g-2 align-items-center">
+                    <div class="col-auto">
+                        <div class="form-check form-switch mb-0">
+                            <input type="checkbox" id="f-emergency" class="form-check-input" role="switch">
+                            <label for="f-emergency" class="form-check-label" style="font-size:var(--fs-xs)">Emergências</label>
+                        </div>
+                    </div>
+                    <div class="col-auto">
+                        <div class="form-check form-switch mb-0">
+                            <input type="checkbox" id="f-pendency" class="form-check-input" role="switch">
+                            <label for="f-pendency" class="form-check-label" style="font-size:var(--fs-xs)">Pendências</label>
+                        </div>
+                    </div>
+                    <div class="col-auto">
+                        <div class="form-check form-switch mb-0">
+                            <input type="checkbox" id="f-critical-unnotified" class="form-check-input" role="switch">
+                            <label for="f-critical-unnotified" class="form-check-label" style="font-size:var(--fs-xs)"><i class="bi bi-exclamation-triangle-fill rx-flag-critical-unnotified" style="font-size:.82rem"></i> Achado crítico não resolvido</label>
+                        </div>
+                    </div>
+                    <div class="col-auto">
+                        <div class="form-check form-switch mb-0">
+                            <input type="checkbox" id="f-critical-notified" class="form-check-input" role="switch">
+                            <label for="f-critical-notified" class="form-check-label" style="font-size:var(--fs-xs)"><i class="bi bi-patch-check-fill rx-flag-critical-notified" style="font-size:.82rem"></i> Achado crítico resolvido</label>
+                        </div>
+                    </div>
+                    <div class="col-auto">
+                        <div class="form-check form-switch mb-0">
+                            <input type="checkbox" id="f-archived" class="form-check-input" role="switch">
+                            <label for="f-archived" class="form-check-label" style="font-size:var(--fs-xs)"><i class="bi bi-archive-fill rx-flag-archived" style="font-size:.82rem"></i> Arquivados</label>
+                        </div>
+                    </div>
+                    <div class="ms-auto col-auto d-flex gap-2">
+                        <button type="button" id="f-clear" class="btn btn-outline-secondary rx-btn-xs"><i class="bi bi-x-circle me-1"></i>Limpar</button>
+                        <button type="button" id="f-apply" class="btn btn-primary rx-btn-xs"><i class="bi bi-funnel me-1"></i>Filtrar</button>
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="col-md-4">
-            <label class="form-label fw-semibold" style="font-size:var(--fs-xs)">@L["Status"]</label>
-            <select name="StatusFilter" class="form-select form-select-sm">
-                <option value="">@L["Todos"]</option>
-                @if (Model.IsReceptionist)
-                {
-                    @foreach (var st in Enum.GetValues<MockData.ExamReportStatus>()
-                                        .Where(s => s != MockData.ExamReportStatus.AwaitingSignature))
-                    {
-                        <option value="@st" selected="@(Model.StatusFilter == st.ToString())">
-                            @MockData.GetReceptionStatusLabel(st)
-                        </option>
-                    }
-                }
-                else
-                {
+    </div>
+}
+else
+{
+    <form method="get" class="card p-3 mb-4 anim-fade-in anim-delay-1">
+        <div class="row g-2 align-items-end">
+            <div class="col-md-5">
+                <label class="form-label fw-semibold" style="font-size:var(--fs-xs)">@L["Buscar"]</label>
+                <div class="input-group input-group-sm">
+                    <span class="input-group-text"><i class="bi bi-search"></i></span>
+                    <input name="Search" value="@Model.Search" class="form-control" placeholder="Paciente ou nº do exame…" />
+                </div>
+            </div>
+            <div class="col-md-4">
+                <label class="form-label fw-semibold" style="font-size:var(--fs-xs)">@L["Status"]</label>
+                <select name="StatusFilter" class="form-select form-select-sm">
+                    <option value="">@L["Todos"]</option>
                     @foreach (var s in new[] { "Agendado", "Em andamento", "Concluído", "Laudo pendente", "Laudo emitido" })
                     {
                         <option value="@s" selected="@(Model.StatusFilter == s)">@s</option>
                     }
-                }
-            </select>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <button type="submit" class="btn btn-primary btn-sm w-100"><i class="bi bi-funnel me-1"></i>@L["Filtrar"]</button>
+            </div>
         </div>
-        <div class="col-md-3">
-            <button type="submit" class="btn btn-primary btn-sm w-100">
-                <i class="bi bi-funnel me-1"></i>@L["Filtrar"]
-            </button>
-        </div>
-    </div>
-</form>
+    </form>
+}
 
 @* ─────────────────────────────────────────────────────────
    RECEPTIONIST — Tabulator nested-tree table
@@ -108,16 +230,22 @@
         #reception-table .tabulator-footer .tabulator-paginator label { font-size: .78rem; }
         #reception-table .tabulator-footer .tabulator-page-size { font-size: .78rem; padding: 1px 4px; height: auto; }
         #reception-table .tabulator-footer .tabulator-page { padding: 2px 8px; font-size: .78rem; line-height: 1.4; }
-        /* flag icons: critical finding + pendency */
+        /* flag icons */
         .rx-flags-slot {
-            display: inline-flex; align-items: center; gap: 3px;
-            width: 2.6rem; min-width: 2.6rem;
+            display: inline-flex; align-items: center; gap: 2px;
+            width: 5.8rem; min-width: 5.8rem;
             vertical-align: middle; margin-right: 2px;
         }
-        .rx-flag-critical-unnotified { color: #c62828; font-size: .95rem; cursor: default; }
-        .rx-flag-critical-notified   { color: #2e7d32; font-size: .95rem; cursor: default; }
-        .rx-flag-pendency            { color: #e65100; font-size: .95rem; cursor: default; }
-        #reception-table .tabulator-cell .rx-flags { display: inline-flex; gap: 5px; align-items: center; }
+        .rx-flag-placeholder        { display: inline-block; width: 1rem; height: 1rem; }
+        .rx-flag-critical-unnotified { color: #c62828; font-size: .9rem; cursor: default; }
+        .rx-flag-critical-notified   { color: #2e7d32; font-size: .9rem; cursor: default; }
+        .rx-flag-pendency            { color: #e65100; font-size: .9rem; cursor: default; }
+        .rx-flag-attach              { color: var(--clr-navy-600); font-size: .9rem; cursor: default; }
+        .rx-flag-attach-empty        { color: #ccc; font-size: .9rem; cursor: default; }
+        .rx-attach-item              { display: inline-flex; align-items: center; }
+        .rx-badge-count              { font-size: .58rem; font-weight: 700; color: var(--clr-navy-700); margin-left: 1px; line-height: 1; }
+        .mod-img-count               { font-size: .6rem; color: #888; font-weight: 600; margin-left: 3px; vertical-align: super; }
+        .rx-flag-archived            { color: #546e7a; font-size: .9rem; cursor: default; }
         /* external loading overlay */
         #rx-loading-overlay {
             position: absolute; inset: 0; z-index: 10;
@@ -135,6 +263,10 @@
         #rx-loading-overlay.hidden { display: none; }
         /* block column resize handles */
         #reception-table .tabulator-col-resize-handle { display: none !important; pointer-events: none !important; }
+        /* filter panel: chevron animation + compact buttons */
+        #rx-filter-header .rx-filter-chevron { font-size: .8rem; color: var(--clr-navy-600); transition: transform .25s ease; }
+        #rx-filter-header[aria-expanded="false"] .rx-filter-chevron { transform: rotate(-90deg); }
+        .rx-btn-xs { font-size: .72rem; padding: 2px 10px; line-height: 1.5; }
         /* legend: distinct color per status group */
         #reception-legend .badge-status.scheduled   { background: #e3f2fd; color: #0d47a1; }
         #reception-legend .badge-status.in-progress { background: #fff3e0; color: #bf360c; }
@@ -144,16 +276,26 @@
     </style>
 
     @* Status legend *@
-    <div id="reception-legend" class="d-flex flex-wrap gap-2 align-items-center mb-2" style="font-size:.72rem">
-        <span class="text-muted fw-semibold me-1">Legenda:</span>
-        <span class="badge-status scheduled">Ag. Liberação</span>
-        <span class="badge-status scheduled">Na Fila (Disponível)</span>
-        <span class="badge-status in-progress">Laudando</span>
-        <span class="badge-status pending">Pendência</span>
-        <span class="badge-status pending">Revisão Solicitada</span>
-        <span class="badge-status issued">Aprovado</span>
-        <span class="badge-status issued">Aprovado c/ Revisão</span>
-        <span class="badge-status cancelled">Cancelado</span>
+    <div id="reception-legend" class="mb-2" style="font-size:.68rem">
+        <div class="d-flex flex-wrap gap-2 align-items-center">
+            <span class="text-muted fw-semibold me-1">Situação:</span>
+            <span class="badge-status scheduled">Liberação</span>
+            <span class="badge-status scheduled">Disponível</span>
+            <span class="badge-status in-progress">Laudando</span>
+            <span class="badge-status pending">Pendência</span>
+            <span class="badge-status pending">Revisão</span>
+            <span class="badge-status pending">Assinatura</span>
+            <span class="badge-status issued">Aprovado</span>
+            <span class="badge-status cancelled">Cancelado</span>
+        </div>
+        <div class="d-flex flex-wrap gap-2 align-items-center mt-1">
+            <span class="text-muted fw-semibold me-1">Indicadores:</span>
+            <span style="white-space:nowrap"><i class="bi bi-exclamation-triangle-fill rx-flag-critical-unnotified"></i> Achado crítico não resolvido</span>
+            <span style="white-space:nowrap"><i class="bi bi-patch-check-fill rx-flag-critical-notified"></i> Achado crítico resolvido</span>
+            <span style="white-space:nowrap"><i class="bi bi-flag-fill rx-flag-pendency"></i> Pendência</span>
+            <span style="white-space:nowrap"><i class="bi bi-paperclip rx-flag-attach"></i> Documentos</span>
+            <span style="white-space:nowrap"><i class="bi bi-archive-fill rx-flag-archived"></i> Arquivado</span>
+        </div>
     </div>
 
     <div class="card anim-fade-in anim-delay-2 p-2">
@@ -388,17 +530,24 @@
                     columns: [
                         /* ── Col 1: ID Paciente ─────────────────────────────── */
                         {
-                            title: "ID Paciente", field: "patientId", widthGrow: 1, minWidth: 130,
+                            title: "ID Paciente", field: "patientId", widthGrow: 1, minWidth: 220,
                             formatter: function (cell) {
                                 var d = cell.getRow().getData();
-                                var flags = '';
-                                if (d.criticalFinding === 'unnotified')
-                                    flags += '<i class="bi bi-exclamation-triangle-fill rx-flag-critical-unnotified" title="Achado crítico não resolvido"></i>';
-                                else if (d.criticalFinding === 'notified')
-                                    flags += '<i class="bi bi-patch-check-fill rx-flag-critical-notified" title="Achado crítico resolvido"></i>';
-                                if (d.hasPendency)
-                                    flags += '<i class="bi bi-paperclip rx-flag-pendency" title="Exame com pendências"></i>';
-                                return '<span class="rx-flags-slot">' + flags + '</span>'
+                                var f1 = d.criticalFinding === 'unnotified'
+                                    ? '<i class="bi bi-exclamation-triangle-fill rx-flag-critical-unnotified" title="Achado cr\u00edtico n\u00e3o resolvido"></i>'
+                                    : d.criticalFinding === 'notified'
+                                    ? '<i class="bi bi-patch-check-fill rx-flag-critical-notified" title="Achado cr\u00edtico resolvido"></i>'
+                                    : '<i class="rx-flag-placeholder"></i>';
+                                var f2 = d.hasPendency
+                                    ? '<i class="bi bi-flag-fill rx-flag-pendency" title="Exame com pend\u00eancias"></i>'
+                                    : '<i class="rx-flag-placeholder"></i>';
+                                var f3 = d.attachmentCount > 0
+                                    ? '<span class="rx-attach-item"><i class="bi bi-paperclip rx-flag-attach" title="' + d.attachmentCount + ' doc(s) anexado(s)"></i><span class="rx-badge-count">' + d.attachmentCount + '</span></span>'
+                                    : '<i class="bi bi-paperclip rx-flag-attach-empty" title="Sem documentos"></i>';
+                                var f4 = d.isArchived
+                                    ? '<i class="bi bi-archive-fill rx-flag-archived" title="Exame arquivado (cold storage)"></i>'
+                                    : '<i class="rx-flag-placeholder"></i>';
+                                return '<span class="rx-flags-slot">' + f1 + f2 + f3 + f4 + '</span>'
                                      + '<i class="bi bi-chevron-right rx-toggle-icon" title="Detalhes"></i>'
                                      + '<code style="color:var(--clr-navy-700)">' + escH(d.patientId) + '</code>';
                             },
@@ -421,7 +570,7 @@
                         },
                         /* ── Col 3: Gênero (pai) | vazio (filho) ────────────── */
                         {
-                            title: "Gênero", field: "sexRaw", width: 72, hozAlign: "center",
+                            title: "Sexo", field: "sexRaw", width: 90, hozAlign: "center",
                             formatter: function (cell) {
                                 var d = cell.getRow().getData();
                                 if (d._isChild) return '';
@@ -439,18 +588,19 @@
                         },
                         /* ── Col 5: Mod. (pai) | child: handled by rowFormatter */
                         {
-                            title: "Mod.", field: "modality", width: 82,
+                            title: "Mod.", field: "modality", width: 120,
                             formatter: function (cell) {
                                 var d = cell.getRow().getData();
                                 if (d._isChild) return '';
                                 var abbr = _modAbbr[d.modality] || d.modality;
                                 var clr  = _modClr[abbr] || { bg: '#f0f0f0', c: '#444' };
-                                return '<span style="display:inline-block;padding:1px 9px;border-radius:20px;font-weight:600;white-space:nowrap;background:' + clr.bg + ';color:' + clr.c + '">' + escH(abbr) + '</span>';
+                                return '<span style="display:inline-block;padding:1px 9px;border-radius:20px;font-weight:600;white-space:nowrap;background:' + clr.bg + ';color:' + clr.c + '">' + escH(abbr) + '</span>'
+                                     + '<span class="mod-img-count" title="' + d.imageCount + ' imagem(ns)">' + d.imageCount + '<i class="bi bi-images" style="font-size:.55rem;margin-left:1px"></i></span>';
                             }
                         },
                         /* ── Col 6: Procedimento (pai) | child: handled by rowFormatter */
                         {
-                            title: "Procedimento", field: "procedure", widthGrow: 2, minWidth: 155,
+                            title: "Procedimento", field: "procedure", widthGrow: 1, minWidth: 120,
                             formatter: function (cell) {
                                 var d = cell.getRow().getData();
                                 if (d._isChild) return '';
@@ -459,7 +609,7 @@
                         },
                         /* ── Col 7: Situação (pai) | child: handled by rowFormatter */
                         {
-                            title: "Situação", field: "statusLabel", widthGrow: 1, minWidth: 80,
+                            title: "Situação", field: "statusLabel", width: 140, hozAlign: "center",
                             formatter: function (cell) {
                                 var d = cell.getRow().getData();
                                 if (d._isChild) return '';
@@ -469,7 +619,7 @@
                         },
                         /* ── Col 8: Tipo (pai) | child: handled by rowFormatter */
                         {
-                            title: "Tipo", field: "typeLabel", widthGrow: 1, minWidth: 92,
+                            title: "Tipo", field: "typeLabel", widthGrow: 1, minWidth: 60,
                             formatter: function (cell) {
                                 var d = cell.getRow().getData();
                                 if (d._isChild) return '';
@@ -522,6 +672,136 @@
                 table.on('pageLoading',   _showOpOverlay);
                 table.on('pageLoaded',    _hideOpOverlay);
 
+                /* ── Filter panel JS ─────────────────────────── */
+                (function () {
+                    var _procsByMod = {};
+                    tableData.forEach(function (d) {
+                        if (!_procsByMod[d.modality]) _procsByMod[d.modality] = [];
+                        if (_procsByMod[d.modality].indexOf(d.procedure) === -1)
+                            _procsByMod[d.modality].push(d.procedure);
+                    });
+                    Object.keys(_procsByMod).forEach(function (k) { _procsByMod[k].sort(); });
+
+                    /* Populate executor dropdown */
+                    var execs = tableData.filter(function (d) { return d.executingPhysician !== '—'; })
+                                         .map(function (d) { return d.executingPhysician; })
+                                         .filter(function (v, i, a) { return a.indexOf(v) === i; }).sort();
+                    var selE = document.getElementById('f-executor');
+                    execs.forEach(function (v) { var o = document.createElement('option'); o.value = v; o.textContent = v; selE.appendChild(o); });
+
+                    /* Populate unit dropdown */
+                    var units = tableData.map(function (d) { return d.unit; })
+                                         .filter(function (v, i, a) { return a.indexOf(v) === i; }).sort();
+                    var selU = document.getElementById('f-unit');
+                    units.forEach(function (v) { var o = document.createElement('option'); o.value = v; o.textContent = v; selU.appendChild(o); });
+
+                    /* Populate modality dropdown */
+                    var mods = tableData.map(function (d) { return d.modality; })
+                                        .filter(function (v, i, a) { return a.indexOf(v) === i; }).sort();
+                    var selMod = document.getElementById('f-modality');
+                    mods.forEach(function (v) { var o = document.createElement('option'); o.value = v; o.textContent = v; selMod.appendChild(o); });
+
+                    function buildProcs(mod) {
+                        var sel = document.getElementById('f-procedure');
+                        sel.innerHTML = '<option value="">Todos</option>';
+                        if (!mod) { sel.disabled = true; return; }
+                        sel.disabled = false;
+                        (_procsByMod[mod] || []).forEach(function (v) {
+                            var o = document.createElement('option'); o.value = v; o.textContent = v; sel.appendChild(o);
+                        });
+                    }
+                    buildProcs('');
+
+                    document.getElementById('f-modality').addEventListener('change', function () {
+                        buildProcs(this.value);
+                        document.getElementById('f-procedure').value = '';
+                    });
+
+                    /* Active filter badge */
+                    function updateFilterBadge() {
+                        var count = 0;
+                        ['f-patient-id','f-patient-name','f-access-code'].forEach(function (id) {
+                            if (document.getElementById(id).value.trim()) count++;
+                        });
+                        ['f-executor','f-unit','f-modality','f-procedure','f-study-from','f-study-to','f-date-from','f-date-to','f-type','f-status'].forEach(function (id) {
+                            if (document.getElementById(id).value) count++;
+                        });
+                        ['f-emergency','f-pendency','f-critical-unnotified','f-critical-notified','f-archived'].forEach(function (id) {
+                            if (document.getElementById(id).checked) count++;
+                        });
+                        var badge = document.getElementById('rx-filter-badge');
+                        if (count > 0) {
+                            badge.textContent = count + (count === 1 ? ' aplicado' : ' aplicados');
+                            badge.classList.remove('d-none');
+                        } else {
+                            badge.classList.add('d-none');
+                        }
+                    }
+
+                    function applyFilters() {
+                        var pid    = document.getElementById('f-patient-id').value.trim().toLowerCase();
+                        var pname  = document.getElementById('f-patient-name').value.trim().toLowerCase();
+                        var access = document.getElementById('f-access-code').value.trim().toLowerCase();
+                        var exec   = document.getElementById('f-executor').value;
+                        var unit   = document.getElementById('f-unit').value;
+                        var mod    = document.getElementById('f-modality').value;
+                        var proc   = document.getElementById('f-procedure').value;
+                        var dfrom  = document.getElementById('f-date-from').value;
+                        var dto    = document.getElementById('f-date-to').value;
+                        var sfrom  = document.getElementById('f-study-from').value;
+                        var sto    = document.getElementById('f-study-to').value;
+                        var type   = document.getElementById('f-type').value;
+                        var status = document.getElementById('f-status').value;
+                        var emer   = document.getElementById('f-emergency').checked;
+                        var pend   = document.getElementById('f-pendency').checked;
+                        var cun    = document.getElementById('f-critical-unnotified').checked;
+                        var cno    = document.getElementById('f-critical-notified').checked;
+                        var arch   = document.getElementById('f-archived').checked;
+                        table.setFilter(function (d) {
+                            if (pid    && d.patientId.toLowerCase().indexOf(pid) === -1)    return false;
+                            if (pname  && d.patientName.toLowerCase().indexOf(pname) === -1) return false;
+                            if (access && d.accessCodeRaw.toLowerCase().indexOf(access) === -1) return false;
+                            if (exec   && d.executingPhysician !== exec)                    return false;
+                            if (unit   && d.unit !== unit)                                   return false;
+                            if (mod    && d.modality !== mod)                                return false;
+                            if (proc   && d.procedure !== proc)                              return false;
+                            if (dfrom  && (d.liberationDateOnly < dfrom || !d.liberationDateOnly)) return false;
+                            if (dto    && (d.liberationDateOnly > dto   || !d.liberationDateOnly)) return false;
+                            if (sfrom  && d.studyDateOnly < sfrom) return false;
+                            if (sto    && d.studyDateOnly > sto)   return false;
+                            if (type   && d.typeLabel !== type)                              return false;
+                            if (status && d.statusLabel !== status)                          return false;
+                            if (emer   && !d.isEmergency)                                    return false;
+                            if (pend   && !d.hasPendency)                                    return false;
+                            if (cun && !cno && d.criticalFinding !== 'unnotified')           return false;
+                            if (cno && !cun && d.criticalFinding !== 'notified')             return false;
+                            if (cun && cno && !d.criticalFinding)                            return false;
+                            if (arch  && !d.isArchived)                                      return false;
+                            return true;
+                        });
+                        updateFilterBadge();
+                    }
+
+                    document.getElementById('f-apply').addEventListener('click', applyFilters);
+                    document.getElementById('f-clear').addEventListener('click', function () {
+                        ['f-patient-id','f-patient-name','f-access-code'].forEach(function (id) {
+                            document.getElementById(id).value = '';
+                        });
+                        ['f-executor','f-unit','f-modality','f-type','f-status','f-study-from','f-study-to','f-date-from','f-date-to'].forEach(function (id) {
+                            document.getElementById(id).value = '';
+                        });
+                        buildProcs('');
+                        ['f-emergency','f-pendency','f-critical-unnotified','f-critical-notified','f-archived'].forEach(function (id) {
+                            document.getElementById(id).checked = false;
+                        });
+                        table.clearFilter();
+                        updateFilterBadge();
+                    });
+                    document.querySelectorAll('#rx-filter-panel input[type="text"], #rx-filter-panel input[type="date"]').forEach(function (inp) {
+                        inp.addEventListener('keydown', function (e) { if (e.key === 'Enter') applyFilters(); });
+                    });
+                })();
+
                 /* ── Edit modal — delegated click on table wrapper ── */
                 document.getElementById('reception-table-wrap').addEventListener('click', function (e) {
                     var btn = e.target.closest('.btn-edit-patient');
@@ -535,6 +815,7 @@
                     modal.querySelector('#ep-cpf').value         = btn.dataset.cpf    || '';
                     modal.querySelector('#ep-email').value       = btn.dataset.email  || '';
                     modal.querySelector('#ep-access-code').value = btn.dataset.code   || '';
+                    document.body.appendChild(modal);
                     bootstrap.Modal.getOrCreateInstance(modal).show();
                 });
 

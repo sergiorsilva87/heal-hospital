@@ -91,7 +91,12 @@ public class IndexModel : PageModel
                     hasPendency         = e.HasPendency,
                     technicianName      = e.TechnicianName,
                     executingPhysician  = e.ExecutingPhysician ?? "\u2014",
-                    requestingPhysician = e.RequestingPhysician
+                    requestingPhysician = e.RequestingPhysician,
+                    studyDateOnly       = e.StudyDateTime.ToString("yyyy-MM-dd"),
+                    liberationDateOnly  = e.LiberationDateTime?.ToString("yyyy-MM-dd") ?? "",
+                    imageCount          = e.ImageCount,
+                    attachmentCount     = e.AttachmentCount,
+                    isArchived          = e.IsArchived
                 })
             );
         }
