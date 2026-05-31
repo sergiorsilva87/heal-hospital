@@ -1,0 +1,25 @@
+@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer L
+@* Status + indicator legend (Melhorias item 1) *@
+<div id="reception-legend" class="mb-2" style="font-size:.68rem">
+    <div class="d-flex flex-wrap gap-2 align-items-center">
+        <span class="text-muted fw-semibold me-1">@L["Situação:"]</span>
+        <span class="badge-status release">@L["Liberação"]</span>
+        <span class="badge-status available">@L["Disponível"]</span>
+        <span class="badge-status reporting">@L["Laudando"]</span>
+        <span class="badge-status pendency">@L["Pendência"]</span>
+        <span class="badge-status revision">@L["Revisão"]</span>
+        <span class="badge-status signature">@L["Assinatura"]</span>
+        <span class="badge-status approved">@L["Aprovado"]</span>
+        <span class="badge-status cancelled">@L["Cancelado"]</span>
+    </div>
+    <div class="d-flex flex-wrap gap-2 align-items-center mt-1">
+        <span class="text-muted fw-semibold me-1">@L["Indicadores:"]</span>
+        <span style="white-space:nowrap"><i class="bi bi-exclamation-triangle-fill rx-flag-critical-unnotified"></i> @L["Achado crítico não resolvido"]</span>
+        <span style="white-space:nowrap"><i class="bi bi-patch-check-fill rx-flag-critical-notified"></i> @L["Achado crítico resolvido"]</span>
+        <span style="white-space:nowrap"><i class="bi bi-flag-fill rx-flag-pendency"></i> @L["Pendência"]</span>
+        <span style="white-space:nowrap"><i class="bi bi-paperclip rx-flag-attach"></i> @L["Documentos"]</span>
+        <span style="white-space:nowrap"><i class="bi bi-archive-fill rx-flag-archived"></i> @L["Arquivado"]</span>
+        <span style="white-space:nowrap"><i class="bi bi-key-fill rx-flag-code-generated"></i> @L["Código de download gerado"]</span>
+        <span style="white-space:nowrap"><i class="bi bi-cloud-arrow-down-fill rx-flag-downloaded"></i> @L["Laudo baixado pelo paciente"]</span>
+    </div>
+</div>

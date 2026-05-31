@@ -1,19 +1,34 @@
 @page
 @model Heal.Hospital.Web.Pages.Exams.IndexModel
 @using Heal.Hospital.Web.Services
+@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer L
 @{
     Layout = "_AuthLayout";
     ViewData["Title"] = L["Lista de Exames"].Value;
+    var _loc = System.Globalization.CultureInfo.CurrentUICulture.Name;
+    var _tabLoc = _loc.StartsWith("es") ? "es" : _loc.StartsWith("en") ? "en" : "pt-br";
 }
 
 @functions {
-    string PageLink(int page) =>
-        Url.Page(null, new { Search = Model.Search, StatusFilter = Model.StatusFilter, page })!;
 
     // JSON-encoded localized string for safe embedding inside JS. Returns IHtmlContent so Razor
     // does not HTML-encode the quotes; System.Text.Json still escapes <, >, & and non-ASCII.
     Microsoft.AspNetCore.Html.IHtmlContent J(string key) =>
         new Microsoft.AspNetCore.Html.HtmlString(System.Text.Json.JsonSerializer.Serialize(L[key].Value));
+
+}
+
+@* ── Component stylesheets (per-component CSS, loaded via _AuthLayout Styles section) ── *@
+
+@section Styles {
+    @if (Model.IsReceptionist)
+    {
+        <link href="https://unpkg.com/tabulator-tables@6.4.0/dist/css/tabulator_bootstrap5.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="~/css/exams/flags.css" asp-append-version="true"/>
+        <link rel="stylesheet" href="~/css/exams/table.css" asp-append-version="true"/>
+        <link rel="stylesheet" href="~/css/exams/filters.css" asp-append-version="true"/>
+        <link rel="stylesheet" href="~/css/exams/legend.css" asp-append-version="true"/>
+    }
 }
 
 <!-- Toolbar -->
@@ -29,1226 +44,119 @@
 
 @if (Model.IsReceptionist)
 {
-    <div id="rx-filter-card" class="card mb-3 anim-fade-in anim-delay-1">
-        <div class="d-flex align-items-center px-3 py-2" id="rx-filter-header"
-             data-bs-toggle="collapse" data-bs-target="#rx-filter-body"
-             aria-expanded="false" aria-controls="rx-filter-body"
-             style="cursor:pointer;user-select:none">
-            <i class="bi bi-funnel me-2" style="font-size:.82rem;color:var(--clr-navy-700)"></i>
-            <span class="fw-semibold" style="font-size:.82rem;color:var(--clr-navy-900)">@L["Filtros"]</span>
-            <span id="rx-filter-badge" class="badge rounded-pill ms-2 d-none"
-                  style="background:var(--clr-navy-600);font-size:.6rem;padding:2px 7px">0 @L["aplicados"]</span>
-            <i class="bi bi-chevron-down ms-auto rx-filter-chevron"></i>
-        </div>
-        <div id="rx-filter-body" class="collapse">
-            <div class="px-3 pb-3 pt-1" id="rx-filter-panel">
-                <div class="row g-2 mb-2">
-                    <div class="col-md-2">
-                        <label class="form-label fw-semibold" style="font-size:var(--fs-xs)">@L["ID Paciente"]</label>
-                        <input type="text" id="f-patient-id" class="form-control form-control-sm" placeholder="PAC-00012">
-                    </div>
-                    <div class="col-md-3">
-                        <label class="form-label fw-semibold" style="font-size:var(--fs-xs)">@L["Nome do paciente"]</label>
-                        <input type="text" id="f-patient-name" class="form-control form-control-sm" placeholder="@L["Digite o nome..."]">
-                    </div>
-                    <div class="col-md-2">
-                        <label class="form-label fw-semibold" style="font-size:var(--fs-xs)">@L["Nº Acesso"]</label>
-                        <input type="text" id="f-access-code" class="form-control form-control-sm" placeholder="847291">
-                    </div>
-                    <div class="col-md-3">
-                        <label class="form-label fw-semibold" style="font-size:var(--fs-xs)">@L["Médico executor"]</label>
-                        <select id="f-executor" class="form-select form-select-sm">
-                            <option value="">@L["Todos"]</option>
-                        </select>
-                    </div>
-                    <div class="col-md-2">
-                        <label class="form-label fw-semibold" style="font-size:var(--fs-xs)">@L["Unidade"]</label>
-                        <select id="f-unit" class="form-select form-select-sm">
-                            <option value="">@L["Todas"]</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="row g-2 mb-2">
-                    <div class="col-md-2">
-                        <label class="form-label fw-semibold" style="font-size:var(--fs-xs)">@L["Modalidade"]</label>
-                        <select id="f-modality" class="form-select form-select-sm">
-                            <option value="">@L["Todas"]</option>
-                        </select>
-                    </div>
-                    <div class="col-md-3">
-                        <label class="form-label fw-semibold" style="font-size:var(--fs-xs)">@L["Procedimento"]</label>
-                        <select id="f-procedure" class="form-select form-select-sm" disabled>
-                            <option value="">@L["Todos"]</option>
-                        </select>
-                    </div>
-                    <div class="col-md-1">
-                        <label class="form-label fw-semibold" style="font-size:var(--fs-xs)">@L["Tipo"]</label>
-                        <select id="f-type" class="form-select form-select-sm">
-                            <option value="">@L["Todos"]</option>
-                            <option value="PS">PS</option>
-                            <option value="Int.">Int.</option>
-                            <option value="Eletivo">@L["Eletivo"]</option>
-                        </select>
-                    </div>
-                    <div class="col-md-2">
-                        <label class="form-label fw-semibold" style="font-size:var(--fs-xs)">@L["Situação"]</label>
-                        <select id="f-status" class="form-select form-select-sm">
-                            <option value="">@L["Todas"]</option>
-                            <option value="Liberação">@L["Liberação"]</option>
-                            <option value="Disponível">@L["Disponível"]</option>
-                            <option value="Laudando">@L["Laudando"]</option>
-                            <option value="Pendência">@L["Pendência"]</option>
-                            <option value="Assinatura">@L["Assinatura"]</option>
-                            <option value="Revisão">@L["Revisão"]</option>
-                            <option value="Aprovado">@L["Aprovado"]</option>
-                            <option value="Cancelado">@L["Cancelado"]</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="row g-2 mb-2">
-                    <div class="col-auto">
-                        <label class="form-label fw-semibold" style="font-size:var(--fs-xs)">@L["Estudo"] &mdash; @L["início"]</label>
-                        <input type="date" id="f-study-from" class="form-control form-control-sm">
-                    </div>
-                    <div class="col-auto">
-                        <label class="form-label fw-semibold" style="font-size:var(--fs-xs)">@L["Estudo"] &mdash; @L["fim"]</label>
-                        <input type="date" id="f-study-to" class="form-control form-control-sm">
-                    </div>
-                    <div class="col-auto" style="border-left:1px solid #d0d7e2;padding-left:1rem">
-                        <label class="form-label fw-semibold" style="font-size:var(--fs-xs)">@L["Finalização"] &mdash; @L["início"]</label>
-                        <input type="date" id="f-date-from" class="form-control form-control-sm">
-                    </div>
-                    <div class="col-auto">
-                        <label class="form-label fw-semibold" style="font-size:var(--fs-xs)">@L["Finalização"] &mdash; @L["fim"]</label>
-                        <input type="date" id="f-date-to" class="form-control form-control-sm">
-                    </div>
-                </div>
-                <div class="row g-2 align-items-center">
-                    <div class="col-auto">
-                        <div class="form-check form-switch mb-0">
-                            <input type="checkbox" id="f-emergency" class="form-check-input" role="switch">
-                            <label for="f-emergency" class="form-check-label" style="font-size:var(--fs-xs)">@L["Emergências"]</label>
-                        </div>
-                    </div>
-                    <div class="col-auto">
-                        <div class="form-check form-switch mb-0">
-                            <input type="checkbox" id="f-pendency" class="form-check-input" role="switch">
-                            <label for="f-pendency" class="form-check-label" style="font-size:var(--fs-xs)">@L["Pendências"]</label>
-                        </div>
-                    </div>
-                    <div class="col-auto">
-                        <div class="form-check form-switch mb-0">
-                            <input type="checkbox" id="f-critical-unnotified" class="form-check-input" role="switch">
-                            <label for="f-critical-unnotified" class="form-check-label" style="font-size:var(--fs-xs)"><i class="bi bi-exclamation-triangle-fill rx-flag-critical-unnotified" style="font-size:.82rem"></i> @L["Achado crítico não resolvido"]</label>
-                        </div>
-                    </div>
-                    <div class="col-auto">
-                        <div class="form-check form-switch mb-0">
-                            <input type="checkbox" id="f-critical-notified" class="form-check-input" role="switch">
-                            <label for="f-critical-notified" class="form-check-label" style="font-size:var(--fs-xs)"><i class="bi bi-patch-check-fill rx-flag-critical-notified" style="font-size:.82rem"></i> @L["Achado crítico resolvido"]</label>
-                        </div>
-                    </div>
-                    <div class="col-auto">
-                        <div class="form-check form-switch mb-0">
-                            <input type="checkbox" id="f-archived" class="form-check-input" role="switch">
-                            <label for="f-archived" class="form-check-label" style="font-size:var(--fs-xs)"><i class="bi bi-archive-fill rx-flag-archived" style="font-size:.82rem"></i> @L["Arquivados"]</label>
-                        </div>
-                    </div>
-                    <div class="ms-auto col-auto d-flex gap-2">
-                        <button type="button" id="f-clear" class="btn btn-outline-secondary rx-btn-xs"><i class="bi bi-x-circle me-1"></i>@L["Limpar"]</button>
-                        <button type="button" id="f-apply" class="btn btn-primary rx-btn-xs"><i class="bi bi-funnel me-1"></i>@L["Filtrar"]</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    @* ── Receptionist screen: filters + legend + Tabulator table + modals ── *@
+    <partial name="Components/_ExamsFilters"/>
+    <partial name="Components/_ExamsLegend"/>
+    <partial name="Components/_ExamsTable"/>
+
+    <partial name="Components/_EditPatientModal"/>
+    <partial name="Components/_RecoveryModal"/>
+    <partial name="Components/_DownloadModal"/>
+    <partial name="Components/_CriticalModals"/>
+    <partial name="Components/_PendencyModal"/>
+    <partial name="Components/_ArchivedModal"/>
+    <partial name="Components/_DownloadCodeModal"/>
+    <partial name="Components/_DownloadHistoryModal"/>
+    <partial name="Components/_Toast"/>
 }
 else
 {
-    <form method="get" class="card p-3 mb-4 anim-fade-in anim-delay-1">
-        <div class="row g-2 align-items-end">
-            <div class="col-md-5">
-                <label class="form-label fw-semibold" style="font-size:var(--fs-xs)">@L["Buscar"]</label>
-                <div class="input-group input-group-sm">
-                    <span class="input-group-text"><i class="bi bi-search"></i></span>
-                    <input name="Search" value="@Model.Search" class="form-control" placeholder="@L["Paciente ou nº do exame…"]" />
-                </div>
-            </div>
-            <div class="col-md-4">
-                <label class="form-label fw-semibold" style="font-size:var(--fs-xs)">@L["Status"]</label>
-                <select name="StatusFilter" class="form-select form-select-sm">
-                    <option value="">@L["Todos"]</option>
-                    @foreach (var s in new[] { "Agendado", "Em andamento", "Concluído", "Laudo pendente", "Laudo emitido" })
-                    {
-                        <option value="@s" selected="@(Model.StatusFilter == s)">@L[s]</option>
-                    }
-                </select>
-            </div>
-            <div class="col-md-3">
-                <button type="submit" class="btn btn-primary btn-sm w-100"><i class="bi bi-funnel me-1"></i>@L["Filtrar"]</button>
-            </div>
-        </div>
-    </form>
+    @* ── Other roles: simple search form + legacy table + server pagination ── *@
+    <partial name="Components/_ExamsSearchForm" model="Model"/>
+    <partial name="Components/_ExamsLegacyTable" model="Model"/>
+    <partial name="Components/_ExamsPagination" model="Model"/>
 }
 
-@* ─────────────────────────────────────────────────────────
-   RECEPTIONIST — Tabulator nested-tree table
-   ───────────────────────────────────────────────────────── *@
-@if (Model.IsReceptionist)
-{
-    var _loc = System.Globalization.CultureInfo.CurrentUICulture.Name;
-    var _tabLoc = _loc.StartsWith("es") ? "es" : _loc.StartsWith("en") ? "en" : "pt-br";
-
-    <link href="https://unpkg.com/tabulator-tables@6.4.0/dist/css/tabulator_bootstrap5.min.css" rel="stylesheet">
-    <style>
-        #reception-table .tabulator-col-title  { font-size: .79rem; font-weight: 600; }
-        #reception-table .tabulator-cell       { font-size: .8rem; }
-        /* emergency row highlight */
-        #reception-table .tabulator-row.row-emergency { background-color: #fff5f5 !important; }
-        #reception-table .tabulator-row.row-emergency .tabulator-cell { color: #7f1d1d; }
-        /* Ações cell must not clip buttons */
-        #reception-table .tabulator-cell { overflow: visible; }
-        /* normalize code elements — same face as surrounding text */
-        #reception-table .tabulator-cell code { font-family: inherit; font-weight: 600; }
-        /* uniform row font weight */
-        #reception-table .tabulator-cell { font-weight: 400; }
-        /* flex-wrap on rows allows inline detail panel below cells */
-        #reception-table .tabulator-row { flex-wrap: wrap !important; }
-        #reception-table .rx-detail { flex: 0 0 100%; width: 100%; display: none; flex-wrap: wrap; }
-        #reception-table .rx-detail.open { display: flex; }
-        #reception-table .rx-detail-row {
-            flex: 0 0 100%; width: 100%;
-            display: flex; flex-wrap: wrap; align-items: center;
-            gap: 0 1.5rem; padding: 4px 12px 4px 40px;
-            font-size: .75rem; color: var(--clr-navy-800); background: #f0f4fa;
-        }
-        #reception-table .rx-detail-row + .rx-detail-row { border-top: 1px dashed #d0d7e2; }
-        #reception-table .rx-detail b { font-weight: 600; }
-        /* expand toggle chevron */
-        #reception-table .rx-toggle-icon {
-            display: inline-block; margin-right: 8px; cursor: pointer;
-            font-size: .85rem; color: var(--clr-navy-600); transition: transform .15s;
-        }
-        #reception-table .row-open .rx-toggle-icon { transform: rotate(90deg); }
-        /* pagination: compact size */
-        #reception-table .tabulator-footer { font-size: .78rem; }
-        #reception-table .tabulator-footer .tabulator-paginator label { font-size: .78rem; }
-        #reception-table .tabulator-footer .tabulator-page-size { font-size: .78rem; padding: 1px 4px; height: auto; }
-        #reception-table .tabulator-footer .tabulator-page { padding: 2px 8px; font-size: .78rem; line-height: 1.4; }
-        /* flag icons */
-        .rx-flags-slot {
-            display: inline-flex; align-items: center; gap: 2px;
-            width: 8.4rem; min-width: 8.4rem;
-            vertical-align: middle; margin-right: 2px;
-        }
-        .rx-flag-placeholder        { display: inline-block; width: 1rem; height: 1rem; }
-        .rx-flag-critical-unnotified { color: #c62828; font-size: .9rem; cursor: default; }
-        .rx-flag-critical-notified   { color: #2e7d32; font-size: .9rem; cursor: default; }
-        .rx-flag-pendency            { color: #e65100; font-size: .9rem; cursor: default; }
-        .rx-flag-attach              { color: var(--clr-navy-600); font-size: .9rem; cursor: default; }
-        .rx-flag-attach-empty        { color: #ccc; font-size: .9rem; cursor: default; }
-        .rx-attach-item              { display: inline-flex; align-items: center; }
-        .rx-badge-count              { font-size: .58rem; font-weight: 700; color: var(--clr-navy-700); margin-left: 1px; line-height: 1; }
-        .mod-img-count               { font-size: .6rem; color: #888; font-weight: 600; margin-left: 3px; vertical-align: super; }
-        .rx-flag-archived            { color: #546e7a; font-size: .9rem; cursor: default; }
-        .rx-flag-code-generated      { color: #f9a825; font-size: .9rem; cursor: default; }
-        .rx-flag-downloaded          { color: #00897b; font-size: .9rem; cursor: default; }
-        /* external loading overlay */
-        #rx-loading-overlay {
-            position: absolute; inset: 0; z-index: 10;
-            background: rgba(255,255,255,.88);
-            display: flex; flex-direction: column;
-            align-items: center; justify-content: center; gap: .6rem;
-            font-size: .83rem; font-weight: 500; color: var(--clr-navy-700);
-        }
-        #rx-loading-overlay.rx-op {
-            flex-direction: row; justify-content: flex-start;
-            padding: .5rem .75rem; inset: auto 0 0 0;
-            height: 2.4rem; background: rgba(240,244,250,.95);
-            border-top: 1px solid #d0d7e2; font-size: .8rem; font-weight: 400;
-        }
-        #rx-loading-overlay.hidden { display: none; }
-        /* block column resize handles */
-        #reception-table .tabulator-col-resize-handle { display: none !important; pointer-events: none !important; }
-        /* center Sexo and Situação columns (header + body) — Melhorias item 2 */
-        #reception-table .tabulator-cell[tabulator-field="sexRaw"],
-        #reception-table .tabulator-cell[tabulator-field="statusLabel"] { text-align: center !important; }
-        #reception-table .tabulator-col[tabulator-field="sexRaw"] .tabulator-col-title,
-        #reception-table .tabulator-col[tabulator-field="statusLabel"] .tabulator-col-title { text-align: center !important; }
-        /* filter panel: chevron animation + compact buttons */
-        #rx-filter-header .rx-filter-chevron { font-size: .8rem; color: var(--clr-navy-600); transition: transform .25s ease; }
-        #rx-filter-header[aria-expanded="false"] .rx-filter-chevron { transform: rotate(-90deg); }
-        .rx-btn-xs { font-size: .72rem; padding: 2px 10px; line-height: 1.5; }
-        /* legend: distinct color per status (Melhorias item 1) */
-        #reception-legend .badge-status.release    { background: #f3e5f5; color: #6a1b9a; }
-        #reception-legend .badge-status.available  { background: #e3f2fd; color: #0d47a1; }
-        #reception-legend .badge-status.reporting  { background: #fff3e0; color: #bf360c; }
-        #reception-legend .badge-status.pendency   { background: #fdecea; color: #b71c1c; }
-        #reception-legend .badge-status.revision   { background: #fff3e0; color: #bf360c; }
-        #reception-legend .badge-status.signature  { background: #fff3e0; color: #bf360c; }
-        #reception-legend .badge-status.approved   { background: #e8f5e9; color: #1b5e20; }
-        #reception-legend .badge-status.cancelled  { background: #f0f0f0; color: #6c757d; }
-    </style>
-
-    @* Status legend *@
-    <div id="reception-legend" class="mb-2" style="font-size:.68rem">
-        <div class="d-flex flex-wrap gap-2 align-items-center">
-            <span class="text-muted fw-semibold me-1">@L["Situação:"]</span>
-            <span class="badge-status release">@L["Liberação"]</span>
-            <span class="badge-status available">@L["Disponível"]</span>
-            <span class="badge-status reporting">@L["Laudando"]</span>
-            <span class="badge-status pendency">@L["Pendência"]</span>
-            <span class="badge-status revision">@L["Revisão"]</span>
-            <span class="badge-status signature">@L["Assinatura"]</span>
-            <span class="badge-status approved">@L["Aprovado"]</span>
-            <span class="badge-status cancelled">@L["Cancelado"]</span>
-        </div>
-        <div class="d-flex flex-wrap gap-2 align-items-center mt-1">
-            <span class="text-muted fw-semibold me-1">@L["Indicadores:"]</span>
-            <span style="white-space:nowrap"><i class="bi bi-exclamation-triangle-fill rx-flag-critical-unnotified"></i> @L["Achado crítico não resolvido"]</span>
-            <span style="white-space:nowrap"><i class="bi bi-patch-check-fill rx-flag-critical-notified"></i> @L["Achado crítico resolvido"]</span>
-            <span style="white-space:nowrap"><i class="bi bi-flag-fill rx-flag-pendency"></i> @L["Pendência"]</span>
-            <span style="white-space:nowrap"><i class="bi bi-paperclip rx-flag-attach"></i> @L["Documentos"]</span>
-            <span style="white-space:nowrap"><i class="bi bi-archive-fill rx-flag-archived"></i> @L["Arquivado"]</span>
-            <span style="white-space:nowrap"><i class="bi bi-key-fill rx-flag-code-generated"></i> @L["Código de download gerado"]</span>
-            <span style="white-space:nowrap"><i class="bi bi-cloud-arrow-down-fill rx-flag-downloaded"></i> @L["Laudo baixado pelo paciente"]</span>
-        </div>
-    </div>
-
-    <div id="rx-filter-warning" class="alert alert-warning d-none py-2 px-3 mb-2 d-flex align-items-center"
-         style="font-size:var(--fs-xs)">
-        <i class="bi bi-funnel-fill me-2"></i>
-        <span>
-            <strong>@L["Atenção:"]</strong> @L["a lista abaixo está filtrada — alguns exames podem estar ocultos. Expanda o painel de filtros acima para revisar ou limpar os critérios aplicados."]
-        </span>
-    </div>
-
-    <div class="card anim-fade-in anim-delay-2 p-2">
-        <div id="reception-table-wrap" style="overflow-x:auto;position:relative">
-            <div id="reception-table"></div>
-            <div id="rx-loading-overlay">
-                <div class="spinner-border" role="status" style="width:2.25rem;height:2.25rem;color:var(--clr-navy-600)">
-                    <span class="visually-hidden">@L["Carregando..."]</span>
-                </div>
-                <span>@L["Carregando dados do servidor…"]</span>
-            </div>
-        </div>
-    </div>
-
-    @* Edit patient modal *@
-    <div class="modal fade" id="editPatientModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-lg modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">
-                        <i class="bi bi-pencil-square me-2"></i>@L["Editar dados do paciente"]
-                    </h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="@L["Fechar"]"></button>
-                </div>
-                <form method="post" asp-antiforgery="true">
-                    @Html.AntiForgeryToken()
-                    <input type="hidden" id="ep-patient-id" name="PatientId" />
-
-                    <ul class="nav nav-tabs px-3 pt-2" id="ep-tabs" role="tablist">
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link active" id="ep-tab-data-btn" data-bs-toggle="tab"
-                                    data-bs-target="#ep-tab-data" type="button" role="tab">
-                                <i class="bi bi-person-vcard me-1"></i>@L["Dados do Paciente"]
-                            </button>
-                        </li>
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="ep-tab-history-btn" data-bs-toggle="tab"
-                                    data-bs-target="#ep-tab-history" type="button" role="tab">
-                                <i class="bi bi-clock-history me-1"></i>@L["Histórico de alteração"]
-                            </button>
-                        </li>
-                    </ul>
-
-                    <div class="modal-body">
-                        <div class="tab-content">
-                            @* ── Tab 1: Dados do Paciente ── *@
-                            <div class="tab-pane fade show active" id="ep-tab-data" role="tabpanel">
-                                <p class="text-muted mb-3" style="font-size:var(--fs-xs)">
-                                    <i class="bi bi-info-circle me-1"></i>
-                                    @L["Alterações são propagadas para os dados do paciente, tags DICOM e cabeçalho do laudo."]
-                                </p>
-                                <div class="row g-3">
-                                    <div class="col-md-6">
-                                        <label class="form-label">@L["Nome completo"]</label>
-                                        <input type="text" id="ep-name" name="PatientName" class="form-control" />
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label class="form-label">@L["Nome social"]</label>
-                                        <input type="text" id="ep-social" name="SocialName" class="form-control" />
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label class="form-label">@L["Nome da mãe"]</label>
-                                        <input type="text" id="ep-mother" name="MotherName" class="form-control" />
-                                    </div>
-                                    <div class="col-md-3">
-                                        <label class="form-label">@L["Sexo"]</label>
-                                        <select id="ep-sex" name="Sex" class="form-select">
-                                            <option value="M">M</option>
-                                            <option value="F">F</option>
-                                            <option value="O">@L["Outro"]</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <label class="form-label">@L["Telefone"]</label>
-                                        <input type="tel" id="ep-phone" name="Phone" class="form-control" placeholder="(11) 90000-0000" />
-                                    </div>
-                                    <div class="col-md-5">
-                                        <label class="form-label">@L["Nascimento (data/hora)"]</label>
-                                        <input type="datetime-local" step="1" id="ep-birth" name="BirthDateTime" class="form-control" />
-                                    </div>
-                                    <div class="col-md-4">
-                                        <label class="form-label">CPF</label>
-                                        <input type="text" id="ep-cpf" name="Cpf" class="form-control" placeholder="000.000.000-00" />
-                                    </div>
-                                    <div class="col-md-7">
-                                        <label class="form-label">@L["E-mail"]</label>
-                                        <input type="email" id="ep-email" name="Email" class="form-control" />
-                                    </div>
-                                    <div class="col-md-5">
-                                        <label class="form-label">@L["Data e hora do estudo (exame)"]</label>
-                                        <input type="datetime-local" id="ep-study" name="StudyDateTime" class="form-control" />
-                                    </div>
-                                    <div class="col-md-4">
-                                        <label class="form-label">@L["Código de download do laudo"]</label>
-                                        <div class="input-group">
-                                            <input type="text" id="ep-access-code" name="DownloadAccessCode"
-                                                   class="form-control" maxlength="6" readonly />
-                                            <button type="button" id="ep-gen-code" class="btn btn-outline-primary"
-                                                    title="@L["Gerar novo código de 6 dígitos"]">
-                                                <i class="bi bi-key"></i> @L["Gerar"]
-                                            </button>
-                                        </div>
-                                        <div class="form-text" style="font-size:var(--fs-xs)">
-                                            @L["Código de 6 dígitos para o paciente baixar o laudo no portal."]
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            @* ── Tab 2: Histórico de alteração ── *@
-                            <div class="tab-pane fade" id="ep-tab-history" role="tabpanel">
-                                <p class="text-muted mb-2" style="font-size:var(--fs-xs)">
-                                    <i class="bi bi-info-circle me-1"></i>
-                                    @L["Todas as alterações feitas no cadastro deste paciente ficam registradas abaixo."]
-                                </p>
-                                <div id="ep-history-wrap" style="max-height:320px;overflow-y:auto">
-                                    <table class="table table-sm align-middle mb-0" style="font-size:var(--fs-xs)">
-                                        <thead class="table-light" style="position:sticky;top:0;z-index:1">
-                                            <tr>
-                                                <th>@L["Quem alterou"]</th>
-                                                <th>@L["Cargo"]</th>
-                                                <th>@L["Unidade"]</th>
-                                                <th>@L["Alteração"]</th>
-                                                <th class="text-nowrap">@L["Data e hora"]</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="ep-history-body"></tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="alert alert-warning mx-3 mb-2 py-2" style="font-size:var(--fs-xs)">
-                        <i class="bi bi-shield-exclamation me-1"></i>
-                        <strong>@L["Atenção:"]</strong> @L["os dados alterados aqui passam a constar no laudo do paciente. O paciente será notificado de que houve alteração no laudo, e o sistema registra o momento e o usuário responsável. A alteração dos dados do paciente e do estudo é de responsabilidade de quem a realiza."]
-                    </div>
-
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">@L["Cancelar"]</button>
-                        <button type="submit" class="btn btn-danger">
-                            <i class="bi bi-check2 me-1"></i>@L["Salvar alterações"]
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    @* Recovery request modal (cold storage) *@
-    <div class="modal fade" id="recoveryModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title"><i class="bi bi-snow me-2"></i>@L["Recuperação de arquivo"]</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="@L["Fechar"]"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="text-center mb-3">
-                        <i class="bi bi-cloud-arrow-down" style="font-size:2.4rem;color:var(--clr-info-700)"></i>
-                    </div>
-                    <p class="mb-2">
-                        @L["O arquivo"] <strong id="rec-file-name">—</strong> @L["está armazenado em camada fria (cold storage) e não pode ser baixado imediatamente."]
-                    </p>
-                    <p class="text-muted mb-0" style="font-size:var(--fs-xs)">
-                        @L["Ao solicitar a recuperação, o arquivo é movido para a camada quente e ficará disponível para download em alguns minutos. Você será notificado quando estiver pronto."]
-                    </p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">@L["Cancelar"]</button>
-                    <button type="button" id="rec-confirm" class="btn btn-primary">
-                        <i class="bi bi-arrow-clockwise me-1"></i>@L["Solicitar recuperação"]
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    @* Download modal *@
-    <div class="modal fade" id="downloadModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-lg modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">
-                        <i class="bi bi-download me-2"></i>@L["Download do exame"]
-                        <span id="dl-study" class="text-muted ms-2" style="font-size:var(--fs-sm)"></span>
-                    </h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="@L["Fechar"]"></button>
-                </div>
-                <div class="modal-body">
-                    <ul class="nav nav-tabs mb-3" id="dl-tabs" role="tablist">
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#dl-current"
-                                    type="button" role="tab"><i class="bi bi-file-earmark-medical me-1"></i>@L["Exame atual"]</button>
-                        </li>
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#dl-prior"
-                                    type="button" role="tab"><i class="bi bi-clock-history me-1"></i>@L["Exames anteriores"]</button>
-                        </li>
-                    </ul>
-                    <div class="tab-content" style="max-height:60vh;overflow-y:auto">
-                        @* ── Tab 1: Exame atual selecionado ── *@
-                        <div class="tab-pane fade show active" id="dl-current" role="tabpanel">
-                            <h6 class="fw-semibold mb-2"><i class="bi bi-file-earmark-medical me-1 text-danger"></i>@L["Laudos do exame"]</h6>
-                            <table class="table table-sm align-middle" style="font-size:var(--fs-xs)">
-                                <thead class="table-light"><tr><th>@L["Laudo"]</th><th class="text-end" style="width:130px">@L["Ação"]</th></tr></thead>
-                                <tbody id="dl-reports-body"></tbody>
-                            </table>
-                            <h6 class="fw-semibold mb-2 mt-3"><i class="bi bi-paperclip me-1"></i>@L["Arquivos anexados"]</h6>
-                            <table class="table table-sm align-middle" style="font-size:var(--fs-xs)">
-                                <thead class="table-light"><tr>
-                                    <th>@L["Arquivo"]</th><th>@L["Upload"]</th><th>@L["Tipo"]</th><th>@L["Tamanho"]</th><th>@L["Responsável"]</th>
-                                    <th class="text-end" style="width:130px">@L["Ação"]</th>
-                                </tr></thead>
-                                <tbody id="dl-attachments-body"></tbody>
-                            </table>
-                        </div>
-                        @* ── Tab 2: Exames anteriores ── *@
-                        <div class="tab-pane fade" id="dl-prior" role="tabpanel">
-                            <div id="dl-prior-body"></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">@L["Fechar"]</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    @section Scripts {
+@section Scripts {
+    @if (Model.IsReceptionist)
+    {
         <script src="https://unpkg.com/tabulator-tables@6.4.0/dist/js/tabulator.min.js"></script>
+        @* ── i18n + data bridge: external JS modules read window.Exams.{data,locale} and Exams.t(key) ── *@
         <script>
             (function () {
-                var tableData = @Html.Raw(Model.ReceptionExamsJson);
-
-                /* HTML-escape helper for formatter output */
-                function escH(s) {
-                    return String(s == null ? '' : s)
-                        .replace(/&/g, '&amp;').replace(/</g, '&lt;')
-                        .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
-                }
-
-                /* ── Modality abbreviation & badge colors (non-retired DICOM codes) ── */
-                var _modAbbr = {
-                    'Radiografia': 'DX', 'Tomografia': 'CT', 'Ressonância': 'MR',
-                    'Ultrassonografia': 'US', 'Mamografia': 'MG', 'PET-CT': 'PT',
-                    'Fluoroscopia': 'RF', 'Cintilografia': 'NM', 'Angiografia': 'XA',
-                    'Densitometria': 'BDUS', 'Eletrocardiograma': 'ECG'
+                var E = window.Exams = window.Exams || {};
+                E.data = @Html.Raw(Model.ReceptionExamsJson);
+                E.locale = "@_tabLoc";
+                E.i18n = {
+                    "Processando...": @J("Processando..."),
+                    "Processando…": @J("Processando…"),
+                    "Nome social:": @J("Nome social:"),
+                    "Nasc.:": @J("Nasc.:"),
+                    "Idade:": @J("Idade:"),
+                    "ID Estudo:": @J("ID Estudo:"),
+                    "Data Estudo:": @J("Data Estudo:"),
+                    "Liberação:": @J("Liberação:"),
+                    "Data Laudo:": @J("Data Laudo:"),
+                    "Unidade:": @J("Unidade:"),
+                    "Técnico:": @J("Técnico:"),
+                    "Executor:": @J("Executor:"),
+                    "Solicitante:": @J("Solicitante:"),
+                    "ID Paciente": @J("ID Paciente"),
+                    "Achado crítico não resolvido": @J("Achado crítico não resolvido"),
+                    "Achado crítico resolvido": @J("Achado crítico resolvido"),
+                    "Exame com pendências": @J("Exame com pendências"),
+                    "doc(s) anexado(s)": @J("doc(s) anexado(s)"),
+                    "Sem documentos": @J("Sem documentos"),
+                    "Exame arquivado (cold storage)": @J("Exame arquivado (cold storage)"),
+                    "Código de download do laudo gerado": @J("Código de download do laudo gerado"),
+                    "Laudo já baixado pelo paciente": @J("Laudo já baixado pelo paciente"),
+                    "Detalhes": @J("Detalhes"),
+                    "Paciente": @J("Paciente"),
+                    "Sexo": @J("Sexo"),
+                    "Número de Acesso": @J("Número de Acesso"),
+                    "Mod.": @J("Mod."),
+                    "imagem(ns)": @J("imagem(ns)"),
+                    "Procedimento": @J("Procedimento"),
+                    "Situação": @J("Situação"),
+                    "Tipo": @J("Tipo"),
+                    "Ações": @J("Ações"),
+                    "Editar dados do paciente": @J("Editar dados do paciente"),
+                    "Baixar laudos e anexos": @J("Baixar laudos e anexos"),
+                    "Imprimir laudo": @J("Imprimir laudo"),
+                    "Todos": @J("Todos"),
+                    "aplicado": @J("aplicado"),
+                    "aplicados": @J("aplicados"),
+                    "Nenhuma alteração registrada.": @J("Nenhuma alteração registrada."),
+                    "Arquivo em cold storage — solicitar recuperação": @J("Arquivo em cold storage — solicitar recuperação"),
+                    "Recuperar": @J("Recuperar"),
+                    "Baixar": @J("Baixar"),
+                    "Nenhum laudo disponível.": @J("Nenhum laudo disponível."),
+                    "Nenhum arquivo anexado.": @J("Nenhum arquivo anexado."),
+                    "Nenhum exame anterior encontrado.": @J("Nenhum exame anterior encontrado."),
+                    "Anexo": @J("Anexo"),
+                    "Upload": @J("Upload"),
+                    "Tamanho": @J("Tamanho"),
+                    "Responsável": @J("Responsável"),
+                    "Ação": @J("Ação"),
+                    "Achado crítico registrado": @J("Achado crítico registrado"),
+                    "Achado resolvido": @J("Achado resolvido"),
+                    "(sem e-mail cadastrado)": @J("(sem e-mail cadastrado)"),
+                    "Contato registrado com sucesso.": @J("Contato registrado com sucesso."),
+                    "Achado crítico marcado como resolvido.": @J("Achado crítico marcado como resolvido."),
+                    "Resposta enviada para a pendência.": @J("Resposta enviada para a pendência."),
+                    "Nenhum item arquivado.": @J("Nenhum item arquivado."),
+                    "Restauração solicitada. Você será avisado quando os arquivos estiverem disponíveis (pode levar algumas horas).": @J("Restauração solicitada. Você será avisado quando os arquivos estiverem disponíveis (pode levar algumas horas)."),
+                    "Código copiado.": @J("Código copiado."),
+                    "O paciente ainda não baixou os laudos.": @J("O paciente ainda não baixou os laudos."),
+                    "Recuperação solicitada": @J("Recuperação solicitada")
                 };
-                var _modClr = {
-                    CT:   { bg: '#fff3e0', c: '#bf360c' },
-                    MR:   { bg: '#f3e5f5', c: '#6a1b9a' },
-                    US:   { bg: '#e0f7fa', c: '#006064' },
-                    MG:   { bg: '#fce4ec', c: '#880e4f' },
-                    PT:   { bg: '#e8f5e9', c: '#1b5e20' },
-                    DX:   { bg: '#e3f2fd', c: '#0d47a1' },
-                    CR:   { bg: '#e8eaf6', c: '#1a237e' },
-                    NM:   { bg: '#f9fbe7', c: '#33691e' },
-                    RF:   { bg: '#e0f2f1', c: '#004d40' },
-                    XA:   { bg: '#fbe9e7', c: '#b71c1c' },
-                    ECG:  { bg: '#fff8e1', c: '#e65100' },
-                    BDUS: { bg: '#f1f8e9', c: '#558b2f' }
+                E.t = function (k) {
+                    var v = E.i18n[k];
+                    return v == null ? k : v;
                 };
-
-                /* ── Status dot colors — keyed by stable PT label (must match #reception-legend) ── */
-                var _statusDotClr = {
-                    'Liberação':  '#6a1b9a',
-                    'Disponível': '#0d47a1',
-                    'Laudando':   '#bf360c',
-                    'Pendência':  '#b71c1c',
-                    'Revisão':    '#bf360c',
-                    'Assinatura': '#bf360c',
-                    'Aprovado':   '#1b5e20',
-                    'Cancelado':  '#9e9e9e'
-                };
-
-                /* ── Loading overlay (external div, immune to Tabulator lifecycle) ── */
-                var _overlay = document.getElementById('rx-loading-overlay');
-                var _spinnerSmHtml =
-                    '<div class="spinner-border spinner-border-sm" role="status" style="color:var(--clr-navy-600)">'
-                    + '<span class="visually-hidden">' + @J("Processando...") + '</span></div>'
-                    + '<span>' + @J("Processando…") + '</span>';
-
-                var _initialLoading = true;
-                var _opTimer = null;
-
-                function _showOpOverlay() {
-                    if (_initialLoading) return;
-                    if (_opTimer) { clearTimeout(_opTimer); _opTimer = null; }
-                    _overlay.innerHTML = _spinnerSmHtml;
-                    _overlay.classList.add('rx-op');
-                    _overlay.classList.remove('hidden');
-                }
-                function _hideOpOverlay() {
-                    if (_initialLoading) return;
-                    if (_opTimer) clearTimeout(_opTimer);
-                    _opTimer = setTimeout(function () {
-                        _overlay.classList.add('hidden');
-                        _opTimer = null;
-                    }, 120);
-                }
-
-                var table = new Tabulator("#reception-table", {
-                    data: [],
-                    layout: "fitColumns",
-                    resizableColumns: false,
-                    rowFormatter: function (row) {
-                        var d  = row.getData();
-                        var el = row.getElement();
-                        if (d.isEmergency) el.classList.add('row-emergency');
-                        if (el.querySelector('.rx-detail')) return;
-
-                        var detail = document.createElement('div');
-                        detail.className = 'rx-detail';
-
-                        var r1 = '<div class="rx-detail-row">';
-                        if (d.socialNameRaw) r1 += '<span><b>' + @J("Nome social:") + '</b> ' + escH(d.socialNameRaw) + '</span>';
-                        r1 += '<span><b>' + @J("Nasc.:") + '</b> '      + escH(d.birthStr)          + '</span>';
-                        r1 += '<span><b>' + @J("Idade:") + '</b> '       + escH(d.ageFormatted)      + '</span>';
-                        r1 += '<span><b>' + @J("ID Estudo:") + '</b> '   + escH(d.studyId)           + '</span>';
-                        r1 += '<span><b>' + @J("Data Estudo:") + '</b> '   + escH(d.studyDateTime)     + '</span>';
-                        r1 += '<span><b>' + @J("Liberação:") + '</b> '        + escH(d.liberationDateStr) + '</span>';
-                        r1 += '<span><b>' + @J("Data Laudo:") + '</b> '    + escH(d.reportDateTimeStr) + '</span>';
-                        r1 += '</div>';
-
-                        var r2 = '<div class="rx-detail-row">';
-                        r2 += '<span><b>' + @J("Unidade:") + '</b> '     + escH(d.unit)               + '</span>';
-                        r2 += '<span><b>' + @J("Técnico:") + '</b> '   + escH(d.technicianName)     + '</span>';
-                        r2 += '<span><b>' + @J("Executor:") + '</b> '    + escH(d.executingPhysician)  + '</span>';
-                        r2 += '<span><b>' + @J("Solicitante:") + '</b> ' + escH(d.requestingPhysician) + '</span>';
-                        r2 += '</div>';
-
-                        detail.innerHTML = r1 + r2;
-                        el.appendChild(detail);
-                    },
-                    pagination: true,
-                    paginationMode: "local",
-                    paginationSize: 10,
-                    paginationSizeSelector: [10, 15, 25, 50],
-                    locale: "@_tabLoc",
-                    langs: {
-                        "pt-br": {
-                            pagination: {
-                                page_size: "Itens por página",
-                                first: "Primeira", first_title: "Primeira página",
-                                last: "Última",    last_title: "Última página",
-                                prev: "Anterior",  prev_title: "Página anterior",
-                                next: "Próxima",   next_title: "Próxima página",
-                                all: "Todos",
-                                counter: { showing: "Exibindo", of: "de", rows: "registros", pages: "páginas" }
-                            }
-                        },
-                        "en": {
-                            pagination: {
-                                page_size: "Page size:",
-                                first: "First", first_title: "First Page",
-                                last: "Last",   last_title: "Last Page",
-                                prev: "Prev",   prev_title: "Previous Page",
-                                next: "Next",   next_title: "Next Page",
-                                all: "All",
-                                counter: { showing: "Showing", of: "of", rows: "rows", pages: "pages" }
-                            }
-                        },
-                        "es": {
-                            pagination: {
-                                page_size: "Por pág.:",
-                                first: "Primera",   first_title: "Primera página",
-                                last: "Última",     last_title: "Última página",
-                                prev: "Anterior",   prev_title: "Página anterior",
-                                next: "Siguiente",  next_title: "Página siguiente",
-                                all: "Todos",
-                                counter: { showing: "Mostrando", of: "de", rows: "registros", pages: "páginas" }
-                            }
-                        }
-                    },
-                    columns: [
-                        /* ── Col 1: ID Paciente ─────────────────────────────── */
-                        {
-                            title: @J("ID Paciente"), field: "patientId", widthGrow: 1, minWidth: 220,
-                            formatter: function (cell) {
-                                var d = cell.getRow().getData();
-                                var f1 = d.criticalFinding === 'unnotified'
-                                    ? '<i class="bi bi-exclamation-triangle-fill rx-flag-critical-unnotified" title=' + @J("Achado crítico não resolvido") + '></i>'
-                                    : d.criticalFinding === 'notified'
-                                    ? '<i class="bi bi-patch-check-fill rx-flag-critical-notified" title=' + @J("Achado crítico resolvido") + '></i>'
-                                    : '<i class="rx-flag-placeholder"></i>';
-                                var f2 = d.hasPendency
-                                    ? '<i class="bi bi-flag-fill rx-flag-pendency" title=' + @J("Exame com pendências") + '></i>'
-                                    : '<i class="rx-flag-placeholder"></i>';
-                                var f3 = d.attachmentCount > 0
-                                    ? '<span class="rx-attach-item"><i class="bi bi-paperclip rx-flag-attach" title="' + d.attachmentCount + ' ' + @J("doc(s) anexado(s)") + '"></i><span class="rx-badge-count">' + d.attachmentCount + '</span></span>'
-                                    : '<i class="bi bi-paperclip rx-flag-attach-empty" title=' + @J("Sem documentos") + '></i>';
-                                var f4 = d.isArchived
-                                    ? '<i class="bi bi-archive-fill rx-flag-archived" title=' + @J("Exame arquivado (cold storage)") + '></i>'
-                                    : '<i class="rx-flag-placeholder"></i>';
-                                var f5 = d.downloadCodeGenerated
-                                    ? '<i class="bi bi-key-fill rx-flag-code-generated" title=' + @J("Código de download do laudo gerado") + '></i>'
-                                    : '<i class="rx-flag-placeholder"></i>';
-                                var f6 = d.reportDownloaded
-                                    ? '<i class="bi bi-cloud-arrow-down-fill rx-flag-downloaded" title=' + @J("Laudo já baixado pelo paciente") + '></i>'
-                                    : '<i class="rx-flag-placeholder"></i>';
-                                return '<span class="rx-flags-slot">' + f1 + f2 + f3 + f4 + f5 + f6 + '</span>'
-                                     + '<i class="bi bi-chevron-right rx-toggle-icon" title=' + @J("Detalhes") + '></i>'
-                                     + '<code style="color:var(--clr-navy-700)">' + escH(d.patientId) + '</code>';
-                            },
-                            cellClick: function (e, cell) {
-                                var rowEl  = cell.getRow().getElement();
-                                var detail = rowEl.querySelector('.rx-detail');
-                                if (!detail) return;
-                                var isOpen = detail.classList.toggle('open');
-                                rowEl.classList.toggle('row-open', isOpen);
-                            }
-                        },
-                        /* ── Col 2: Paciente (pai) | child: handled by rowFormatter */
-                        {
-                            title: @J("Paciente"), field: "patientName", widthGrow: 2, minWidth: 140,
-                            formatter: function (cell) {
-                                var d = cell.getRow().getData();
-                                if (d._isChild) return '';
-                                return escH(d.patientName);
-                            }
-                        },
-                        /* ── Col 3: Gênero (pai) | vazio (filho) ────────────── */
-                        {
-                            title: @J("Sexo"), field: "sexRaw", width: 90, hozAlign: "center", headerHozAlign: "center",
-                            formatter: function (cell) {
-                                var d = cell.getRow().getData();
-                                if (d._isChild) return '';
-                                return escH(d.sexRaw);
-                            }
-                        },
-                        /* ── Col 4: AN = Nº Acesso (pai) | vazio (filho) ───────── */
-                        {
-                            title: "AN", field: "accessCodeRaw", width: 82, headerTooltip: @J("Número de Acesso"),
-                            formatter: function (cell) {
-                                var d = cell.getRow().getData();
-                                if (d._isChild) return '';
-                                return '<code style="color:var(--clr-navy-700)">' + escH(d.accessCodeRaw) + '</code>';
-                            }
-                        },
-                        /* ── Col 5: Mod. (pai) | child: handled by rowFormatter */
-                        {
-                            title: @J("Mod."), field: "modality", width: 120,
-                            formatter: function (cell) {
-                                var d = cell.getRow().getData();
-                                if (d._isChild) return '';
-                                var abbr = _modAbbr[d.modality] || d.modality;
-                                var clr  = _modClr[abbr] || { bg: '#f0f0f0', c: '#444' };
-                                return '<span style="display:inline-block;padding:1px 9px;border-radius:20px;font-weight:600;white-space:nowrap;background:' + clr.bg + ';color:' + clr.c + '">' + escH(abbr) + '</span>'
-                                     + '<span class="mod-img-count" title="' + d.imageCount + ' ' + @J("imagem(ns)") + '">' + d.imageCount + '<i class="bi bi-images" style="font-size:.55rem;margin-left:1px"></i></span>';
-                            }
-                        },
-                        /* ── Col 6: Procedimento (pai) | child: handled by rowFormatter */
-                        {
-                            title: @J("Procedimento"), field: "procedure", widthGrow: 1, minWidth: 120,
-                            formatter: function (cell) {
-                                var d = cell.getRow().getData();
-                                if (d._isChild) return '';
-                                return escH(d.procedure);
-                            }
-                        },
-                        /* ── Col 7: Situação (pai) | child: handled by rowFormatter */
-                        {
-                            title: @J("Situação"), field: "statusLabel", width: 140, hozAlign: "center", headerHozAlign: "center",
-                            formatter: function (cell) {
-                                var d = cell.getRow().getData();
-                                if (d._isChild) return '';
-                                var clr = _statusDotClr[d.statusLabel] || '#666';
-                                return '<span style="display:inline-block;width:14px;height:14px;border-radius:50%;background:' + clr + ';vertical-align:middle;cursor:default" title="' + escH(d.statusLabel) + '"></span>';
-                            }
-                        },
-                        /* ── Col 8: Tipo (pai) | child: handled by rowFormatter */
-                        {
-                            title: @J("Tipo"), field: "typeLabel", widthGrow: 1, minWidth: 60,
-                            formatter: function (cell) {
-                                var d = cell.getRow().getData();
-                                if (d._isChild) return '';
-                                return '<span class="badge" style="background:var(--clr-navy-100);color:var(--clr-navy-900)">' + escH(d.typeLabel) + '</span>';
-                            }
-                        },
-                        /* ── Col: Ações ───────────────────────────────── */
-                        {
-                            title: @J("Ações"), field: "hasReport", width: 140, hozAlign: "right",
-                            headerSort: false,
-                            formatter: function (cell) {
-                                var d = cell.getRow().getData();
-                                if (d._isChild) return '';
-                                var html = '<div class="d-flex gap-1 justify-content-end">';
-                                html += '<button class="btn btn-sm btn-outline-primary btn-edit-patient py-0"'
-                                      + ' data-id="'     + escH(d.patientId)     + '"'
-                                      + ' data-name="'   + escH(d.patientName)   + '"'
-                                      + ' data-social="' + escH(d.socialNameRaw) + '"'
-                                      + ' data-mother="' + escH(d.motherNameRaw) + '"'
-                                      + ' data-phone="'  + escH(d.phoneRaw)      + '"'
-                                      + ' data-sex="'    + escH(d.sexRaw)        + '"'
-                                      + ' data-birth="'  + escH(d.birthForInput) + '"'
-                                      + ' data-study="'  + escH(d.studyForInput) + '"'
-                                      + ' data-cpf="'    + escH(d.cpfRaw)        + '"'
-                                      + ' data-email="'  + escH(d.emailRaw)      + '"'
-                                      + ' data-code="'   + escH(d.accessCodeRaw) + '"'
-                                      + ' title=' + @J("Editar dados do paciente") + '>'
-                                      + '<i class="bi bi-pencil-square"></i></button>';
-                                html += '<button class="btn btn-sm btn-outline-primary btn-download-exam py-0"'
-                                      + ' data-study="' + escH(d.studyId) + '"'
-                                      + ' title=' + @J("Baixar laudos e anexos") + '><i class="bi bi-download"></i></button>';
-                                if (d.hasReport) {
-                                    html += '<a href="#" class="btn btn-sm btn-outline-primary py-0" title=' + @J("Imprimir laudo") + ' target="_blank"><i class="bi bi-printer"></i></a>';
-                                }
-                                html += '</div>';
-                                return html;
-                            }
-                        }
-                    ]
-                });
-
-                /* ── Initial load: overlay visible until data renders ── */
-                setTimeout(function () {
-                    table.setData(tableData).then(function () {
-                        _initialLoading = false;
-                        _overlay.classList.add('hidden');
-                    });
-                }, 3000 + Math.floor(Math.random() * 2001));
-
-                /* ── Brief loader on sort, filter and page change ────── */
-                table.on('dataSorting',   _showOpOverlay);
-                table.on('dataSorted',    _hideOpOverlay);
-                table.on('dataFiltering', _showOpOverlay);
-                table.on('dataFiltered',  _hideOpOverlay);
-                table.on('pageLoading',   _showOpOverlay);
-                table.on('pageLoaded',    _hideOpOverlay);
-
-                /* ── Filter panel JS ─────────────────────────── */
-                (function () {
-                    var _procsByMod = {};
-                    tableData.forEach(function (d) {
-                        if (!_procsByMod[d.modality]) _procsByMod[d.modality] = [];
-                        if (_procsByMod[d.modality].indexOf(d.procedure) === -1)
-                            _procsByMod[d.modality].push(d.procedure);
-                    });
-                    Object.keys(_procsByMod).forEach(function (k) { _procsByMod[k].sort(); });
-
-                    /* Populate executor dropdown */
-                    var execs = tableData.filter(function (d) { return d.executingPhysician !== '—'; })
-                                         .map(function (d) { return d.executingPhysician; })
-                                         .filter(function (v, i, a) { return a.indexOf(v) === i; }).sort();
-                    var selE = document.getElementById('f-executor');
-                    execs.forEach(function (v) { var o = document.createElement('option'); o.value = v; o.textContent = v; selE.appendChild(o); });
-
-                    /* Populate unit dropdown */
-                    var units = tableData.map(function (d) { return d.unit; })
-                                         .filter(function (v, i, a) { return a.indexOf(v) === i; }).sort();
-                    var selU = document.getElementById('f-unit');
-                    units.forEach(function (v) { var o = document.createElement('option'); o.value = v; o.textContent = v; selU.appendChild(o); });
-
-                    /* Populate modality dropdown */
-                    var mods = tableData.map(function (d) { return d.modality; })
-                                        .filter(function (v, i, a) { return a.indexOf(v) === i; }).sort();
-                    var selMod = document.getElementById('f-modality');
-                    mods.forEach(function (v) { var o = document.createElement('option'); o.value = v; o.textContent = v; selMod.appendChild(o); });
-
-                    function buildProcs(mod) {
-                        var sel = document.getElementById('f-procedure');
-                        sel.innerHTML = '<option value="">' + @J("Todos") + '</option>';
-                        if (!mod) { sel.disabled = true; return; }
-                        sel.disabled = false;
-                        (_procsByMod[mod] || []).forEach(function (v) {
-                            var o = document.createElement('option'); o.value = v; o.textContent = v; sel.appendChild(o);
-                        });
-                    }
-                    buildProcs('');
-
-                    document.getElementById('f-modality').addEventListener('change', function () {
-                        buildProcs(this.value);
-                        document.getElementById('f-procedure').value = '';
-                    });
-
-                    /* Active filter badge */
-                    function updateFilterBadge() {
-                        var count = 0;
-                        ['f-patient-id','f-patient-name','f-access-code'].forEach(function (id) {
-                            if (document.getElementById(id).value.trim()) count++;
-                        });
-                        ['f-executor','f-unit','f-modality','f-procedure','f-study-from','f-study-to','f-date-from','f-date-to','f-type','f-status'].forEach(function (id) {
-                            if (document.getElementById(id).value) count++;
-                        });
-                        ['f-emergency','f-pendency','f-critical-unnotified','f-critical-notified','f-archived'].forEach(function (id) {
-                            if (document.getElementById(id).checked) count++;
-                        });
-                        var badge = document.getElementById('rx-filter-badge');
-                        if (count > 0) {
-                            badge.textContent = count + (count === 1 ? ' ' + @J("aplicado") : ' ' + @J("aplicados"));
-                            badge.classList.remove('d-none');
-                        } else {
-                            badge.classList.add('d-none');
-                        }
-                    }
-
-                    function applyFilters() {
-                        var pid    = document.getElementById('f-patient-id').value.trim().toLowerCase();
-                        var pname  = document.getElementById('f-patient-name').value.trim().toLowerCase();
-                        var access = document.getElementById('f-access-code').value.trim().toLowerCase();
-                        var exec   = document.getElementById('f-executor').value;
-                        var unit   = document.getElementById('f-unit').value;
-                        var mod    = document.getElementById('f-modality').value;
-                        var proc   = document.getElementById('f-procedure').value;
-                        var dfrom  = document.getElementById('f-date-from').value;
-                        var dto    = document.getElementById('f-date-to').value;
-                        var sfrom  = document.getElementById('f-study-from').value;
-                        var sto    = document.getElementById('f-study-to').value;
-                        var type   = document.getElementById('f-type').value;
-                        var status = document.getElementById('f-status').value;
-                        var emer   = document.getElementById('f-emergency').checked;
-                        var pend   = document.getElementById('f-pendency').checked;
-                        var cun    = document.getElementById('f-critical-unnotified').checked;
-                        var cno    = document.getElementById('f-critical-notified').checked;
-                        var arch   = document.getElementById('f-archived').checked;
-                        table.setFilter(function (d) {
-                            if (pid    && d.patientId.toLowerCase().indexOf(pid) === -1)    return false;
-                            if (pname  && d.patientName.toLowerCase().indexOf(pname) === -1) return false;
-                            if (access && d.accessCodeRaw.toLowerCase().indexOf(access) === -1) return false;
-                            if (exec   && d.executingPhysician !== exec)                    return false;
-                            if (unit   && d.unit !== unit)                                   return false;
-                            if (mod    && d.modality !== mod)                                return false;
-                            if (proc   && d.procedure !== proc)                              return false;
-                            if (dfrom  && (d.liberationDateOnly < dfrom || !d.liberationDateOnly)) return false;
-                            if (dto    && (d.liberationDateOnly > dto   || !d.liberationDateOnly)) return false;
-                            if (sfrom  && d.studyDateOnly < sfrom) return false;
-                            if (sto    && d.studyDateOnly > sto)   return false;
-                            if (type   && d.typeLabel !== type)                              return false;
-                            if (status && d.statusLabel !== status)                          return false;
-                            if (emer   && !d.isEmergency)                                    return false;
-                            if (pend   && !d.hasPendency)                                    return false;
-                            if (cun && !cno && d.criticalFinding !== 'unnotified')           return false;
-                            if (cno && !cun && d.criticalFinding !== 'notified')             return false;
-                            if (cun && cno && !d.criticalFinding)                            return false;
-                            if (arch  && !d.isArchived)                                      return false;
-                            return true;
-                        });
-                        updateFilterBadge();
-                    }
-
-                    document.getElementById('f-apply').addEventListener('click', applyFilters);
-                    document.getElementById('f-clear').addEventListener('click', function () {
-                        ['f-patient-id','f-patient-name','f-access-code'].forEach(function (id) {
-                            document.getElementById(id).value = '';
-                        });
-                        ['f-executor','f-unit','f-modality','f-type','f-status','f-study-from','f-study-to','f-date-from','f-date-to'].forEach(function (id) {
-                            document.getElementById(id).value = '';
-                        });
-                        buildProcs('');
-                        ['f-emergency','f-pendency','f-critical-unnotified','f-critical-notified','f-archived'].forEach(function (id) {
-                            document.getElementById(id).checked = false;
-                        });
-                        table.clearFilter();
-                        updateFilterBadge();
-                    });
-                    document.querySelectorAll('#rx-filter-panel input[type="text"], #rx-filter-panel input[type="date"]').forEach(function (inp) {
-                        inp.addEventListener('keydown', function (e) { if (e.key === 'Enter') applyFilters(); });
-                    });
-                })();
-
-                /* ── Edit modal — delegated click on table wrapper ── */
-                document.getElementById('reception-table-wrap').addEventListener('click', function (e) {
-                    var btn = e.target.closest('.btn-edit-patient');
-                    if (!btn) return;
-                    var modal = document.getElementById('editPatientModal');
-                    modal.querySelector('#ep-patient-id').value  = btn.dataset.id     || '';
-                    modal.querySelector('#ep-name').value        = btn.dataset.name   || '';
-                    modal.querySelector('#ep-social').value      = btn.dataset.social || '';
-                    modal.querySelector('#ep-mother').value      = btn.dataset.mother || '';
-                    modal.querySelector('#ep-phone').value       = btn.dataset.phone  || '';
-                    modal.querySelector('#ep-sex').value         = btn.dataset.sex    || 'M';
-                    modal.querySelector('#ep-birth').value       = btn.dataset.birth  || '';
-                    modal.querySelector('#ep-study').value       = (btn.dataset.study || '').slice(0, 16);
-                    modal.querySelector('#ep-cpf').value         = btn.dataset.cpf    || '';
-                    modal.querySelector('#ep-email').value       = btn.dataset.email  || '';
-                    modal.querySelector('#ep-access-code').value = btn.dataset.code   || '';
-
-                    /* Render change history for this patient */
-                    var rec = tableData.find(function (d) { return d.patientId === btn.dataset.id; });
-                    var body = modal.querySelector('#ep-history-body');
-                    body.innerHTML = '';
-                    var logs = (rec && rec.changeLogs) || [];
-                    if (logs.length === 0) {
-                        body.innerHTML = '<tr><td colspan="5" class="text-center text-muted py-3">'
-                                       + @J("Nenhuma alteração registrada.") + '</td></tr>';
-                    } else {
-                        logs.forEach(function (l) {
-                            body.insertAdjacentHTML('beforeend',
-                                '<tr>'
-                              + '<td><div class="d-flex align-items-center gap-2">'
-                              + '<span class="hosp-avatar" style="width:26px;height:26px;font-size:.6rem">' + escH(l.initials) + '</span>'
-                              + '<span>' + escH(l.userName) + '</span></div></td>'
-                              + '<td>' + escH(l.userRole) + '</td>'
-                              + '<td>' + escH(l.unit) + '</td>'
-                              + '<td>' + escH(l.summary) + '</td>'
-                              + '<td class="text-nowrap">' + escH(l.at) + '</td>'
-                              + '</tr>');
-                        });
-                    }
-                    /* Always reset to first tab on open */
-                    bootstrap.Tab.getOrCreateInstance(modal.querySelector('#ep-tab-data-btn')).show();
-
-                    document.body.appendChild(modal);
-                    bootstrap.Modal.getOrCreateInstance(modal).show();
-                });
-
-                document.getElementById('ep-gen-code').addEventListener('click', function () {
-                    document.getElementById('ep-access-code').value =
-                        Math.floor(100000 + Math.random() * 900000).toString();
-                });
-
-                /* ── Download modal ─────────────────────────────── */
-                function dlIcon(isCold, label) {
-                    if (isCold) {
-                        return '<button class="btn btn-sm btn-outline-info py-0 btn-request-recovery" '
-                             + 'data-file="' + escH(label) + '" title=' + @J("Arquivo em cold storage — solicitar recuperação") + '>'
-                             + '<i class="bi bi-snow"></i> ' + @J("Recuperar") + '</button>';
-                    }
-                    return '<a href="#" class="btn btn-sm btn-outline-primary py-0" title=' + @J("Baixar") + '><i class="bi bi-download"></i></a>';
-                }
-
-                document.getElementById('reception-table-wrap').addEventListener('click', function (e) {
-                    var btn = e.target.closest('.btn-download-exam');
-                    if (!btn) return;
-                    var rec = tableData.find(function (d) { return d.studyId === btn.dataset.study; });
-                    if (!rec) return;
-                    var modal = document.getElementById('downloadModal');
-                    modal.querySelector('#dl-study').textContent = rec.studyId + ' · ' + rec.patientName;
-
-                    /* Reports */
-                    var rb = modal.querySelector('#dl-reports-body');
-                    rb.innerHTML = '';
-                    (rec.reports || []).forEach(function (r) {
-                        rb.insertAdjacentHTML('beforeend',
-                            '<tr><td><i class="bi bi-file-earmark-medical me-1 text-danger"></i>' + escH(r.title) + '</td>'
-                          + '<td class="text-end">' + dlIcon(r.isCold, r.title) + '</td></tr>');
-                    });
-                    if (!(rec.reports || []).length)
-                        rb.innerHTML = '<tr><td colspan="2" class="text-center text-muted py-3">' + @J("Nenhum laudo disponível.") + '</td></tr>';
-
-                    /* Attachments */
-                    var ab = modal.querySelector('#dl-attachments-body');
-                    ab.innerHTML = '';
-                    (rec.attachments || []).forEach(function (a) {
-                        ab.insertAdjacentHTML('beforeend',
-                            '<tr><td><i class="bi bi-paperclip me-1"></i>' + escH(a.fileName) + '</td>'
-                          + '<td class="text-nowrap">' + escH(a.uploadedAt) + '</td>'
-                          + '<td>' + escH(a.type) + '</td>'
-                          + '<td class="text-nowrap">' + escH(a.size) + '</td>'
-                          + '<td>' + escH(a.uploadedBy) + '</td>'
-                          + '<td class="text-end">' + dlIcon(a.isCold, a.fileName) + '</td></tr>');
-                    });
-                    if (!(rec.attachments || []).length)
-                        ab.innerHTML = '<tr><td colspan="6" class="text-center text-muted py-3">' + @J("Nenhum arquivo anexado.") + '</td></tr>';
-
-                    /* Prior exams */
-                    var pb = modal.querySelector('#dl-prior-body');
-                    pb.innerHTML = '';
-                    var priors = rec.priorExams || [];
-                    if (!priors.length) {
-                        pb.innerHTML = '<p class="text-center text-muted py-3 mb-0">' + @J("Nenhum exame anterior encontrado.") + '</p>';
-                    } else {
-                        priors.forEach(function (p) {
-                            var html = '<div class="card mb-2"><div class="card-body py-2 px-3">'
-                                + '<div class="d-flex justify-content-between align-items-center">'
-                                + '<div><strong>' + escH(p.title) + '</strong>'
-                                + '<span class="text-muted ms-2" style="font-size:var(--fs-xs)">'
-                                + escH(p.studyId) + ' · AN ' + escH(p.accessNumber) + ' · ' + escH(p.when) + '</span></div>'
-                                + '<div>' + dlIcon(p.isCold, p.title) + '</div></div>';
-                            if ((p.attachments || []).length) {
-                                html += '<table class="table table-sm mt-2 mb-0" style="font-size:var(--fs-xs)">'
-                                     + '<thead class="table-light"><tr><th>' + @J("Anexo") + '</th><th>' + @J("Upload") + '</th><th>' + @J("Tipo") + '</th><th>' + @J("Tamanho") + '</th>'
-                                     + '<th>' + @J("Responsável") + '</th><th>AN</th><th class="text-end">' + @J("Ação") + '</th></tr></thead><tbody>';
-                                p.attachments.forEach(function (a) {
-                                    html += '<tr><td><i class="bi bi-paperclip me-1"></i>' + escH(a.fileName) + '</td>'
-                                          + '<td class="text-nowrap">' + escH(a.uploadedAt) + '</td>'
-                                          + '<td>' + escH(a.type) + '</td><td class="text-nowrap">' + escH(a.size) + '</td>'
-                                          + '<td>' + escH(a.uploadedBy) + '</td><td>' + escH(p.accessNumber) + '</td>'
-                                          + '<td class="text-end">' + dlIcon(a.isCold, a.fileName) + '</td></tr>';
-                                });
-                                html += '</tbody></table>';
-                            }
-                            html += '</div></div>';
-                            pb.insertAdjacentHTML('beforeend', html);
-                        });
-                    }
-
-                    document.body.appendChild(modal);
-                    bootstrap.Modal.getOrCreateInstance(modal).show();
-                });
-
-                /* ── Cold storage recovery request ─────────────── */
-                document.addEventListener('click', function (e) {
-                    var btn = e.target.closest('.btn-request-recovery');
-                    if (!btn) return;
-                    var modal = document.getElementById('recoveryModal');
-                    modal.querySelector('#rec-file-name').textContent = btn.dataset.file || '';
-                    modal._sourceBtn = btn;
-                    document.body.appendChild(modal);
-                    bootstrap.Modal.getOrCreateInstance(modal).show();
-                });
-                document.getElementById('rec-confirm').addEventListener('click', function () {
-                    var modal = document.getElementById('recoveryModal');
-                    var btn = modal._sourceBtn;
-                    if (btn) {
-                        btn.outerHTML = '<span class="badge bg-info-subtle text-info-emphasis">'
-                                      + '<i class="bi bi-hourglass-split me-1"></i>' + @J("Recuperação solicitada") + '</span>';
-                    }
-                    bootstrap.Modal.getOrCreateInstance(modal).hide();
-                });
-
-                /* ── Filter warning banner ─────────────────────── */
-                (function () {
-                    var header = document.getElementById('rx-filter-header');
-                    var warn = document.getElementById('rx-filter-warning');
-                    if (!header || !warn) return;
-                    function refresh() {
-                        var badge = document.getElementById('rx-filter-badge');
-                        var hasFilters = badge && !badge.classList.contains('d-none');
-                        var collapsed = header.getAttribute('aria-expanded') !== 'true';
-                        warn.classList.toggle('d-none', !(hasFilters && collapsed));
-                    }
-                    document.getElementById('f-apply').addEventListener('click', function () { setTimeout(refresh, 0); });
-                    document.getElementById('f-clear').addEventListener('click', function () { setTimeout(refresh, 0); });
-                    document.getElementById('rx-filter-body').addEventListener('shown.bs.collapse', refresh);
-                    document.getElementById('rx-filter-body').addEventListener('hidden.bs.collapse', refresh);
-                    refresh();
-                })();
             })();
         </script>
-    }
-}
-@* ─────────────────────────────────────────────────────────
-   OTHER ROLES — Simple legacy table
-   ───────────────────────────────────────────────────────── *@
-else
-{
-    <div class="card anim-fade-in anim-delay-2">
-        @if (Model.FilteredExams.Length == 0)
-        {
-            <div class="p-5 text-center text-muted">
-                <i class="bi bi-inbox" style="font-size:3rem;opacity:.4"></i>
-                <p class="mt-3 mb-0">@L["Nenhum exame encontrado."]</p>
-            </div>
-        }
-        else
-        {
-            <div class="table-responsive">
-                <table class="hosp-table">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>@L["Paciente"]</th>
-                            <th>@L["Modalidade"]</th>
-                            <th>@L["Médico"]</th>
-                            <th>@L["Data"]</th>
-                            <th>@L["Status"]</th>
-                            <th>@L["Ações"]</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var exam in Model.FilteredExams)
-                        {
-                            var statusCss = exam.Status switch {
-                                "Agendado"       => "scheduled",
-                                "Em andamento"   => "in-progress",
-                                "Concluído"      => "completed",
-                                "Laudo pendente" => "pending",
-                                "Laudo emitido"  => "issued",
-                                _                => "completed"
-                            };
-                            <tr>
-                                <td><code style="font-size:var(--fs-xs);color:var(--clr-navy-700)">@exam.Id</code></td>
-                                <td>
-                                    <div class="d-flex align-items-center gap-2">
-                                        <span class="hosp-avatar" style="width:28px;height:28px;font-size:.65rem;">
-                                            @string.Join("", exam.Patient.Split(' ').Take(2).Select(p => p[0]))
-                                        </span>
-                                        @exam.Patient
-                                    </div>
-                                </td>
-                                <td>@exam.Modality</td>
-                                <td class="text-muted" style="font-size:var(--fs-xs)">@exam.Physician</td>
-                                <td style="white-space:nowrap">@exam.Date.ToString("dd/MM/yyyy")</td>
-                                <td><span class="badge-status @statusCss">@L[exam.Status]</span></td>
-                                <td>
-                                    <div class="d-flex gap-1">
-                                        <button class="btn btn-sm btn-outline-secondary" title="@L["Ver detalhes"]">
-                                            <i class="bi bi-eye"></i>
-                                        </button>
-                                        @if (exam.ReportUrl is not null)
-                                        {
-                                            <a href="@exam.ReportUrl" class="btn btn-sm btn-outline-primary" title="@L["Ver laudo"]">
-                                                <i class="bi bi-file-earmark-text"></i>
-                                            </a>
-                                        }
-                                    </div>
-                                </td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
-        }
-    </div>
-
-    @if (Model.TotalPages > 1)
-    {
-        <nav class="mt-3 anim-fade-in anim-delay-3" aria-label="@L["Paginação de exames"]">
-            <ul class="pagination pagination-sm justify-content-center mb-0">
-                <li class="page-item @(Model.PageIndex == 1 ? "disabled" : "")">
-                    <a class="page-link" href="@PageLink(Math.Max(1, Model.PageIndex - 1))"><i class="bi bi-chevron-left"></i></a>
-                </li>
-                @for (int p = 1; p <= Model.TotalPages; p++)
-                {
-                    <li class="page-item @(p == Model.PageIndex ? "active" : "")">
-                        <a class="page-link" href="@PageLink(p)">@p</a>
-                    </li>
-                }
-                <li class="page-item @(Model.PageIndex == Model.TotalPages ? "disabled" : "")">
-                    <a class="page-link" href="@PageLink(Math.Min(Model.TotalPages, Model.PageIndex + 1))"><i class="bi bi-chevron-right"></i></a>
-                </li>
-            </ul>
-            <p class="text-center text-muted mt-2 mb-0" style="font-size:var(--fs-xs)">
-                @L["Página"] @Model.PageIndex @L["de"] @Model.TotalPages · @Model.TotalCount @L["exames"]
-            </p>
-        </nav>
+        @* ── Component modules (deterministic load order: core → table → filters → modals) ── *@
+        <script src="~/js/exams/core.js" asp-append-version="true"></script>
+        <script src="~/js/exams/table.js" asp-append-version="true"></script>
+        <script src="~/js/exams/filters.js" asp-append-version="true"></script>
+        <script src="~/js/exams/edit-patient-modal.js" asp-append-version="true"></script>
+        <script src="~/js/exams/download-modal.js" asp-append-version="true"></script>
+        <script src="~/js/exams/recovery-modal.js" asp-append-version="true"></script>
+        <script src="~/js/exams/critical-modals.js" asp-append-version="true"></script>
+        <script src="~/js/exams/pendency-modal.js" asp-append-version="true"></script>
+        <script src="~/js/exams/archived-modal.js" asp-append-version="true"></script>
+        <script src="~/js/exams/download-code-modal.js" asp-append-version="true"></script>
+        <script src="~/js/exams/download-history-modal.js" asp-append-version="true"></script>
     }
 }

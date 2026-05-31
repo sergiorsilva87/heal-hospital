@@ -1,0 +1,31 @@
+@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer L
+@* Archived items (cold storage) modal *@
+<div class="modal fade" id="archivedModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    <i class="bi bi-archive-fill me-2" style="color:#546e7a"></i>@L["Itens arquivados"]
+                    <span id="ar-study" class="text-muted ms-2" style="font-size:var(--fs-sm)"></span>
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="@L["Fechar"]"></button>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-info d-flex align-items-start gap-2" style="font-size:var(--fs-xs)">
+                    <i class="bi bi-info-circle-fill mt-1"></i>
+                    <div>@L["Estes itens estão em armazenamento de longo prazo (cold storage). A restauração não é imediata e pode levar algumas horas. Você será avisado quando os arquivos estiverem disponíveis para download."]</div>
+                </div>
+                <table class="table table-sm align-middle" style="font-size:var(--fs-xs)">
+                    <thead class="table-light"><tr>
+                        <th>@L["Item"]</th><th>@L["Tipo"]</th><th>@L["Tamanho"]</th><th>@L["Arquivado em"]</th>
+                    </tr></thead>
+                    <tbody id="ar-body"></tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">@L["Fechar"]</button>
+                <button type="button" class="btn btn-info text-white" id="ar-restore"><i class="bi bi-snow me-1"></i>@L["Solicitar restauração"]</button>
+            </div>
+        </div>
+    </div>
+</div>

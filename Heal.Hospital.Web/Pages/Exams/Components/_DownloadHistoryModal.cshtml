@@ -1,0 +1,27 @@
+@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer L
+@* Patient download history modal *@
+<div class="modal fade" id="downloadHistoryModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    <i class="bi bi-cloud-arrow-down-fill me-2" style="color:#00897b"></i>@L["Downloads do paciente"]
+                    <span id="dh-study" class="text-muted ms-2" style="font-size:var(--fs-sm)"></span>
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="@L["Fechar"]"></button>
+            </div>
+            <div class="modal-body">
+                <p class="text-muted mb-3" style="font-size:var(--fs-xs)">@L["Registro de quando o paciente baixou os laudos deste exame."]</p>
+                <table class="table table-sm align-middle" style="font-size:var(--fs-xs)">
+                    <thead class="table-light"><tr>
+                        <th>@L["Data e hora"]</th><th>@L["Dispositivo"]</th><th>@L["Endereço IP"]</th>
+                    </tr></thead>
+                    <tbody id="dh-body"></tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">@L["Fechar"]</button>
+            </div>
+        </div>
+    </div>
+</div>

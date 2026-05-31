@@ -1,0 +1,135 @@
+@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer L
+@* Edit patient modal *@
+<div class="modal fade" id="editPatientModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    <i class="bi bi-pencil-square me-2"></i>@L["Editar dados do paciente"]
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="@L["Fechar"]"></button>
+            </div>
+            <form method="post" asp-antiforgery="true">
+                @Html.AntiForgeryToken()
+                <input type="hidden" id="ep-patient-id" name="PatientId" />
+
+                <ul class="nav nav-tabs px-3 pt-2" id="ep-tabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="ep-tab-data-btn" data-bs-toggle="tab"
+                                data-bs-target="#ep-tab-data" type="button" role="tab">
+                            <i class="bi bi-person-vcard me-1"></i>@L["Dados do Paciente"]
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="ep-tab-history-btn" data-bs-toggle="tab"
+                                data-bs-target="#ep-tab-history" type="button" role="tab">
+                            <i class="bi bi-clock-history me-1"></i>@L["Histórico de alteração"]
+                        </button>
+                    </li>
+                </ul>
+
+                <div class="modal-body">
+                    <div class="tab-content">
+                        @* ── Tab 1: Dados do Paciente ── *@
+                        <div class="tab-pane fade show active" id="ep-tab-data" role="tabpanel">
+                            <p class="text-muted mb-3" style="font-size:var(--fs-xs)">
+                                <i class="bi bi-info-circle me-1"></i>
+                                @L["Alterações são propagadas para os dados do paciente, tags DICOM e cabeçalho do laudo."]
+                            </p>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label class="form-label">@L["Nome completo"]</label>
+                                    <input type="text" id="ep-name" name="PatientName" class="form-control" />
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">@L["Nome social"]</label>
+                                    <input type="text" id="ep-social" name="SocialName" class="form-control" />
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">@L["Nome da mãe"]</label>
+                                    <input type="text" id="ep-mother" name="MotherName" class="form-control" />
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label">@L["Sexo"]</label>
+                                    <select id="ep-sex" name="Sex" class="form-select">
+                                        <option value="M">M</option>
+                                        <option value="F">F</option>
+                                        <option value="O">@L["Outro"]</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label">@L["Telefone"]</label>
+                                    <input type="tel" id="ep-phone" name="Phone" class="form-control" placeholder="(11) 90000-0000" />
+                                </div>
+                                <div class="col-md-5">
+                                    <label class="form-label">@L["Nascimento (data/hora)"]</label>
+                                    <input type="datetime-local" step="1" id="ep-birth" name="BirthDateTime" class="form-control" />
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label">CPF</label>
+                                    <input type="text" id="ep-cpf" name="Cpf" class="form-control" placeholder="000.000.000-00" />
+                                </div>
+                                <div class="col-md-7">
+                                    <label class="form-label">@L["E-mail"]</label>
+                                    <input type="email" id="ep-email" name="Email" class="form-control" />
+                                </div>
+                                <div class="col-md-5">
+                                    <label class="form-label">@L["Data e hora do estudo (exame)"]</label>
+                                    <input type="datetime-local" id="ep-study" name="StudyDateTime" class="form-control" />
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label">@L["Código de download do laudo"]</label>
+                                    <div class="input-group">
+                                        <input type="text" id="ep-access-code" name="DownloadAccessCode"
+                                               class="form-control" maxlength="6" readonly />
+                                        <button type="button" id="ep-gen-code" class="btn btn-outline-primary"
+                                                title="@L["Gerar novo código de 6 dígitos"]">
+                                            <i class="bi bi-key"></i> @L["Gerar"]
+                                        </button>
+                                    </div>
+                                    <div class="form-text" style="font-size:var(--fs-xs)">
+                                        @L["Código de 6 dígitos para o paciente baixar o laudo no portal."]
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        @* ── Tab 2: Histórico de alteração ── *@
+                        <div class="tab-pane fade" id="ep-tab-history" role="tabpanel">
+                            <p class="text-muted mb-2" style="font-size:var(--fs-xs)">
+                                <i class="bi bi-info-circle me-1"></i>
+                                @L["Todas as alterações feitas no cadastro deste paciente ficam registradas abaixo."]
+                            </p>
+                            <div id="ep-history-wrap" style="max-height:320px;overflow-y:auto">
+                                <table class="table table-sm align-middle mb-0" style="font-size:var(--fs-xs)">
+                                    <thead class="table-light" style="position:sticky;top:0;z-index:1">
+                                        <tr>
+                                            <th>@L["Quem alterou"]</th>
+                                            <th>@L["Cargo"]</th>
+                                            <th>@L["Unidade"]</th>
+                                            <th>@L["Alteração"]</th>
+                                            <th class="text-nowrap">@L["Data e hora"]</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="ep-history-body"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="alert alert-warning mx-3 mb-2 py-2" style="font-size:var(--fs-xs)">
+                    <i class="bi bi-shield-exclamation me-1"></i>
+                    <strong>@L["Atenção:"]</strong> @L["os dados alterados aqui passam a constar no laudo do paciente. O paciente será notificado de que houve alteração no laudo, e o sistema registra o momento e o usuário responsável. A alteração dos dados do paciente e do estudo é de responsabilidade de quem a realiza."]
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">@L["Cancelar"]</button>
+                    <button type="submit" class="btn btn-danger">
+                        <i class="bi bi-check2 me-1"></i>@L["Salvar alterações"]
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

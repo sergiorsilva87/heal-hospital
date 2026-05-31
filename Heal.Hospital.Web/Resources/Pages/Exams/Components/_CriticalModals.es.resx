@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <data name="Achado crítico não resolvido" xml:space="preserve"><value>Hallazgo crítico no resuelto</value></data>
+  <data name="Achado crítico resolvido" xml:space="preserve"><value>Hallazgo crítico resuelto</value></data>
+  <data name="Contato do paciente" xml:space="preserve"><value>Contacto del paciente</value></data>
+  <data name="CRM" xml:space="preserve"><value>CRM (licencia)</value></data>
+  <data name="Data do achado crítico" xml:space="preserve"><value>Fecha del hallazgo crítico</value></data>
+  <data name="Descreva o contato realizado com o paciente ou responsável..." xml:space="preserve"><value>Describa el contacto realizado con el paciente o responsable...</value></data>
+  <data name="Fechar" xml:space="preserve"><value>Cerrar</value></data>
+  <data name="Histórico completo do achado crítico, desde o registro pelo médico até a resolução." xml:space="preserve"><value>Historial completo del hallazgo crítico, desde el registro por el médico hasta su resolución.</value></data>
+  <data name="Marcar como resolvido" xml:space="preserve"><value>Marcar como resuelto</value></data>
+  <data name="Médico responsável" xml:space="preserve"><value>Médico responsable</value></data>
+  <data name="Mensagem do médico" xml:space="preserve"><value>Mensaje del médico</value></data>
+  <data name="O registro de contato é obrigatório." xml:space="preserve"><value>El registro de contacto es obligatorio.</value></data>
+  <data name="Registrar contato" xml:space="preserve"><value>Registrar contacto</value></data>
+  <data name="Registro de contato" xml:space="preserve"><value>Registro de contacto</value></data>
+</root>

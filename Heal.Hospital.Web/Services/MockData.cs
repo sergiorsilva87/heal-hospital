@@ -616,4 +616,139 @@ public static class MockData
         }
         return list.ToArray();
     }
+
+    // ─────────────────────────────────────────────────────────
+    // RECEPTION — Critical findings / pendency / archive / downloads detail
+    // (deterministic mock used by the clickable column-1 icon modals)
+    // ─────────────────────────────────────────────────────────
+    private static readonly (string Name, string Crm, string Uf)[] _radiologists =
+    [
+        ("Dr. Paulo Ferreira", "CRM 112847", "SP"),
+        ("Dra. Camila Rocha",  "CRM 98233",  "SP"),
+        ("Dr. Ricardo Nunes",  "CRM 145902", "SP"),
+        ("Dra. Sofia Mendes",  "CRM 76110",  "RJ"),
+    ];
+
+    private static readonly string[] _criticalMessages =
+    [
+        "Achado compatível com hemorragia subaracnóidea aguda. Necessária avaliação neurocirúrgica imediata.",
+        "Massa pulmonar espiculada no lobo superior direito, suspeita de neoplasia. Encaminhar com urgência.",
+        "Sinais de tromboembolismo pulmonar central bilateral. Contatar a equipe assistente com prioridade.",
+        "Fratura-luxação cervical instável. Imobilização e avaliação ortopédica urgentes.",
+        "Aneurisma de aorta abdominal com sinais de rotura iminente. Acionar cirurgia vascular.",
+        "Apendicite aguda com sinais de perfuração. Avaliação cirúrgica imediata recomendada.",
+    ];
+
+    public record CriticalDetail(
+        string State, DateTime DetectedAt, string Physician, string Crm, string Uf, string Message,
+        string? ResolvedBy, string? ResolvedRole, DateTime? ResolvedAt, string? ContactNote);
+
+    /// <summary>Deterministic mock detail for the critical-finding icon modals.</summary>
+    public static CriticalDetail? GetCriticalDetail(ReceptionExam e)
+    {
+        if (string.IsNullOrEmpty(e.CriticalFinding)) return null;
+        var seed = Math.Abs((e.StudyId + "crit").GetHashCode());
+        var rad = _radiologists[seed % _radiologists.Length];
+        var msg = _criticalMessages[seed % _criticalMessages.Length];
+        var detectedAt = (e.ReportDateTime ?? e.StudyDateTime).AddMinutes(-(15 + seed % 90));
+
+        if (e.CriticalFinding == "notified")
+        {
+            var resolvers = new (string Name, string Role)[]
+            {
+                ("Carlos Mendes", "Recepção"),
+                ("Patrícia Aoki", "Técnico(a) de Radiologia"),
+            };
+            var r = resolvers[seed % resolvers.Length];
+            var notes = new[]
+            {
+                "Paciente contatado por telefone e orientado a retornar imediatamente ao pronto-socorro.",
+                "Contato realizado com a médica assistente, que assumiu a conduta do caso.",
+                "Responsável pelo paciente informado; transporte para o hospital acionado.",
+            };
+            var note = notes[seed % notes.Length];
+            var resolvedAt = detectedAt.AddMinutes(20 + seed % 70);
+            return new CriticalDetail("notified", detectedAt, rad.Name, rad.Crm, rad.Uf, msg,
+                r.Name, r.Role, resolvedAt, note);
+        }
+
+        return new CriticalDetail("unnotified", detectedAt, rad.Name, rad.Crm, rad.Uf, msg,
+            null, null, null, null);
+    }
+
+    private static readonly string[] _pendencyTexts =
+    [
+        "Faltou a guia de autorização do convênio. Favor anexar o documento para liberação do laudo.",
+        "Exame anterior comparativo não localizado no sistema. Solicito anexar para análise evolutiva.",
+        "Dados clínicos insuficientes na requisição. Necessário informar a indicação clínica detalhada.",
+        "Imagens com artefato de movimento. Avaliar a necessidade de reaquisição de algumas séries.",
+        "Termo de consentimento do contraste não consta no prontuário. Anexar antes da assinatura.",
+    ];
+
+    public record PendencyDetail(
+        string Physician, string Crm, string Uf, DateTime OpenedAt, string Text);
+
+    /// <summary>Deterministic mock detail for the pendency icon modal.</summary>
+    public static PendencyDetail? GetPendencyDetail(ReceptionExam e)
+    {
+        if (!e.HasPendency) return null;
+        var seed = Math.Abs((e.StudyId + "pend").GetHashCode());
+        var rad = _radiologists[seed % _radiologists.Length];
+        var text = _pendencyTexts[seed % _pendencyTexts.Length];
+        var openedAt = (e.LiberationDateTime ?? e.StudyDateTime).AddMinutes(30 + seed % 180);
+        return new PendencyDetail(rad.Name, rad.Crm, rad.Uf, openedAt, text);
+    }
+
+    public record ArchivedItem(string Name, string Kind, string Size, DateTime ArchivedAt);
+
+    /// <summary>Deterministic mock list of archived (cold-storage) items: reports, DICOM images and documents.</summary>
+    public static ArchivedItem[] GetArchivedItems(ReceptionExam e)
+    {
+        if (!e.IsArchived) return [];
+        var seed = Math.Abs((e.StudyId + "arch").GetHashCode());
+        var archivedAt = e.StudyDateTime.AddDays(180 + seed % 540);
+        var list = new List<ArchivedItem>
+        {
+            new($"Laudo assinado — {e.Procedure}.pdf", "Laudo", FormatFileSize(180_000 + seed % 90_000), archivedAt),
+            new($"Série DICOM — {e.ImageCount} imagens", "Imagem DICOM", FormatFileSize((long)e.ImageCount * 524_288L), archivedAt),
+        };
+        if (e.AttachmentCount > 0)
+            list.Add(new("Documentos anexados.zip", "Documento", FormatFileSize(240_000 + seed % 300_000), archivedAt));
+        return list.ToArray();
+    }
+
+    public record DownloadEvent(DateTime At, string Device, string IpAddress);
+
+    /// <summary>Deterministic mock list of patient report-download events.</summary>
+    public static DownloadEvent[] GetDownloadEvents(ReceptionExam e)
+    {
+        if (!WasReportDownloaded(e)) return [];
+        var seed = Math.Abs((e.StudyId + "dl").GetHashCode());
+        var count = 1 + seed % 3; // 1..3 downloads
+        var devices = new[]
+        {
+            "Android · App HealPaciente",
+            "iPhone · Safari",
+            "Windows · Chrome",
+            "macOS · Safari",
+        };
+        var baseAt = (e.ReportDateTime ?? e.StudyDateTime).AddHours(2 + seed % 30);
+        var list = new List<DownloadEvent>();
+        for (var i = 0; i < count; i++)
+        {
+            var at = baseAt.AddHours(i * (6 + seed % 12)).AddMinutes(seed % 50);
+            var dev = devices[(seed + i) % devices.Length];
+            var ip = $"189.{seed % 200}.{seed / 3 % 200}.{seed / 7 % 200}";
+            list.Add(new DownloadEvent(at, dev, ip));
+        }
+        return list.ToArray();
+    }
+
+    /// <summary>Deterministic mock timestamp for when the patient-portal download code was generated.</summary>
+    public static DateTime? GetCodeGeneratedAt(ReceptionExam e)
+    {
+        if (!WasDownloadCodeGenerated(e)) return null;
+        var seed = Math.Abs((e.StudyId + "code").GetHashCode());
+        return (e.ReportDateTime ?? e.StudyDateTime).AddMinutes(10 + seed % 120);
+    }
 }

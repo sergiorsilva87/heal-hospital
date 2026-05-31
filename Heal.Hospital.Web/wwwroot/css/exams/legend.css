@@ -1,0 +1,9 @@
+/* Status legend: distinct color per status (Melhorias item 1) */
+#reception-legend .badge-status.release    { background: #f3e5f5; color: #6a1b9a; }
+#reception-legend .badge-status.available  { background: #e3f2fd; color: #0d47a1; }
+#reception-legend .badge-status.reporting  { background: #fff3e0; color: #bf360c; }
+#reception-legend .badge-status.pendency   { background: #fdecea; color: #b71c1c; }
+#reception-legend .badge-status.revision   { background: #fff3e0; color: #bf360c; }
+#reception-legend .badge-status.signature  { background: #fff3e0; color: #bf360c; }
+#reception-legend .badge-status.approved   { background: #e8f5e9; color: #1b5e20; }
+#reception-legend .badge-status.cancelled  { background: #f0f0f0; color: #6c757d; }

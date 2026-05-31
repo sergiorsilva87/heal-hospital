@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <data name="Agendado" xml:space="preserve"><value>Agendado</value></data>
+  <data name="Buscar" xml:space="preserve"><value>Buscar</value></data>
+  <data name="Concluído" xml:space="preserve"><value>Concluído</value></data>
+  <data name="Em andamento" xml:space="preserve"><value>Em andamento</value></data>
+  <data name="Filtrar" xml:space="preserve"><value>Filtrar</value></data>
+  <data name="Laudo emitido" xml:space="preserve"><value>Laudo emitido</value></data>
+  <data name="Laudo pendente" xml:space="preserve"><value>Laudo pendente</value></data>
+  <data name="Paciente ou nº do exame…" xml:space="preserve"><value>Paciente ou nº do exame…</value></data>
+  <data name="Status" xml:space="preserve"><value>Status</value></data>
+  <data name="Todos" xml:space="preserve"><value>Todos</value></data>
+</root>

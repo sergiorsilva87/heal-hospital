@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <data name="Achado crítico não resolvido" xml:space="preserve"><value>Unresolved critical finding</value></data>
+  <data name="Achado crítico resolvido" xml:space="preserve"><value>Resolved critical finding</value></data>
+  <data name="Contato do paciente" xml:space="preserve"><value>Patient contact</value></data>
+  <data name="CRM" xml:space="preserve"><value>CRM (license)</value></data>
+  <data name="Data do achado crítico" xml:space="preserve"><value>Critical finding date</value></data>
+  <data name="Descreva o contato realizado com o paciente ou responsável..." xml:space="preserve"><value>Describe the contact made with the patient or guardian...</value></data>
+  <data name="Fechar" xml:space="preserve"><value>Close</value></data>
+  <data name="Histórico completo do achado crítico, desde o registro pelo médico até a resolução." xml:space="preserve"><value>Full history of the critical finding, from the physician's record to its resolution.</value></data>
+  <data name="Marcar como resolvido" xml:space="preserve"><value>Mark as resolved</value></data>
+  <data name="Médico responsável" xml:space="preserve"><value>Responsible physician</value></data>
+  <data name="Mensagem do médico" xml:space="preserve"><value>Physician's message</value></data>
+  <data name="O registro de contato é obrigatório." xml:space="preserve"><value>The contact log is required.</value></data>
+  <data name="Registrar contato" xml:space="preserve"><value>Log contact</value></data>
+  <data name="Registro de contato" xml:space="preserve"><value>Contact log</value></data>
+</root>

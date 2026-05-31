@@ -1,0 +1,27 @@
+@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer L
+@model Heal.Hospital.Web.Pages.Exams.IndexModel
+@* Non-receptionist roles — simple search form *@
+<form method="get" class="card p-3 mb-4 anim-fade-in anim-delay-1">
+    <div class="row g-2 align-items-end">
+        <div class="col-md-5">
+            <label class="form-label fw-semibold" style="font-size:var(--fs-xs)">@L["Buscar"]</label>
+            <div class="input-group input-group-sm">
+                <span class="input-group-text"><i class="bi bi-search"></i></span>
+                <input name="Search" value="@Model.Search" class="form-control" placeholder="@L["Paciente ou nº do exame…"]" />
+            </div>
+        </div>
+        <div class="col-md-4">
+            <label class="form-label fw-semibold" style="font-size:var(--fs-xs)">@L["Status"]</label>
+            <select name="StatusFilter" class="form-select form-select-sm">
+                <option value="">@L["Todos"]</option>
+                @foreach (var s in new[] { "Agendado", "Em andamento", "Concluído", "Laudo pendente", "Laudo emitido" })
+                {
+                    <option value="@s" selected="@(Model.StatusFilter == s)">@L[s]</option>
+                }
+            </select>
+        </div>
+        <div class="col-md-3">
+            <button type="submit" class="btn btn-primary btn-sm w-100"><i class="bi bi-funnel me-1"></i>@L["Filtrar"]</button>
+        </div>
+    </div>
+</form>

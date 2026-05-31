@@ -1,0 +1,52 @@
+@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer L
+@* Download modal *@
+<div class="modal fade" id="downloadModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    <i class="bi bi-download me-2"></i>@L["Download do exame"]
+                    <span id="dl-study" class="text-muted ms-2" style="font-size:var(--fs-sm)"></span>
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="@L["Fechar"]"></button>
+            </div>
+            <div class="modal-body">
+                <ul class="nav nav-tabs mb-3" id="dl-tabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#dl-current"
+                                type="button" role="tab"><i class="bi bi-file-earmark-medical me-1"></i>@L["Exame atual"]</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#dl-prior"
+                                type="button" role="tab"><i class="bi bi-clock-history me-1"></i>@L["Exames anteriores"]</button>
+                    </li>
+                </ul>
+                <div class="tab-content" style="max-height:60vh;overflow-y:auto">
+                    @* ── Tab 1: Exame atual selecionado ── *@
+                    <div class="tab-pane fade show active" id="dl-current" role="tabpanel">
+                        <h6 class="fw-semibold mb-2"><i class="bi bi-file-earmark-medical me-1 text-danger"></i>@L["Laudos do exame"]</h6>
+                        <table class="table table-sm align-middle" style="font-size:var(--fs-xs)">
+                            <thead class="table-light"><tr><th>@L["Laudo"]</th><th class="text-end" style="width:130px">@L["Ação"]</th></tr></thead>
+                            <tbody id="dl-reports-body"></tbody>
+                        </table>
+                        <h6 class="fw-semibold mb-2 mt-3"><i class="bi bi-paperclip me-1"></i>@L["Arquivos anexados"]</h6>
+                        <table class="table table-sm align-middle" style="font-size:var(--fs-xs)">
+                            <thead class="table-light"><tr>
+                                <th>@L["Arquivo"]</th><th>@L["Upload"]</th><th>@L["Tipo"]</th><th>@L["Tamanho"]</th><th>@L["Responsável"]</th>
+                                <th class="text-end" style="width:130px">@L["Ação"]</th>
+                            </tr></thead>
+                            <tbody id="dl-attachments-body"></tbody>
+                        </table>
+                    </div>
+                    @* ── Tab 2: Exames anteriores ── *@
+                    <div class="tab-pane fade" id="dl-prior" role="tabpanel">
+                        <div id="dl-prior-body"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">@L["Fechar"]</button>
+            </div>
+        </div>
+    </div>
+</div>

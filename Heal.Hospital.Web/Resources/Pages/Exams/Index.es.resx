@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <data name="(sem e-mail cadastrado)" xml:space="preserve"><value>(sin correo registrado)</value></data>
+  <data name="Ação" xml:space="preserve"><value>Acción</value></data>
+  <data name="Achado crítico marcado como resolvido." xml:space="preserve"><value>Hallazgo crítico marcado como resuelto.</value></data>
+  <data name="Achado crítico não resolvido" xml:space="preserve"><value>Hallazgo crítico no resuelto</value></data>
+  <data name="Achado crítico registrado" xml:space="preserve"><value>Hallazgo crítico registrado</value></data>
+  <data name="Achado crítico resolvido" xml:space="preserve"><value>Hallazgo crítico resuelto</value></data>
+  <data name="Achado resolvido" xml:space="preserve"><value>Hallazgo resuelto</value></data>
+  <data name="Ações" xml:space="preserve"><value>Acciones</value></data>
+  <data name="Anexo" xml:space="preserve"><value>Adjunto</value></data>
+  <data name="aplicado" xml:space="preserve"><value>aplicado</value></data>
+  <data name="aplicados" xml:space="preserve"><value>aplicados</value></data>
+  <data name="Arquivo em cold storage — solicitar recuperação" xml:space="preserve"><value>Archivo en cold storage — solicitar recuperación</value></data>
+  <data name="Baixar" xml:space="preserve"><value>Descargar</value></data>
+  <data name="Baixar laudos e anexos" xml:space="preserve"><value>Descargar informes y adjuntos</value></data>
+  <data name="Código copiado." xml:space="preserve"><value>Código copiado.</value></data>
+  <data name="Código de download do laudo gerado" xml:space="preserve"><value>Código de descarga del informe generado</value></data>
+  <data name="Contato registrado com sucesso." xml:space="preserve"><value>Contacto registrado con éxito.</value></data>
+  <data name="Data Estudo:" xml:space="preserve"><value>Fecha del estudio:</value></data>
+  <data name="Data Laudo:" xml:space="preserve"><value>Fecha del informe:</value></data>
+  <data name="Detalhes" xml:space="preserve"><value>Detalles</value></data>
+  <data name="doc(s) anexado(s)" xml:space="preserve"><value>doc(s) adjunto(s)</value></data>
+  <data name="Editar dados do paciente" xml:space="preserve"><value>Editar datos del paciente</value></data>
+  <data name="Exame arquivado (cold storage)" xml:space="preserve"><value>Examen archivado (cold storage)</value></data>
+  <data name="Exame com pendências" xml:space="preserve"><value>Examen con pendientes</value></data>
+  <data name="Executor:" xml:space="preserve"><value>Ejecutor:</value></data>
+  <data name="ID Estudo:" xml:space="preserve"><value>ID del estudio:</value></data>
+  <data name="ID Paciente" xml:space="preserve"><value>ID del paciente</value></data>
+  <data name="Idade:" xml:space="preserve"><value>Edad:</value></data>
+  <data name="imagem(ns)" xml:space="preserve"><value>imagen(es)</value></data>
+  <data name="Imprimir laudo" xml:space="preserve"><value>Imprimir informe</value></data>
+  <data name="Laudo já baixado pelo paciente" xml:space="preserve"><value>Informe ya descargado por el paciente</value></data>
+  <data name="Liberação:" xml:space="preserve"><value>Liberación:</value></data>
+  <data name="Lista de Exames" xml:space="preserve"><value>Lista de Exámenes</value></data>
+  <data name="Mod." xml:space="preserve"><value>Mod.</value></data>
+  <data name="Nasc.:" xml:space="preserve"><value>Nac.:</value></data>
+  <data name="Nenhum arquivo anexado." xml:space="preserve"><value>Ningún archivo adjunto.</value></data>
+  <data name="Nenhum exame anterior encontrado." xml:space="preserve"><value>No se encontraron exámenes anteriores.</value></data>
+  <data name="Nenhum item arquivado." xml:space="preserve"><value>Ningún elemento archivado.</value></data>
+  <data name="Nenhum laudo disponível." xml:space="preserve"><value>Ningún informe disponible.</value></data>
+  <data name="Nenhuma alteração registrada." xml:space="preserve"><value>Ningún cambio registrado.</value></data>
+  <data name="Nome social:" xml:space="preserve"><value>Nombre social:</value></data>
+  <data name="Número de Acesso" xml:space="preserve"><value>Número de acceso</value></data>
+  <data name="O paciente ainda não baixou os laudos." xml:space="preserve"><value>El paciente aún no ha descargado los informes.</value></data>
+  <data name="Paciente" xml:space="preserve"><value>Paciente</value></data>
+  <data name="Procedimento" xml:space="preserve"><value>Procedimiento</value></data>
+  <data name="Processando..." xml:space="preserve"><value>Procesando...</value></data>
+  <data name="Processando…" xml:space="preserve"><value>Procesando…</value></data>
+  <data name="Recuperação solicitada" xml:space="preserve"><value>Recuperación solicitada</value></data>
+  <data name="Recuperar" xml:space="preserve"><value>Recuperar</value></data>
+  <data name="Responsável" xml:space="preserve"><value>Responsable</value></data>
+  <data name="Resposta enviada para a pendência." xml:space="preserve"><value>Respuesta enviada para la pendencia.</value></data>
+  <data name="Restauração solicitada. Você será avisado quando os arquivos estiverem disponíveis (pode levar algumas horas)." xml:space="preserve"><value>Restauración solicitada. Se le avisará cuando los archivos estén disponibles (puede tardar algunas horas).</value></data>
+  <data name="Sem documentos" xml:space="preserve"><value>Sin documentos</value></data>
+  <data name="Sexo" xml:space="preserve"><value>Sexo</value></data>
+  <data name="Situação" xml:space="preserve"><value>Situación</value></data>
+  <data name="Solicitante:" xml:space="preserve"><value>Solicitante:</value></data>
+  <data name="Tamanho" xml:space="preserve"><value>Tamaño</value></data>
+  <data name="Técnico:" xml:space="preserve"><value>Técnico:</value></data>
+  <data name="Tipo" xml:space="preserve"><value>Tipo</value></data>
+  <data name="Todos" xml:space="preserve"><value>Todos</value></data>
+  <data name="Unidade:" xml:space="preserve"><value>Unidad:</value></data>
+  <data name="Upload" xml:space="preserve"><value>Subida</value></data>
+</root>

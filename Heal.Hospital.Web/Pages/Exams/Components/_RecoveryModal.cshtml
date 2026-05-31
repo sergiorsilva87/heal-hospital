@@ -1,0 +1,29 @@
+@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer L
+@* Recovery request modal (cold storage) *@
+<div class="modal fade" id="recoveryModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><i class="bi bi-snow me-2"></i>@L["Recuperação de arquivo"]</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="@L["Fechar"]"></button>
+            </div>
+            <div class="modal-body">
+                <div class="text-center mb-3">
+                    <i class="bi bi-cloud-arrow-down" style="font-size:2.4rem;color:var(--clr-info-700)"></i>
+                </div>
+                <p class="mb-2">
+                    @L["O arquivo"] <strong id="rec-file-name">—</strong> @L["está armazenado em camada fria (cold storage) e não pode ser baixado imediatamente."]
+                </p>
+                <p class="text-muted mb-0" style="font-size:var(--fs-xs)">
+                    @L["Ao solicitar a recuperação, o arquivo é movido para a camada quente e ficará disponível para download em alguns minutos. Você será notificado quando estiver pronto."]
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">@L["Cancelar"]</button>
+                <button type="button" id="rec-confirm" class="btn btn-primary">
+                    <i class="bi bi-arrow-clockwise me-1"></i>@L["Solicitar recuperação"]
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

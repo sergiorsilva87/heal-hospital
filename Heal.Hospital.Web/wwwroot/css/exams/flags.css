@@ -1,0 +1,22 @@
+/* Column-1 indicator flag icons (shared by table, legend and filters) */
+.rx-flags-slot {
+    display: inline-flex; align-items: center; gap: 2px;
+    width: 8.4rem; min-width: 8.4rem;
+    vertical-align: middle; margin-right: 2px;
+}
+.rx-flag-placeholder        { display: inline-block; width: 1rem; height: 1rem; }
+.rx-flag-critical-unnotified { color: #c62828; font-size: .9rem; cursor: default; }
+.rx-flag-critical-notified   { color: #2e7d32; font-size: .9rem; cursor: default; }
+.rx-flag-pendency            { color: #e65100; font-size: .9rem; cursor: default; }
+.rx-flag-attach              { color: var(--clr-navy-600); font-size: .9rem; cursor: default; }
+.rx-flag-attach-empty        { color: #ccc; font-size: .9rem; cursor: default; }
+.rx-attach-item              { display: inline-flex; align-items: center; }
+.rx-badge-count              { font-size: .58rem; font-weight: 700; color: var(--clr-navy-700); margin-left: 1px; line-height: 1; }
+.mod-img-count               { font-size: .6rem; color: #888; font-weight: 600; margin-left: 3px; vertical-align: super; }
+.rx-flag-archived            { color: #546e7a; font-size: .9rem; cursor: default; }
+.rx-flag-code-generated      { color: #f9a825; font-size: .9rem; cursor: default; }
+.rx-flag-downloaded          { color: #00897b; font-size: .9rem; cursor: default; }
+.rx-icon-btn                 { cursor: pointer !important; transition: transform .1s ease, filter .1s ease; }
+.rx-icon-btn:hover           { transform: scale(1.2); filter: brightness(1.12); }
+.rx-icon-btn:hover .rx-flag-attach,
+.rx-icon-btn:hover .rx-flag-attach-empty { filter: brightness(1.12); }

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <data name="Ao solicitar a recuperação, o arquivo é movido para a camada quente e ficará disponível para download em alguns minutos. Você será notificado quando estiver pronto." xml:space="preserve"><value>Al solicitar la recuperación, el archivo se mueve a la capa caliente y estará disponible para su descarga en unos minutos. Se le notificará cuando esté listo.</value></data>
+  <data name="Cancelar" xml:space="preserve"><value>Cancelar</value></data>
+  <data name="está armazenado em camada fria (cold storage) e não pode ser baixado imediatamente." xml:space="preserve"><value>está almacenado en una capa fría (cold storage) y no puede descargarse de inmediato.</value></data>
+  <data name="Fechar" xml:space="preserve"><value>Cerrar</value></data>
+  <data name="O arquivo" xml:space="preserve"><value>El archivo</value></data>
+  <data name="Recuperação de arquivo" xml:space="preserve"><value>Recuperación de archivo</value></data>
+  <data name="Solicitar recuperação" xml:space="preserve"><value>Solicitar recuperación</value></data>
+</root>

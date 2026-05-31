@@ -4,297 +4,163 @@
   <resheader name="version"><value>2.0</value></resheader>
   <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
   <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
-
-  <!-- Branding -->
-  <data name="St. Mungus" xml:space="preserve"><value>St. Mungus</value></data>
-  <data name="Sistema Hospitalar" xml:space="preserve"><value>Hospital System</value></data>
-
-  <!-- Navigation / Layout -->
-  <data name="Início" xml:space="preserve"><value>Home</value></data>
-  <data name="Dashboard" xml:space="preserve"><value>Dashboard</value></data>
-  <data name="Exames" xml:space="preserve"><value>Exams</value></data>
-  <data name="Alertas" xml:space="preserve"><value>Alerts</value></data>
-  <data name="Notificações" xml:space="preserve"><value>Notifications</value></data>
-  <data name="Sair" xml:space="preserve"><value>Log out</value></data>
-  <data name="Idioma" xml:space="preserve"><value>Language</value></data>
-  <data name="Perfil" xml:space="preserve"><value>Profile</value></data>
-  <data name="Configurações" xml:space="preserve"><value>Settings</value></data>
-  <data name="Menu" xml:space="preserve"><value>Menu</value></data>
   <data name="Abrir menu" xml:space="preserve"><value>Open menu</value></data>
-  <data name="Fechar menu" xml:space="preserve"><value>Close menu</value></data>
-  <data name="Navegação principal" xml:space="preserve"><value>Main navigation</value></data>
-  <data name="Pular para o conteúdo principal" xml:space="preserve"><value>Skip to main content</value></data>
-
-  <!-- Auth -->
-  <data name="Entrar" xml:space="preserve"><value>Sign in</value></data>
-  <data name="Usuário" xml:space="preserve"><value>Username</value></data>
-  <data name="Senha" xml:space="preserve"><value>Password</value></data>
-  <data name="Lembrar-me" xml:space="preserve"><value>Remember me</value></data>
-  <data name="Esqueci minha senha" xml:space="preserve"><value>Forgot my password</value></data>
-  <data name="Credenciais inválidas." xml:space="preserve"><value>Invalid credentials.</value></data>
-  <data name="Verificação em duas etapas" xml:space="preserve"><value>Two-step verification</value></data>
-  <data name="Código de verificação" xml:space="preserve"><value>Verification code</value></data>
-  <data name="Verificar" xml:space="preserve"><value>Verify</value></data>
-  <data name="Código inválido ou expirado." xml:space="preserve"><value>Invalid or expired code.</value></data>
-  <data name="Reenviar código" xml:space="preserve"><value>Resend code</value></data>
-  <data name="Informe o código de 6 dígitos enviado ao seu aplicativo autenticador." xml:space="preserve"><value>Enter the 6-digit code from your authenticator app.</value></data>
-  <data name="Recuperar senha" xml:space="preserve"><value>Recover password</value></data>
-  <data name="Redefinir senha" xml:space="preserve"><value>Reset password</value></data>
-  <data name="Nova senha" xml:space="preserve"><value>New password</value></data>
-  <data name="Confirmar nova senha" xml:space="preserve"><value>Confirm new password</value></data>
-  <data name="As senhas não coincidem." xml:space="preserve"><value>Passwords do not match.</value></data>
-  <data name="Senha redefinida com sucesso." xml:space="preserve"><value>Password successfully reset.</value></data>
-  <data name="Token inválido ou expirado." xml:space="preserve"><value>Invalid or expired token.</value></data>
-  <data name="Enviar link de recuperação" xml:space="preserve"><value>Send recovery link</value></data>
-  <data name="Voltar ao login" xml:space="preserve"><value>Back to login</value></data>
-
-  <!-- Profile -->
-  <data name="Alterar senha" xml:space="preserve"><value>Change password</value></data>
-  <data name="Dados da conta" xml:space="preserve"><value>Account data</value></data>
-  <data name="Configurar MFA" xml:space="preserve"><value>Setup MFA</value></data>
-  <data name="Histórico de acessos" xml:space="preserve"><value>Access history</value></data>
-  <data name="Foto do perfil" xml:space="preserve"><value>Profile photo</value></data>
-  <data name="Dados pessoais" xml:space="preserve"><value>Personal data</value></data>
-  <data name="Senha atual" xml:space="preserve"><value>Current password</value></data>
-  <data name="Salvar" xml:space="preserve"><value>Save</value></data>
-  <data name="Cancelar" xml:space="preserve"><value>Cancel</value></data>
-  <data name="Salvo com sucesso." xml:space="preserve"><value>Saved successfully.</value></data>
-
-  <!-- Exams -->
-  <data name="Lista de Exames" xml:space="preserve"><value>Exam List</value></data>
-  <data name="Paciente" xml:space="preserve"><value>Patient</value></data>
-  <data name="Modalidade" xml:space="preserve"><value>Modality</value></data>
-  <data name="Data" xml:space="preserve"><value>Date</value></data>
-  <data name="Status" xml:space="preserve"><value>Status</value></data>
-  <data name="Ações" xml:space="preserve"><value>Actions</value></data>
-  <data name="Nenhum exame encontrado." xml:space="preserve"><value>No exams found.</value></data>
-  <data name="Filtrar" xml:space="preserve"><value>Filter</value></data>
-  <data name="Buscar" xml:space="preserve"><value>Search</value></data>
-  <data name="Todos" xml:space="preserve"><value>All</value></data>
-  <data name="Agendado" xml:space="preserve"><value>Scheduled</value></data>
-  <data name="Em andamento" xml:space="preserve"><value>In progress</value></data>
-  <data name="Concluído" xml:space="preserve"><value>Completed</value></data>
-  <data name="Laudo pendente" xml:space="preserve"><value>Report pending</value></data>
-  <data name="Laudo emitido" xml:space="preserve"><value>Report issued</value></data>
-
-  <!-- Alerts -->
-  <data name="Central de Alertas" xml:space="preserve"><value>Alert Center</value></data>
-  <data name="Não há alertas no momento." xml:space="preserve"><value>No alerts at the moment.</value></data>
-  <data name="Marcar como lido" xml:space="preserve"><value>Mark as read</value></data>
-  <data name="Marcar todos como lidos" xml:space="preserve"><value>Mark all as read</value></data>
-  <data name="Urgente" xml:space="preserve"><value>Urgent</value></data>
-  <data name="Atenção" xml:space="preserve"><value>Warning</value></data>
-  <data name="Informativo" xml:space="preserve"><value>Informational</value></data>
-
-  <!-- General -->
-  <data name="Olá, {0}" xml:space="preserve"><value>Hello, {0}</value></data>
-  <data name="Carregando…" xml:space="preserve"><value>Loading…</value></data>
-  <data name="Erro inesperado." xml:space="preserve"><value>Unexpected error.</value></data>
-  <data name="Tela não disponível em dispositivos móveis." xml:space="preserve"><value>Screen not available on mobile devices. Please use a desktop computer for the best experience.</value></data>
-  <data name="Links do rodapé" xml:space="preserve"><value>Footer links</value></data>
-  <data name="Informe seu usuário ou e-mail. Se encontrado, enviaremos um link de recuperação." xml:space="preserve"><value>Enter your username or email. If found, we'll send you a recovery link.</value></data>
-  <data name="Link enviado!" xml:space="preserve"><value>Link sent!</value></data>
-  <data name="Verifique sua caixa de entrada. O link expira em 30 minutos." xml:space="preserve"><value>Check your inbox. The link expires in 30 minutes.</value></data>
-  <data name="Usuário ou e-mail" xml:space="preserve"><value>Username or email</value></data>
   <data name="Acesse o sistema interno St. Mungus." xml:space="preserve"><value>Access the St. Mungus internal system.</value></data>
-  <data name="ex: gerente" xml:space="preserve"><value>e.g. manager</value></data>
-  <data name="Mostrar senha" xml:space="preserve"><value>Show password</value></data>
-  <data name="Credenciais de demonstração:" xml:space="preserve"><value>Demo credentials:</value></data>
-  <data name="Código mock:" xml:space="preserve"><value>Mock code:</value></data>
-  <data name="Defina sua nova senha abaixo." xml:space="preserve"><value>Set your new password below.</value></data>
-  <data name="Novo" xml:space="preserve"><value>New</value></data>
-  <data name="Alertas recentes" xml:space="preserve"><value>Recent alerts</value></data>
-  <data name="Ver todos" xml:space="preserve"><value>View all</value></data>
-  <data name="Pacientes cadastrados hoje" xml:space="preserve"><value>Patients registered today</value></data>
-  <data name="Urgência" xml:space="preserve"><value>Urgency</value></data>
-  <data name="Hora" xml:space="preserve"><value>Time</value></data>
-  <data name="Paginação pacientes" xml:space="preserve"><value>Patients pagination</value></data>
-  <data name="Aguardando agendamento" xml:space="preserve"><value>Awaiting scheduling</value></data>
-  <data name="Exame" xml:space="preserve"><value>Exam</value></data>
-  <data name="Paginação fila" xml:space="preserve"><value>Queue pagination</value></data>
-  <data name="Worklist DICOM" xml:space="preserve"><value>DICOM Worklist</value></data>
-  <data name="Confirmar" xml:space="preserve"><value>Confirm</value></data>
-  <data name="Paginação worklist" xml:space="preserve"><value>Worklist pagination</value></data>
-  <data name="Produtividade — Radiologistas" xml:space="preserve"><value>Productivity — Radiologists</value></data>
-  <data name="Radiologista" xml:space="preserve"><value>Radiologist</value></data>
-  <data name="Laudos" xml:space="preserve"><value>Reports</value></data>
-  <data name="TAT médio" xml:space="preserve"><value>Average TAT</value></data>
-  <data name="Paginação radiologistas" xml:space="preserve"><value>Radiologists pagination</value></data>
-  <data name="Lotes mensais" xml:space="preserve"><value>Monthly batches</value></data>
-  <data name="Lote" xml:space="preserve"><value>Batch</value></data>
-  <data name="Período" xml:space="preserve"><value>Period</value></data>
-  <data name="Bruto" xml:space="preserve"><value>Gross</value></data>
-  <data name="Líquido" xml:space="preserve"><value>Net</value></data>
-  <data name="Paginação lotes" xml:space="preserve"><value>Batches pagination</value></data>
+  <data name="Acesse pelo computador (mínimo 1024px) para a melhor experiência." xml:space="preserve"><value>Use a computer (minimum 1024px) for the best experience.</value></data>
   <data name="Achados críticos — pendentes de confirmação" xml:space="preserve"><value>Critical findings — pending confirmation</value></data>
-  <data name="Confirmar recebimento" xml:space="preserve"><value>Confirm receipt</value></data>
-  <data name="Nenhum achado crítico pendente." xml:space="preserve"><value>No pending critical findings.</value></data>
-  <data name="Laudos recentes — meus pacientes" xml:space="preserve"><value>Recent reports — my patients</value></data>
-  <data name="Ver" xml:space="preserve"><value>View</value></data>
-  <data name="Paginação laudos" xml:space="preserve"><value>Reports pagination</value></data>
-  <data name="Laudos só são visíveis ao paciente após assinatura pelo Radiologista Laudador responsável." xml:space="preserve"><value>Reports are only visible to the patient after signature by the responsible Reporting Radiologist.</value></data>
-  <data name="Meus rascunhos" xml:space="preserve"><value>My drafts</value></data>
+  <data name="Agendado" xml:space="preserve"><value>Scheduled</value></data>
+  <data name="Aguardando agendamento" xml:space="preserve"><value>Awaiting scheduling</value></data>
+  <data name="Aguardando assinatura" xml:space="preserve"><value>Awaiting signature</value></data>
+  <data name="Alertas" xml:space="preserve"><value>Alerts</value></data>
+  <data name="Alertas recentes" xml:space="preserve"><value>Recent alerts</value></data>
+  <data name="Alterar senha" xml:space="preserve"><value>Change password</value></data>
+  <data name="As senhas não coincidem." xml:space="preserve"><value>Passwords do not match.</value></data>
+  <data name="Atenção" xml:space="preserve"><value>Warning</value></data>
+  <data name="ativo" xml:space="preserve"><value>active</value></data>
   <data name="Atualizado" xml:space="preserve"><value>Updated</value></data>
+  <data name="Autenticação multifator adiciona uma camada extra de segurança ao seu acesso." xml:space="preserve"><value>Multi-factor authentication adds an extra layer of security to your access.</value></data>
+  <data name="Bem-sucedido" xml:space="preserve"><value>Successful</value></data>
+  <data name="Bruto" xml:space="preserve"><value>Gross</value></data>
+  <data name="Cancelar" xml:space="preserve"><value>Cancel</value></data>
+  <data name="Carregando…" xml:space="preserve"><value>Loading…</value></data>
+  <data name="Central de Alertas" xml:space="preserve"><value>Alert Center</value></data>
+  <data name="Chave manual (TOTP)" xml:space="preserve"><value>Manual key (TOTP)</value></data>
+  <data name="Código de verificação" xml:space="preserve"><value>Verification code</value></data>
+  <data name="Código inválido ou expirado." xml:space="preserve"><value>Invalid or expired code.</value></data>
+  <data name="Código mock:" xml:space="preserve"><value>Mock code:</value></data>
+  <data name="Como configurar:" xml:space="preserve"><value>How to set up:</value></data>
+  <data name="Concluído" xml:space="preserve"><value>Completed</value></data>
+  <data name="Configurações" xml:space="preserve"><value>Settings</value></data>
+  <data name="Configurar MFA" xml:space="preserve"><value>Setup MFA</value></data>
+  <data name="Confirmar" xml:space="preserve"><value>Confirm</value></data>
+  <data name="Confirmar nova senha" xml:space="preserve"><value>Confirm new password</value></data>
+  <data name="Confirmar recebimento" xml:space="preserve"><value>Confirm receipt</value></data>
+  <data name="Copiar" xml:space="preserve"><value>Copy</value></data>
+  <data name="Credenciais de demonstração:" xml:space="preserve"><value>Demo credentials:</value></data>
+  <data name="Credenciais inválidas." xml:space="preserve"><value>Invalid credentials.</value></data>
+  <data name="Dados da conta" xml:space="preserve"><value>Account data</value></data>
+  <data name="Dados pessoais" xml:space="preserve"><value>Personal data</value></data>
+  <data name="Dashboard" xml:space="preserve"><value>Dashboard</value></data>
+  <data name="Data / Hora" xml:space="preserve"><value>Date / Time</value></data>
+  <data name="Defina sua nova senha abaixo." xml:space="preserve"><value>Set your new password below.</value></data>
+  <data name="Departamento" xml:space="preserve"><value>Department</value></data>
+  <data name="Desativar MFA" xml:space="preserve"><value>Disable MFA</value></data>
+  <data name="Digitado por" xml:space="preserve"><value>Transcribed by</value></data>
+  <data name="Digitador" xml:space="preserve"><value>Transcriptionist</value></data>
+  <data name="Dispositivo" xml:space="preserve"><value>Device</value></data>
   <data name="Editar" xml:space="preserve"><value>Edit</value></data>
-  <data name="Paginação rascunhos" xml:space="preserve"><value>Drafts pagination</value></data>
+  <data name="Em andamento" xml:space="preserve"><value>In progress</value></data>
+  <data name="em sua conta." xml:space="preserve"><value>on your account.</value></data>
+  <data name="E-mail de contato" xml:space="preserve"><value>Contact e-mail</value></data>
+  <data name="Endereço IP" xml:space="preserve"><value>IP address</value></data>
+  <data name="Entrar" xml:space="preserve"><value>Sign in</value></data>
+  <data name="Enviar foto" xml:space="preserve"><value>Upload photo</value></data>
+  <data name="Enviar link de recuperação" xml:space="preserve"><value>Send recovery link</value></data>
+  <data name="Enviar nova foto" xml:space="preserve"><value>Upload new photo</value></data>
+  <data name="Erro inesperado." xml:space="preserve"><value>Unexpected error.</value></data>
+  <data name="Escaneie o QR code ao lado" xml:space="preserve"><value>Scan the QR code on the side</value></data>
+  <data name="Esqueci minha senha" xml:space="preserve"><value>Forgot my password</value></data>
+  <data name="Estudo" xml:space="preserve"><value>Study</value></data>
+  <data name="ex: 123456/SP" xml:space="preserve"><value>e.g.: 123456/SP</value></data>
+  <data name="ex: gerente" xml:space="preserve"><value>e.g. manager</value></data>
+  <data name="Exame" xml:space="preserve"><value>Exam</value></data>
+  <data name="Exames" xml:space="preserve"><value>Exams</value></data>
+  <data name="Falhou" xml:space="preserve"><value>Failed</value></data>
+  <data name="Fechar menu" xml:space="preserve"><value>Close menu</value></data>
+  <data name="fim" xml:space="preserve"><value>end</value></data>
+  <data name="Finalização" xml:space="preserve"><value>Completion</value></data>
+  <data name="Financeiro" xml:space="preserve"><value>Finance</value></data>
+  <data name="Foto atual" xml:space="preserve"><value>Current photo</value></data>
+  <data name="Foto do perfil" xml:space="preserve"><value>Profile photo</value></data>
+  <data name="Gerente Hospitalar" xml:space="preserve"><value>Hospital Manager</value></data>
+  <data name="Histórico de acessos" xml:space="preserve"><value>Access history</value></data>
+  <data name="Hora" xml:space="preserve"><value>Time</value></data>
+  <data name="Idioma" xml:space="preserve"><value>Language</value></data>
+  <data name="Informativo" xml:space="preserve"><value>Informational</value></data>
+  <data name="Informe o código de 6 dígitos enviado ao seu aplicativo autenticador." xml:space="preserve"><value>Enter the 6-digit code from your authenticator app.</value></data>
+  <data name="Informe o código de 6 dígitos gerado para confirmar" xml:space="preserve"><value>Enter the generated 6-digit code to confirm</value></data>
+  <data name="Informe seu usuário ou e-mail. Se encontrado, enviaremos um link de recuperação." xml:space="preserve"><value>Enter your username or email. If found, we'll send you a recovery link.</value></data>
+  <data name="Início" xml:space="preserve"><value>Home</value></data>
+  <data name="Instale Google Authenticator ou Microsoft Authenticator" xml:space="preserve"><value>Install Google Authenticator or Microsoft Authenticator</value></data>
+  <data name="JPG, PNG ou WEBP. Máximo 2 MB. Proporção 1:1 recomendada." xml:space="preserve"><value>JPG, PNG or WEBP. Maximum 2 MB. 1:1 ratio recommended.</value></data>
+  <data name="Laudo emitido" xml:space="preserve"><value>Report issued</value></data>
+  <data name="Laudo pendente" xml:space="preserve"><value>Report pending</value></data>
+  <data name="Laudos" xml:space="preserve"><value>Reports</value></data>
   <data name="Laudos digitados ficam pendentes de assinatura pelo médico responsável." xml:space="preserve"><value>Transcribed reports remain pending signature by the responsible physician.</value></data>
   <data name="Laudos digitados por mim" xml:space="preserve"><value>Reports transcribed by me</value></data>
-  <data name="Digitado por" xml:space="preserve"><value>Transcribed by</value></data>
-  <data name="Aguardando assinatura" xml:space="preserve"><value>Awaiting signature</value></data>
-  <data name="Paginação transcrições" xml:space="preserve"><value>Transcriptions pagination</value></data>
-  <data name="Filtros" xml:space="preserve"><value>Filters</value></data>
-  <data name="aplicados" xml:space="preserve"><value>applied</value></data>
-  <data name="ID Paciente" xml:space="preserve"><value>Patient ID</value></data>
-  <data name="Nome do paciente" xml:space="preserve"><value>Patient name</value></data>
-  <data name="Digite o nome..." xml:space="preserve"><value>Type the name...</value></data>
-  <data name="Nº Acesso" xml:space="preserve"><value>Accession No.</value></data>
-  <data name="Médico executor" xml:space="preserve"><value>Performing physician</value></data>
-  <data name="Unidade" xml:space="preserve"><value>Unit</value></data>
-  <data name="Todas" xml:space="preserve"><value>All</value></data>
-  <data name="Procedimento" xml:space="preserve"><value>Procedure</value></data>
-  <data name="Tipo" xml:space="preserve"><value>Type</value></data>
-  <data name="Eletivo" xml:space="preserve"><value>Elective</value></data>
-  <data name="Situação" xml:space="preserve"><value>Status</value></data>
-  <data name="Liberação" xml:space="preserve"><value>Release</value></data>
-  <data name="Disponível" xml:space="preserve"><value>Available</value></data>
-  <data name="Laudando" xml:space="preserve"><value>Reporting</value></data>
-  <data name="Pendência" xml:space="preserve"><value>Pending</value></data>
-  <data name="Assinatura" xml:space="preserve"><value>Signature</value></data>
-  <data name="Revisão" xml:space="preserve"><value>Review</value></data>
-  <data name="Aprovado" xml:space="preserve"><value>Approved</value></data>
-  <data name="Cancelado" xml:space="preserve"><value>Cancelled</value></data>
-  <data name="Estudo — início" xml:space="preserve"><value>Study — start</value></data>
-  <data name="Estudo — fim" xml:space="preserve"><value>Study — end</value></data>
-  <data name="Finalização — início" xml:space="preserve"><value>Completion — start</value></data>
-  <data name="Finalização — fim" xml:space="preserve"><value>Completion — end</value></data>
-  <data name="Emergências" xml:space="preserve"><value>Emergencies</value></data>
-  <data name="Pendências" xml:space="preserve"><value>Pending items</value></data>
-  <data name="Achado crítico não resolvido" xml:space="preserve"><value>Unresolved critical finding</value></data>
-  <data name="Achado crítico resolvido" xml:space="preserve"><value>Resolved critical finding</value></data>
-  <data name="Arquivados" xml:space="preserve"><value>Archived</value></data>
-  <data name="Limpar" xml:space="preserve"><value>Clear</value></data>
-  <data name="Paciente ou nº do exame…" xml:space="preserve"><value>Patient or exam no.…</value></data>
-  <data name="Situação:" xml:space="preserve"><value>Status:</value></data>
-  <data name="Indicadores:" xml:space="preserve"><value>Indicators:</value></data>
-  <data name="Documentos" xml:space="preserve"><value>Documents</value></data>
-  <data name="Arquivado" xml:space="preserve"><value>Archived</value></data>
-  <data name="Código de download gerado" xml:space="preserve"><value>Download code generated</value></data>
-  <data name="Laudo baixado pelo paciente" xml:space="preserve"><value>Report downloaded by patient</value></data>
-  <data name="Atenção:" xml:space="preserve"><value>Attention:</value></data>
-  <data name="a lista abaixo está filtrada — alguns exames podem estar ocultos. Expanda o painel de filtros acima para revisar ou limpar os critérios aplicados." xml:space="preserve"><value>the list below is filtered — some exams may be hidden. Expand the filter panel above to review or clear the applied criteria.</value></data>
-  <data name="Carregando..." xml:space="preserve"><value>Loading...</value></data>
-  <data name="Carregando dados do servidor…" xml:space="preserve"><value>Loading data from the server…</value></data>
-  <data name="Editar dados do paciente" xml:space="preserve"><value>Edit patient data</value></data>
-  <data name="Fechar" xml:space="preserve"><value>Close</value></data>
-  <data name="Dados do Paciente" xml:space="preserve"><value>Patient Data</value></data>
-  <data name="Histórico de alteração" xml:space="preserve"><value>Change history</value></data>
-  <data name="Alterações são propagadas para os dados do paciente, tags DICOM e cabeçalho do laudo." xml:space="preserve"><value>Changes are propagated to the patient data, DICOM tags and report header.</value></data>
-  <data name="Nome completo" xml:space="preserve"><value>Full name</value></data>
-  <data name="Nome social" xml:space="preserve"><value>Preferred name</value></data>
-  <data name="Nome da mãe" xml:space="preserve"><value>Mother's name</value></data>
-  <data name="Sexo" xml:space="preserve"><value>Sex</value></data>
-  <data name="Outro" xml:space="preserve"><value>Other</value></data>
-  <data name="Telefone" xml:space="preserve"><value>Phone</value></data>
-  <data name="Nascimento (data/hora)" xml:space="preserve"><value>Birth (date/time)</value></data>
-  <data name="E-mail" xml:space="preserve"><value>E-mail</value></data>
-  <data name="Data e hora do estudo (exame)" xml:space="preserve"><value>Study date and time (exam)</value></data>
-  <data name="Código de download do laudo" xml:space="preserve"><value>Report download code</value></data>
-  <data name="Gerar novo código de 6 dígitos" xml:space="preserve"><value>Generate new 6-digit code</value></data>
-  <data name="Gerar" xml:space="preserve"><value>Generate</value></data>
-  <data name="Código de 6 dígitos para o paciente baixar o laudo no portal." xml:space="preserve"><value>6-digit code for the patient to download the report on the portal.</value></data>
-  <data name="Todas as alterações feitas no cadastro deste paciente ficam registradas abaixo." xml:space="preserve"><value>All changes made to this patient's record are logged below.</value></data>
-  <data name="Quem alterou" xml:space="preserve"><value>Changed by</value></data>
-  <data name="Cargo" xml:space="preserve"><value>Role</value></data>
-  <data name="Alteração" xml:space="preserve"><value>Change</value></data>
-  <data name="Data e hora" xml:space="preserve"><value>Date and time</value></data>
-  <data name="os dados alterados aqui passam a constar no laudo do paciente. O paciente será notificado de que houve alteração no laudo, e o sistema registra o momento e o usuário responsável. A alteração dos dados do paciente e do estudo é de responsabilidade de quem a realiza." xml:space="preserve"><value>the data changed here will appear on the patient's report. The patient will be notified that the report was changed, and the system records the moment and the responsible user. Changing the patient and study data is the responsibility of whoever performs it.</value></data>
-  <data name="Salvar alterações" xml:space="preserve"><value>Save changes</value></data>
-  <data name="Recuperação de arquivo" xml:space="preserve"><value>File recovery</value></data>
-  <data name="O arquivo" xml:space="preserve"><value>The file</value></data>
-  <data name="está armazenado em camada fria (cold storage) e não pode ser baixado imediatamente." xml:space="preserve"><value>is stored in a cold tier (cold storage) and cannot be downloaded immediately.</value></data>
-  <data name="Ao solicitar a recuperação, o arquivo é movido para a camada quente e ficará disponível para download em alguns minutos. Você será notificado quando estiver pronto." xml:space="preserve"><value>When you request recovery, the file is moved to the hot tier and will be available for download in a few minutes. You will be notified when it is ready.</value></data>
-  <data name="Solicitar recuperação" xml:space="preserve"><value>Request recovery</value></data>
-  <data name="Download do exame" xml:space="preserve"><value>Exam download</value></data>
-  <data name="Exame atual" xml:space="preserve"><value>Current exam</value></data>
-  <data name="Exames anteriores" xml:space="preserve"><value>Prior exams</value></data>
-  <data name="Laudos do exame" xml:space="preserve"><value>Exam reports</value></data>
-  <data name="Laudo" xml:space="preserve"><value>Report</value></data>
-  <data name="Ação" xml:space="preserve"><value>Action</value></data>
-  <data name="Arquivos anexados" xml:space="preserve"><value>Attached files</value></data>
-  <data name="Arquivo" xml:space="preserve"><value>File</value></data>
-  <data name="Upload" xml:space="preserve"><value>Upload</value></data>
-  <data name="Tamanho" xml:space="preserve"><value>Size</value></data>
-  <data name="Responsável" xml:space="preserve"><value>Responsible</value></data>
-  <data name="Médico" xml:space="preserve"><value>Physician</value></data>
-  <data name="Ver detalhes" xml:space="preserve"><value>View details</value></data>
-  <data name="Ver laudo" xml:space="preserve"><value>View report</value></data>
-  <data name="Paginação de exames" xml:space="preserve"><value>Exam pagination</value></data>
-  <data name="Página" xml:space="preserve"><value>Page</value></data>
-  <data name="de" xml:space="preserve"><value>of</value></data>
-  <data name="exame(s)" xml:space="preserve"><value>exam(s)</value></data>
-  <data name="Processando..." xml:space="preserve"><value>Processing...</value></data>
-  <data name="Processando…" xml:space="preserve"><value>Processing…</value></data>
-  <data name="Nome social:" xml:space="preserve"><value>Preferred name:</value></data>
-  <data name="Nasc.:" xml:space="preserve"><value>Birth:</value></data>
-  <data name="Idade:" xml:space="preserve"><value>Age:</value></data>
-  <data name="ID Estudo:" xml:space="preserve"><value>Study ID:</value></data>
-  <data name="Data Estudo:" xml:space="preserve"><value>Study date:</value></data>
-  <data name="Liberação:" xml:space="preserve"><value>Release:</value></data>
-  <data name="Data Laudo:" xml:space="preserve"><value>Report date:</value></data>
-  <data name="Unidade:" xml:space="preserve"><value>Unit:</value></data>
-  <data name="Técnico:" xml:space="preserve"><value>Technician:</value></data>
-  <data name="Executor:" xml:space="preserve"><value>Performer:</value></data>
-  <data name="Solicitante:" xml:space="preserve"><value>Requester:</value></data>
-  <data name="Exame com pendências" xml:space="preserve"><value>Exam with pending items</value></data>
-  <data name="doc(s) anexado(s)" xml:space="preserve"><value>attached doc(s)</value></data>
-  <data name="Sem documentos" xml:space="preserve"><value>No documents</value></data>
-  <data name="Exame arquivado (cold storage)" xml:space="preserve"><value>Archived exam (cold storage)</value></data>
-  <data name="Código de download do laudo gerado" xml:space="preserve"><value>Report download code generated</value></data>
-  <data name="Laudo já baixado pelo paciente" xml:space="preserve"><value>Report already downloaded by patient</value></data>
-  <data name="Detalhes" xml:space="preserve"><value>Details</value></data>
-  <data name="Número de Acesso" xml:space="preserve"><value>Accession Number</value></data>
-  <data name="Mod." xml:space="preserve"><value>Mod.</value></data>
-  <data name="imagem(ns)" xml:space="preserve"><value>image(s)</value></data>
-  <data name="Baixar laudos e anexos" xml:space="preserve"><value>Download reports and attachments</value></data>
-  <data name="Imprimir laudo" xml:space="preserve"><value>Print report</value></data>
-  <data name="aplicado" xml:space="preserve"><value>applied</value></data>
-  <data name="Nenhuma alteração registrada." xml:space="preserve"><value>No changes recorded.</value></data>
-  <data name="Arquivo em cold storage — solicitar recuperação" xml:space="preserve"><value>File in cold storage — request recovery</value></data>
-  <data name="Recuperar" xml:space="preserve"><value>Recover</value></data>
-  <data name="Baixar" xml:space="preserve"><value>Download</value></data>
-  <data name="Nenhum laudo disponível." xml:space="preserve"><value>No reports available.</value></data>
-  <data name="Nenhum arquivo anexado." xml:space="preserve"><value>No files attached.</value></data>
-  <data name="Nenhum exame anterior encontrado." xml:space="preserve"><value>No prior exams found.</value></data>
-  <data name="Anexo" xml:space="preserve"><value>Attachment</value></data>
-  <data name="Recuperação solicitada" xml:space="preserve"><value>Recovery requested</value></data>
-  <data name="Últimos acessos registrados para sua conta." xml:space="preserve"><value>Latest accesses recorded for your account.</value></data>
-  <data name="Data / Hora" xml:space="preserve"><value>Date / Time</value></data>
-  <data name="Endereço IP" xml:space="preserve"><value>IP address</value></data>
-  <data name="Dispositivo" xml:space="preserve"><value>Device</value></data>
-  <data name="Bem-sucedido" xml:space="preserve"><value>Successful</value></data>
-  <data name="Falhou" xml:space="preserve"><value>Failed</value></data>
-  <data name="E-mail de contato" xml:space="preserve"><value>Contact e-mail</value></data>
-  <data name="Autenticação multifator adiciona uma camada extra de segurança ao seu acesso." xml:space="preserve"><value>Multi-factor authentication adds an extra layer of security to your access.</value></data>
+  <data name="Laudos recentes — meus pacientes" xml:space="preserve"><value>Recent reports — my patients</value></data>
+  <data name="Laudos só são visíveis ao paciente após assinatura pelo Radiologista Laudador responsável." xml:space="preserve"><value>Reports are only visible to the patient after signature by the responsible Reporting Radiologist.</value></data>
+  <data name="Lembrar-me" xml:space="preserve"><value>Remember me</value></data>
+  <data name="Link enviado!" xml:space="preserve"><value>Link sent!</value></data>
+  <data name="Links do rodapé" xml:space="preserve"><value>Footer links</value></data>
+  <data name="Líquido" xml:space="preserve"><value>Net</value></data>
+  <data name="Lote" xml:space="preserve"><value>Batch</value></data>
+  <data name="Lotes mensais" xml:space="preserve"><value>Monthly batches</value></data>
+  <data name="Marcar como lido" xml:space="preserve"><value>Mark as read</value></data>
+  <data name="Marcar todos como lidos" xml:space="preserve"><value>Mark all as read</value></data>
+  <data name="Médico Auxiliar" xml:space="preserve"><value>Assistant Physician</value></data>
+  <data name="Médico Solicitante" xml:space="preserve"><value>Requesting Physician</value></data>
+  <data name="Menu" xml:space="preserve"><value>Menu</value></data>
+  <data name="Meus rascunhos" xml:space="preserve"><value>My drafts</value></data>
   <data name="MFA está" xml:space="preserve"><value>MFA is</value></data>
-  <data name="ativo" xml:space="preserve"><value>active</value></data>
-  <data name="em sua conta." xml:space="preserve"><value>on your account.</value></data>
-  <data name="QR Code (mock)" xml:space="preserve"><value>QR Code (mock)</value></data>
-  <data name="Como configurar:" xml:space="preserve"><value>How to set up:</value></data>
-  <data name="Instale Google Authenticator ou Microsoft Authenticator" xml:space="preserve"><value>Install Google Authenticator or Microsoft Authenticator</value></data>
-  <data name="Escaneie o QR code ao lado" xml:space="preserve"><value>Scan the QR code on the side</value></data>
-  <data name="Informe o código de 6 dígitos gerado para confirmar" xml:space="preserve"><value>Enter the generated 6-digit code to confirm</value></data>
-  <data name="Chave manual (TOTP)" xml:space="preserve"><value>Manual key (TOTP)</value></data>
-  <data name="Copiar" xml:space="preserve"><value>Copy</value></data>
-  <data name="Reconfigurar MFA" xml:space="preserve"><value>Reconfigure MFA</value></data>
-  <data name="Desativar MFA" xml:space="preserve"><value>Disable MFA</value></data>
-  <data name="Nome de exibição" xml:space="preserve"><value>Display name</value></data>
-  <data name="Departamento" xml:space="preserve"><value>Department</value></data>
-  <data name="ex: 123456/SP" xml:space="preserve"><value>e.g.: 123456/SP</value></data>
-  <data name="Foto atual" xml:space="preserve"><value>Current photo</value></data>
+  <data name="Modalidade" xml:space="preserve"><value>Modality</value></data>
+  <data name="Mostrar senha" xml:space="preserve"><value>Show password</value></data>
+  <data name="Não há alertas no momento." xml:space="preserve"><value>No alerts at the moment.</value></data>
+  <data name="Navegação principal" xml:space="preserve"><value>Main navigation</value></data>
+  <data name="Nenhum achado crítico pendente." xml:space="preserve"><value>No pending critical findings.</value></data>
   <data name="Nenhuma foto personalizada. Usando iniciais." xml:space="preserve"><value>No custom photo. Using initials.</value></data>
-  <data name="Enviar nova foto" xml:space="preserve"><value>Upload new photo</value></data>
-  <data name="JPG, PNG ou WEBP. Máximo 2 MB. Proporção 1:1 recomendada." xml:space="preserve"><value>JPG, PNG or WEBP. Maximum 2 MB. 1:1 ratio recommended.</value></data>
-  <data name="Enviar foto" xml:space="preserve"><value>Upload photo</value></data>
+  <data name="Nome completo" xml:space="preserve"><value>Full name</value></data>
+  <data name="Nome de exibição" xml:space="preserve"><value>Display name</value></data>
+  <data name="Notificações" xml:space="preserve"><value>Notifications</value></data>
+  <data name="Nova senha" xml:space="preserve"><value>New password</value></data>
+  <data name="Novo" xml:space="preserve"><value>New</value></data>
+  <data name="Olá, {0}" xml:space="preserve"><value>Hello, {0}</value></data>
+  <data name="Paciente" xml:space="preserve"><value>Patient</value></data>
+  <data name="Pacientes cadastrados hoje" xml:space="preserve"><value>Patients registered today</value></data>
+  <data name="Paginação fila" xml:space="preserve"><value>Queue pagination</value></data>
+  <data name="Paginação laudos" xml:space="preserve"><value>Reports pagination</value></data>
+  <data name="Paginação lotes" xml:space="preserve"><value>Batches pagination</value></data>
+  <data name="Paginação pacientes" xml:space="preserve"><value>Patients pagination</value></data>
+  <data name="Paginação radiologistas" xml:space="preserve"><value>Radiologists pagination</value></data>
+  <data name="Paginação rascunhos" xml:space="preserve"><value>Drafts pagination</value></data>
+  <data name="Paginação transcrições" xml:space="preserve"><value>Transcriptions pagination</value></data>
+  <data name="Paginação worklist" xml:space="preserve"><value>Worklist pagination</value></data>
+  <data name="Perfil" xml:space="preserve"><value>Profile</value></data>
+  <data name="Período" xml:space="preserve"><value>Period</value></data>
+  <data name="Produtividade — Radiologistas" xml:space="preserve"><value>Productivity — Radiologists</value></data>
+  <data name="Pular para o conteúdo principal" xml:space="preserve"><value>Skip to main content</value></data>
+  <data name="QR Code (mock)" xml:space="preserve"><value>QR Code (mock)</value></data>
+  <data name="Radiologista" xml:space="preserve"><value>Radiologist</value></data>
+  <data name="Recepcionista" xml:space="preserve"><value>Receptionist</value></data>
+  <data name="Reconfigurar MFA" xml:space="preserve"><value>Reconfigure MFA</value></data>
+  <data name="Recuperar senha" xml:space="preserve"><value>Recover password</value></data>
+  <data name="Redefinir senha" xml:space="preserve"><value>Reset password</value></data>
+  <data name="Reenviar código" xml:space="preserve"><value>Resend code</value></data>
   <data name="Remover" xml:space="preserve"><value>Remove</value></data>
-  <data name="Acesse pelo computador (mínimo 1024px) para a melhor experiência." xml:space="preserve"><value>Use a computer (minimum 1024px) for the best experience.</value></data>
+  <data name="Sair" xml:space="preserve"><value>Log out</value></data>
+  <data name="Salvar" xml:space="preserve"><value>Save</value></data>
+  <data name="Salvo com sucesso." xml:space="preserve"><value>Saved successfully.</value></data>
+  <data name="Senha" xml:space="preserve"><value>Password</value></data>
+  <data name="Senha atual" xml:space="preserve"><value>Current password</value></data>
+  <data name="Senha redefinida com sucesso." xml:space="preserve"><value>Password successfully reset.</value></data>
+  <data name="Sistema Hospitalar" xml:space="preserve"><value>Hospital System</value></data>
+  <data name="St. Mungus" xml:space="preserve"><value>St. Mungus</value></data>
+  <data name="Status" xml:space="preserve"><value>Status</value></data>
+  <data name="TAT médio" xml:space="preserve"><value>Average TAT</value></data>
+  <data name="Técnico de Radiologia" xml:space="preserve"><value>Radiology Technician</value></data>
+  <data name="Tela não disponível em dispositivos móveis." xml:space="preserve"><value>Screen not available on mobile devices. Please use a desktop computer for the best experience.</value></data>
+  <data name="Telefone" xml:space="preserve"><value>Phone</value></data>
+  <data name="Token inválido ou expirado." xml:space="preserve"><value>Invalid or expired token.</value></data>
+  <data name="Últimos acessos registrados para sua conta." xml:space="preserve"><value>Latest accesses recorded for your account.</value></data>
+  <data name="Urgência" xml:space="preserve"><value>Urgency</value></data>
+  <data name="Urgente" xml:space="preserve"><value>Urgent</value></data>
+  <data name="Usuário" xml:space="preserve"><value>Username</value></data>
+  <data name="Usuário ou e-mail" xml:space="preserve"><value>Username or email</value></data>
+  <data name="Ver" xml:space="preserve"><value>View</value></data>
+  <data name="Ver todos" xml:space="preserve"><value>View all</value></data>
+  <data name="Verificação em duas etapas" xml:space="preserve"><value>Two-step verification</value></data>
+  <data name="Verificar" xml:space="preserve"><value>Verify</value></data>
+  <data name="Verifique sua caixa de entrada. O link expira em 30 minutos." xml:space="preserve"><value>Check your inbox. The link expires in 30 minutes.</value></data>
+  <data name="Voltar ao login" xml:space="preserve"><value>Back to login</value></data>
+  <data name="Worklist DICOM" xml:space="preserve"><value>DICOM Worklist</value></data>
 </root>

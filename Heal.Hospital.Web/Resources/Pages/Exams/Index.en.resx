@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <data name="(sem e-mail cadastrado)" xml:space="preserve"><value>(no e-mail on file)</value></data>
+  <data name="Ação" xml:space="preserve"><value>Action</value></data>
+  <data name="Achado crítico marcado como resolvido." xml:space="preserve"><value>Critical finding marked as resolved.</value></data>
+  <data name="Achado crítico não resolvido" xml:space="preserve"><value>Unresolved critical finding</value></data>
+  <data name="Achado crítico registrado" xml:space="preserve"><value>Critical finding recorded</value></data>
+  <data name="Achado crítico resolvido" xml:space="preserve"><value>Resolved critical finding</value></data>
+  <data name="Achado resolvido" xml:space="preserve"><value>Finding resolved</value></data>
+  <data name="Ações" xml:space="preserve"><value>Actions</value></data>
+  <data name="Anexo" xml:space="preserve"><value>Attachment</value></data>
+  <data name="aplicado" xml:space="preserve"><value>applied</value></data>
+  <data name="aplicados" xml:space="preserve"><value>applied</value></data>
+  <data name="Arquivo em cold storage — solicitar recuperação" xml:space="preserve"><value>File in cold storage — request recovery</value></data>
+  <data name="Baixar" xml:space="preserve"><value>Download</value></data>
+  <data name="Baixar laudos e anexos" xml:space="preserve"><value>Download reports and attachments</value></data>
+  <data name="Código copiado." xml:space="preserve"><value>Code copied.</value></data>
+  <data name="Código de download do laudo gerado" xml:space="preserve"><value>Report download code generated</value></data>
+  <data name="Contato registrado com sucesso." xml:space="preserve"><value>Contact logged successfully.</value></data>
+  <data name="Data Estudo:" xml:space="preserve"><value>Study date:</value></data>
+  <data name="Data Laudo:" xml:space="preserve"><value>Report date:</value></data>
+  <data name="Detalhes" xml:space="preserve"><value>Details</value></data>
+  <data name="doc(s) anexado(s)" xml:space="preserve"><value>attached doc(s)</value></data>
+  <data name="Editar dados do paciente" xml:space="preserve"><value>Edit patient data</value></data>
+  <data name="Exame arquivado (cold storage)" xml:space="preserve"><value>Archived exam (cold storage)</value></data>
+  <data name="Exame com pendências" xml:space="preserve"><value>Exam with pending items</value></data>
+  <data name="Executor:" xml:space="preserve"><value>Performer:</value></data>
+  <data name="ID Estudo:" xml:space="preserve"><value>Study ID:</value></data>
+  <data name="ID Paciente" xml:space="preserve"><value>Patient ID</value></data>
+  <data name="Idade:" xml:space="preserve"><value>Age:</value></data>
+  <data name="imagem(ns)" xml:space="preserve"><value>image(s)</value></data>
+  <data name="Imprimir laudo" xml:space="preserve"><value>Print report</value></data>
+  <data name="Laudo já baixado pelo paciente" xml:space="preserve"><value>Report already downloaded by patient</value></data>
+  <data name="Liberação:" xml:space="preserve"><value>Release:</value></data>
+  <data name="Lista de Exames" xml:space="preserve"><value>Exam List</value></data>
+  <data name="Mod." xml:space="preserve"><value>Mod.</value></data>
+  <data name="Nasc.:" xml:space="preserve"><value>Birth:</value></data>
+  <data name="Nenhum arquivo anexado." xml:space="preserve"><value>No files attached.</value></data>
+  <data name="Nenhum exame anterior encontrado." xml:space="preserve"><value>No prior exams found.</value></data>
+  <data name="Nenhum item arquivado." xml:space="preserve"><value>No archived items.</value></data>
+  <data name="Nenhum laudo disponível." xml:space="preserve"><value>No reports available.</value></data>
+  <data name="Nenhuma alteração registrada." xml:space="preserve"><value>No changes recorded.</value></data>
+  <data name="Nome social:" xml:space="preserve"><value>Preferred name:</value></data>
+  <data name="Número de Acesso" xml:space="preserve"><value>Accession Number</value></data>
+  <data name="O paciente ainda não baixou os laudos." xml:space="preserve"><value>The patient has not downloaded the reports yet.</value></data>
+  <data name="Paciente" xml:space="preserve"><value>Patient</value></data>
+  <data name="Procedimento" xml:space="preserve"><value>Procedure</value></data>
+  <data name="Processando..." xml:space="preserve"><value>Processing...</value></data>
+  <data name="Processando…" xml:space="preserve"><value>Processing…</value></data>
+  <data name="Recuperação solicitada" xml:space="preserve"><value>Recovery requested</value></data>
+  <data name="Recuperar" xml:space="preserve"><value>Recover</value></data>
+  <data name="Responsável" xml:space="preserve"><value>Responsible</value></data>
+  <data name="Resposta enviada para a pendência." xml:space="preserve"><value>Reply sent for the pending issue.</value></data>
+  <data name="Restauração solicitada. Você será avisado quando os arquivos estiverem disponíveis (pode levar algumas horas)." xml:space="preserve"><value>Restoration requested. You will be notified when the files are available (it may take a few hours).</value></data>
+  <data name="Sem documentos" xml:space="preserve"><value>No documents</value></data>
+  <data name="Sexo" xml:space="preserve"><value>Sex</value></data>
+  <data name="Situação" xml:space="preserve"><value>Status</value></data>
+  <data name="Solicitante:" xml:space="preserve"><value>Requester:</value></data>
+  <data name="Tamanho" xml:space="preserve"><value>Size</value></data>
+  <data name="Técnico:" xml:space="preserve"><value>Technician:</value></data>
+  <data name="Tipo" xml:space="preserve"><value>Type</value></data>
+  <data name="Todos" xml:space="preserve"><value>All</value></data>
+  <data name="Unidade:" xml:space="preserve"><value>Unit:</value></data>
+  <data name="Upload" xml:space="preserve"><value>Upload</value></data>
+</root>

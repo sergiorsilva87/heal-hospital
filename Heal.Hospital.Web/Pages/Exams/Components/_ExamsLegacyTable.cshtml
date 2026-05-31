@@ -1,0 +1,71 @@
+@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer L
+@model Heal.Hospital.Web.Pages.Exams.IndexModel
+@* Other roles — simple legacy exam table *@
+<div class="card anim-fade-in anim-delay-2">
+    @if (Model.FilteredExams.Length == 0)
+    {
+        <div class="p-5 text-center text-muted">
+            <i class="bi bi-inbox" style="font-size:3rem;opacity:.4"></i>
+            <p class="mt-3 mb-0">@L["Nenhum exame encontrado."]</p>
+        </div>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="hosp-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>@L["Paciente"]</th>
+                        <th>@L["Modalidade"]</th>
+                        <th>@L["Médico"]</th>
+                        <th>@L["Data"]</th>
+                        <th>@L["Status"]</th>
+                        <th>@L["Ações"]</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var exam in Model.FilteredExams)
+                    {
+                        var statusCss = exam.Status switch {
+                            "Agendado"       => "scheduled",
+                            "Em andamento"   => "in-progress",
+                            "Concluído"      => "completed",
+                            "Laudo pendente" => "pending",
+                            "Laudo emitido"  => "issued",
+                            _                => "completed"
+                        };
+                        <tr>
+                            <td><code style="font-size:var(--fs-xs);color:var(--clr-navy-700)">@exam.Id</code></td>
+                            <td>
+                                <div class="d-flex align-items-center gap-2">
+                                    <span class="hosp-avatar" style="width:28px;height:28px;font-size:.65rem;">
+                                        @string.Join("", exam.Patient.Split(' ').Take(2).Select(p => p[0]))
+                                    </span>
+                                    @exam.Patient
+                                </div>
+                            </td>
+                            <td>@exam.Modality</td>
+                            <td class="text-muted" style="font-size:var(--fs-xs)">@exam.Physician</td>
+                            <td style="white-space:nowrap">@exam.Date.ToString("dd/MM/yyyy")</td>
+                            <td><span class="badge-status @statusCss">@L[exam.Status]</span></td>
+                            <td>
+                                <div class="d-flex gap-1">
+                                    <button class="btn btn-sm btn-outline-secondary" title="@L["Ver detalhes"]">
+                                        <i class="bi bi-eye"></i>
+                                    </button>
+                                    @if (exam.ReportUrl is not null)
+                                    {
+                                        <a href="@exam.ReportUrl" class="btn btn-sm btn-outline-primary" title="@L["Ver laudo"]">
+                                            <i class="bi bi-file-earmark-text"></i>
+                                        </a>
+                                    }
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>

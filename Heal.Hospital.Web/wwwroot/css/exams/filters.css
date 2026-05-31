@@ -1,0 +1,4 @@
+/* Receptionist filter panel */
+#rx-filter-header .rx-filter-chevron { font-size: .8rem; color: var(--clr-navy-600); transition: transform .25s ease; }
+#rx-filter-header[aria-expanded="false"] .rx-filter-chevron { transform: rotate(-90deg); }
+.rx-btn-xs { font-size: .72rem; padding: 2px 10px; line-height: 1.5; }

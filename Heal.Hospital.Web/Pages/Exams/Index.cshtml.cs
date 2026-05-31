@@ -144,6 +144,41 @@ public class IndexModel : PageModel
                             uploadedBy = a.UploadedBy,
                             isCold     = a.IsCold
                         })
+                    }),
+                    criticalDetail = MockData.GetCriticalDetail(e) is { } cd ? new
+                    {
+                        state        = cd.State,
+                        detectedAt   = cd.DetectedAt.ToString("dd/MM/yyyy HH:mm"),
+                        physician    = cd.Physician,
+                        crm          = cd.Crm,
+                        uf           = cd.Uf,
+                        message      = cd.Message,
+                        resolvedBy   = cd.ResolvedBy,
+                        resolvedRole = cd.ResolvedRole,
+                        resolvedAt   = cd.ResolvedAt?.ToString("dd/MM/yyyy HH:mm"),
+                        contactNote  = cd.ContactNote
+                    } : null,
+                    pendencyDetail = MockData.GetPendencyDetail(e) is { } pd ? new
+                    {
+                        physician = pd.Physician,
+                        crm       = pd.Crm,
+                        uf        = pd.Uf,
+                        openedAt  = pd.OpenedAt.ToString("dd/MM/yyyy HH:mm"),
+                        text      = pd.Text
+                    } : null,
+                    archivedItems = MockData.GetArchivedItems(e).Select(a => new
+                    {
+                        name       = a.Name,
+                        kind       = a.Kind,
+                        size       = a.Size,
+                        archivedAt = a.ArchivedAt.ToString("dd/MM/yyyy")
+                    }),
+                    codeGeneratedAt = MockData.GetCodeGeneratedAt(e)?.ToString("dd/MM/yyyy HH:mm"),
+                    downloadEvents = MockData.GetDownloadEvents(e).Select(d => new
+                    {
+                        at     = d.At.ToString("dd/MM/yyyy HH:mm"),
+                        device = d.Device,
+                        ip     = d.IpAddress
                     })
                 })
             );

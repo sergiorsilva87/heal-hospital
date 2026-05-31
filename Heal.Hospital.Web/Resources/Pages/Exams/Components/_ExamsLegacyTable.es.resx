@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <data name="Ações" xml:space="preserve"><value>Acciones</value></data>
+  <data name="Agendado" xml:space="preserve"><value>Programado</value></data>
+  <data name="Concluído" xml:space="preserve"><value>Completado</value></data>
+  <data name="Data" xml:space="preserve"><value>Fecha</value></data>
+  <data name="Em andamento" xml:space="preserve"><value>En progreso</value></data>
+  <data name="Laudo emitido" xml:space="preserve"><value>Informe emitido</value></data>
+  <data name="Laudo pendente" xml:space="preserve"><value>Informe pendiente</value></data>
+  <data name="Médico" xml:space="preserve"><value>Médico</value></data>
+  <data name="Modalidade" xml:space="preserve"><value>Modalidad</value></data>
+  <data name="Nenhum exame encontrado." xml:space="preserve"><value>No se encontraron exámenes.</value></data>
+  <data name="Paciente" xml:space="preserve"><value>Paciente</value></data>
+  <data name="Status" xml:space="preserve"><value>Estado</value></data>
+  <data name="Ver detalhes" xml:space="preserve"><value>Ver detalles</value></data>
+  <data name="Ver laudo" xml:space="preserve"><value>Ver informe</value></data>
+</root>

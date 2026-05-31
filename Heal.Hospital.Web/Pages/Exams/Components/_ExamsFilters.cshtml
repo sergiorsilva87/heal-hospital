@@ -1,0 +1,135 @@
+@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer L
+@* Receptionist — collapsible filter panel *@
+<div id="rx-filter-card" class="card mb-3 anim-fade-in anim-delay-1">
+    <div class="d-flex align-items-center px-3 py-2" id="rx-filter-header"
+         data-bs-toggle="collapse" data-bs-target="#rx-filter-body"
+         aria-expanded="false" aria-controls="rx-filter-body"
+         style="cursor:pointer;user-select:none">
+        <i class="bi bi-funnel me-2" style="font-size:.82rem;color:var(--clr-navy-700)"></i>
+        <span class="fw-semibold" style="font-size:.82rem;color:var(--clr-navy-900)">@L["Filtros"]</span>
+        <span id="rx-filter-badge" class="badge rounded-pill ms-2 d-none"
+              style="background:var(--clr-navy-600);font-size:.6rem;padding:2px 7px">0 @L["aplicados"]</span>
+        <i class="bi bi-chevron-down ms-auto rx-filter-chevron"></i>
+    </div>
+    <div id="rx-filter-body" class="collapse">
+        <div class="px-3 pb-3 pt-1" id="rx-filter-panel">
+            <div class="row g-2 mb-2">
+                <div class="col-md-2">
+                    <label class="form-label fw-semibold" style="font-size:var(--fs-xs)">@L["ID Paciente"]</label>
+                    <input type="text" id="f-patient-id" class="form-control form-control-sm" placeholder="PAC-00012">
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label fw-semibold" style="font-size:var(--fs-xs)">@L["Nome do paciente"]</label>
+                    <input type="text" id="f-patient-name" class="form-control form-control-sm" placeholder="@L["Digite o nome..."]">
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label fw-semibold" style="font-size:var(--fs-xs)">@L["Nº Acesso"]</label>
+                    <input type="text" id="f-access-code" class="form-control form-control-sm" placeholder="847291">
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label fw-semibold" style="font-size:var(--fs-xs)">@L["Médico executor"]</label>
+                    <select id="f-executor" class="form-select form-select-sm">
+                        <option value="">@L["Todos"]</option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label fw-semibold" style="font-size:var(--fs-xs)">@L["Unidade"]</label>
+                    <select id="f-unit" class="form-select form-select-sm">
+                        <option value="">@L["Todas"]</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row g-2 mb-2">
+                <div class="col-md-2">
+                    <label class="form-label fw-semibold" style="font-size:var(--fs-xs)">@L["Modalidade"]</label>
+                    <select id="f-modality" class="form-select form-select-sm">
+                        <option value="">@L["Todas"]</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label fw-semibold" style="font-size:var(--fs-xs)">@L["Procedimento"]</label>
+                    <select id="f-procedure" class="form-select form-select-sm" disabled>
+                        <option value="">@L["Todos"]</option>
+                    </select>
+                </div>
+                <div class="col-md-1">
+                    <label class="form-label fw-semibold" style="font-size:var(--fs-xs)">@L["Tipo"]</label>
+                    <select id="f-type" class="form-select form-select-sm">
+                        <option value="">@L["Todos"]</option>
+                        <option value="PS">PS</option>
+                        <option value="Int.">Int.</option>
+                        <option value="Eletivo">@L["Eletivo"]</option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label fw-semibold" style="font-size:var(--fs-xs)">@L["Situação"]</label>
+                    <select id="f-status" class="form-select form-select-sm">
+                        <option value="">@L["Todas"]</option>
+                        <option value="Liberação">@L["Liberação"]</option>
+                        <option value="Disponível">@L["Disponível"]</option>
+                        <option value="Laudando">@L["Laudando"]</option>
+                        <option value="Pendência">@L["Pendência"]</option>
+                        <option value="Assinatura">@L["Assinatura"]</option>
+                        <option value="Revisão">@L["Revisão"]</option>
+                        <option value="Aprovado">@L["Aprovado"]</option>
+                        <option value="Cancelado">@L["Cancelado"]</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row g-2 mb-2">
+                <div class="col-auto">
+                    <label class="form-label fw-semibold" style="font-size:var(--fs-xs)">@L["Estudo — início"]</label>
+                    <input type="date" id="f-study-from" class="form-control form-control-sm">
+                </div>
+                <div class="col-auto">
+                    <label class="form-label fw-semibold" style="font-size:var(--fs-xs)">@L["Estudo — fim"]</label>
+                    <input type="date" id="f-study-to" class="form-control form-control-sm">
+                </div>
+                <div class="col-auto" style="border-left:1px solid #d0d7e2;padding-left:1rem">
+                    <label class="form-label fw-semibold" style="font-size:var(--fs-xs)">@L["Finalização — início"]</label>
+                    <input type="date" id="f-date-from" class="form-control form-control-sm">
+                </div>
+                <div class="col-auto">
+                    <label class="form-label fw-semibold" style="font-size:var(--fs-xs)">@L["Finalização — fim"]</label>
+                    <input type="date" id="f-date-to" class="form-control form-control-sm">
+                </div>
+            </div>
+            <div class="row g-2 align-items-center">
+                <div class="col-auto">
+                    <div class="form-check form-switch mb-0">
+                        <input type="checkbox" id="f-emergency" class="form-check-input" role="switch">
+                        <label for="f-emergency" class="form-check-label" style="font-size:var(--fs-xs)">@L["Emergências"]</label>
+                    </div>
+                </div>
+                <div class="col-auto">
+                    <div class="form-check form-switch mb-0">
+                        <input type="checkbox" id="f-pendency" class="form-check-input" role="switch">
+                        <label for="f-pendency" class="form-check-label" style="font-size:var(--fs-xs)">@L["Pendências"]</label>
+                    </div>
+                </div>
+                <div class="col-auto">
+                    <div class="form-check form-switch mb-0">
+                        <input type="checkbox" id="f-critical-unnotified" class="form-check-input" role="switch">
+                        <label for="f-critical-unnotified" class="form-check-label" style="font-size:var(--fs-xs)"><i class="bi bi-exclamation-triangle-fill rx-flag-critical-unnotified" style="font-size:.82rem"></i> @L["Achado crítico não resolvido"]</label>
+                    </div>
+                </div>
+                <div class="col-auto">
+                    <div class="form-check form-switch mb-0">
+                        <input type="checkbox" id="f-critical-notified" class="form-check-input" role="switch">
+                        <label for="f-critical-notified" class="form-check-label" style="font-size:var(--fs-xs)"><i class="bi bi-patch-check-fill rx-flag-critical-notified" style="font-size:.82rem"></i> @L["Achado crítico resolvido"]</label>
+                    </div>
+                </div>
+                <div class="col-auto">
+                    <div class="form-check form-switch mb-0">
+                        <input type="checkbox" id="f-archived" class="form-check-input" role="switch">
+                        <label for="f-archived" class="form-check-label" style="font-size:var(--fs-xs)"><i class="bi bi-archive-fill rx-flag-archived" style="font-size:.82rem"></i> @L["Arquivados"]</label>
+                    </div>
+                </div>
+                <div class="ms-auto col-auto d-flex gap-2">
+                    <button type="button" id="f-clear" class="btn btn-outline-secondary rx-btn-xs"><i class="bi bi-x-circle me-1"></i>@L["Limpar"]</button>
+                    <button type="button" id="f-apply" class="btn btn-primary rx-btn-xs"><i class="bi bi-funnel me-1"></i>@L["Filtrar"]</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

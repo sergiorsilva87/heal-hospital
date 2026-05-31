@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <data name="Achado crítico não resolvido" xml:space="preserve"><value>Achado crítico não resolvido</value></data>
+  <data name="Achado crítico resolvido" xml:space="preserve"><value>Achado crítico resolvido</value></data>
+  <data name="Aprovado" xml:space="preserve"><value>Aprovado</value></data>
+  <data name="Arquivado" xml:space="preserve"><value>Arquivado</value></data>
+  <data name="Assinatura" xml:space="preserve"><value>Assinatura</value></data>
+  <data name="Cancelado" xml:space="preserve"><value>Cancelado</value></data>
+  <data name="Código de download gerado" xml:space="preserve"><value>Código de download gerado</value></data>
+  <data name="Disponível" xml:space="preserve"><value>Disponível</value></data>
+  <data name="Documentos" xml:space="preserve"><value>Documentos</value></data>
+  <data name="Indicadores:" xml:space="preserve"><value>Indicadores:</value></data>
+  <data name="Laudando" xml:space="preserve"><value>Laudando</value></data>
+  <data name="Laudo baixado pelo paciente" xml:space="preserve"><value>Laudo baixado pelo paciente</value></data>
+  <data name="Liberação" xml:space="preserve"><value>Liberação</value></data>
+  <data name="Pendência" xml:space="preserve"><value>Pendência</value></data>
+  <data name="Revisão" xml:space="preserve"><value>Revisão</value></data>
+  <data name="Situação:" xml:space="preserve"><value>Situação:</value></data>
+</root>

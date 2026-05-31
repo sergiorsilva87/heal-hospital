@@ -4,8 +4,9 @@ using Heal.Hospital.Web.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddRazorPages();
-builder.Services.AddLocalization();
+builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
+builder.Services.AddRazorPages()
+    .AddViewLocalization();
 builder.Services.AddSingleton<MockAuthService>();
 
 // Cookie authentication (no Identity)

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <data name="a lista abaixo está filtrada — alguns exames podem estar ocultos. Expanda o painel de filtros acima para revisar ou limpar os critérios aplicados." xml:space="preserve"><value>the list below is filtered — some exams may be hidden. Expand the filter panel above to review or clear the applied criteria.</value></data>
+  <data name="Atenção:" xml:space="preserve"><value>Attention:</value></data>
+  <data name="Carregando dados do servidor…" xml:space="preserve"><value>Loading data from the server…</value></data>
+  <data name="Carregando..." xml:space="preserve"><value>Loading...</value></data>
+</root>

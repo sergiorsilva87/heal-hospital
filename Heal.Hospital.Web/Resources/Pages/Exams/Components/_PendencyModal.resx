@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <data name="A resposta é obrigatória." xml:space="preserve"><value>A resposta é obrigatória.</value></data>
+  <data name="Anexar arquivo" xml:space="preserve"><value>Anexar arquivo</value></data>
+  <data name="CRM" xml:space="preserve"><value>CRM</value></data>
+  <data name="Data da pendência" xml:space="preserve"><value>Data da pendência</value></data>
+  <data name="Descreva a ação tomada para resolver a pendência..." xml:space="preserve"><value>Descreva a ação tomada para resolver a pendência...</value></data>
+  <data name="Enviar resposta" xml:space="preserve"><value>Enviar resposta</value></data>
+  <data name="Fechar" xml:space="preserve"><value>Fechar</value></data>
+  <data name="Médico responsável" xml:space="preserve"><value>Médico responsável</value></data>
+  <data name="Pendência apontada pelo médico" xml:space="preserve"><value>Pendência apontada pelo médico</value></data>
+  <data name="Pendência do exame" xml:space="preserve"><value>Pendência do exame</value></data>
+  <data name="Resposta" xml:space="preserve"><value>Resposta</value></data>
+  <data name="Sanar pendência" xml:space="preserve"><value>Sanar pendência</value></data>
+</root>

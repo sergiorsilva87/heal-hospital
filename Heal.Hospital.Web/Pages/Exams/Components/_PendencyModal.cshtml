@@ -1,0 +1,41 @@
+@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer L
+@* Pendency modal *@
+<div class="modal fade" id="pendencyModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header" style="background:#fff3e0">
+                <h5 class="modal-title" style="color:#e65100">
+                    <i class="bi bi-flag-fill me-2"></i>@L["Pendência do exame"]
+                    <span id="pd-study" class="text-muted ms-2" style="font-size:var(--fs-sm)"></span>
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="@L["Fechar"]"></button>
+            </div>
+            <div class="modal-body">
+                <dl class="row mb-3" style="font-size:var(--fs-sm)">
+                    <dt class="col-sm-4">@L["Médico responsável"]</dt><dd class="col-sm-8" id="pd-physician"></dd>
+                    <dt class="col-sm-4">@L["CRM"]</dt><dd class="col-sm-8" id="pd-crm"></dd>
+                    <dt class="col-sm-4">@L["Data da pendência"]</dt><dd class="col-sm-8" id="pd-date"></dd>
+                </dl>
+                <div class="mb-3">
+                    <label class="form-label fw-semibold mb-1">@L["Pendência apontada pelo médico"]</label>
+                    <div class="alert alert-warning mb-0" id="pd-text" style="font-size:var(--fs-sm)"></div>
+                </div>
+                <hr>
+                <h6 class="fw-semibold mb-2"><i class="bi bi-reply me-1"></i>@L["Sanar pendência"]</h6>
+                <div class="mb-2">
+                    <label for="pd-file" class="form-label mb-1" style="font-size:var(--fs-sm)">@L["Anexar arquivo"]</label>
+                    <input type="file" id="pd-file" class="form-control form-control-sm" multiple>
+                </div>
+                <div class="mb-1">
+                    <label for="pd-reply" class="form-label mb-1" style="font-size:var(--fs-sm)">@L["Resposta"] <span class="text-danger">*</span></label>
+                    <textarea id="pd-reply" class="form-control" rows="3" placeholder="@L["Descreva a ação tomada para resolver a pendência..."]"></textarea>
+                    <div class="invalid-feedback" id="pd-reply-err">@L["A resposta é obrigatória."]</div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">@L["Fechar"]</button>
+                <button type="button" class="btn btn-primary" id="pd-send"><i class="bi bi-send me-1"></i>@L["Enviar resposta"]</button>
+            </div>
+        </div>
+    </div>
+</div>

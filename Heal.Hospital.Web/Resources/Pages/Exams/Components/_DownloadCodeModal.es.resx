@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <data name="Código de download do laudo" xml:space="preserve"><value>Código de descarga del informe</value></data>
+  <data name="Consulta rápida do código que o paciente usa para baixar os laudos no portal." xml:space="preserve"><value>Consulta rápida del código que el paciente usa para descargar los informes en el portal.</value></data>
+  <data name="Copiar" xml:space="preserve"><value>Copiar</value></data>
+  <data name="Fechar" xml:space="preserve"><value>Cerrar</value></data>
+  <data name="Gerado em" xml:space="preserve"><value>Generado el</value></data>
+  <data name="Para gerar um novo código, utilize a tela de edição do exame." xml:space="preserve"><value>Para generar un nuevo código, utilice la pantalla de edición del examen.</value></data>
+</root>

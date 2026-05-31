@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <data name="Arquivado em" xml:space="preserve"><value>Archived on</value></data>
+  <data name="Estes itens estão em armazenamento de longo prazo (cold storage). A restauração não é imediata e pode levar algumas horas. Você será avisado quando os arquivos estiverem disponíveis para download." xml:space="preserve"><value>These items are in long-term storage (cold storage). Restoration is not immediate and may take a few hours. You will be notified when the files are available for download.</value></data>
+  <data name="Fechar" xml:space="preserve"><value>Close</value></data>
+  <data name="Item" xml:space="preserve"><value>Item</value></data>
+  <data name="Itens arquivados" xml:space="preserve"><value>Archived items</value></data>
+  <data name="Solicitar restauração" xml:space="preserve"><value>Request restoration</value></data>
+  <data name="Tamanho" xml:space="preserve"><value>Size</value></data>
+  <data name="Tipo" xml:space="preserve"><value>Type</value></data>
+</root>

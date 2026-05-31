@@ -1,0 +1,68 @@
+@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer L
+@* Critical finding modals — unresolved + resolved (history) *@
+
+@* ───────── Achado crítico NÃO resolvido ───────── *@
+<div class="modal fade" id="criticalUnresolvedModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header" style="background:#fdecea">
+                <h5 class="modal-title text-danger">
+                    <i class="bi bi-exclamation-triangle-fill me-2"></i>@L["Achado crítico não resolvido"]
+                    <span id="cu-study" class="text-muted ms-2" style="font-size:var(--fs-sm)"></span>
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="@L["Fechar"]"></button>
+            </div>
+            <div class="modal-body">
+                <dl class="row mb-3" style="font-size:var(--fs-sm)">
+                    <dt class="col-sm-4">@L["Data do achado crítico"]</dt><dd class="col-sm-8" id="cu-date"></dd>
+                    <dt class="col-sm-4">@L["Médico responsável"]</dt><dd class="col-sm-8" id="cu-physician"></dd>
+                    <dt class="col-sm-4">@L["CRM"]</dt><dd class="col-sm-8" id="cu-crm"></dd>
+                </dl>
+                <div class="mb-3">
+                    <label class="form-label fw-semibold mb-1">@L["Mensagem do médico"]</label>
+                    <div class="alert alert-danger mb-0" id="cu-message" style="font-size:var(--fs-sm)"></div>
+                </div>
+                <div class="card mb-3"><div class="card-body py-2 px-3">
+                    <h6 class="fw-semibold mb-2"><i class="bi bi-person-vcard me-1"></i>@L["Contato do paciente"]</h6>
+                    <div style="font-size:var(--fs-sm)" class="d-flex flex-wrap gap-3">
+                        <span><i class="bi bi-person me-1"></i><span id="cu-patient"></span></span>
+                        <span><i class="bi bi-telephone me-1"></i><span id="cu-phone"></span></span>
+                        <span><i class="bi bi-envelope me-1"></i><span id="cu-email"></span></span>
+                    </div>
+                </div></div>
+                <div class="mb-1">
+                    <label for="cu-note" class="form-label fw-semibold mb-1">@L["Registro de contato"] <span class="text-danger">*</span></label>
+                    <textarea id="cu-note" class="form-control" rows="3" placeholder="@L["Descreva o contato realizado com o paciente ou responsável..."]"></textarea>
+                    <div class="invalid-feedback" id="cu-note-err">@L["O registro de contato é obrigatório."]</div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">@L["Fechar"]</button>
+                <button type="button" class="btn btn-outline-primary" id="cu-register"><i class="bi bi-journal-check me-1"></i>@L["Registrar contato"]</button>
+                <button type="button" class="btn btn-success" id="cu-resolve"><i class="bi bi-check2-circle me-1"></i>@L["Marcar como resolvido"]</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@* ───────── Achado crítico RESOLVIDO (histórico) ───────── *@
+<div class="modal fade" id="criticalResolvedModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header" style="background:#e8f5e9">
+                <h5 class="modal-title text-success">
+                    <i class="bi bi-patch-check-fill me-2"></i>@L["Achado crítico resolvido"]
+                    <span id="crv-study" class="text-muted ms-2" style="font-size:var(--fs-sm)"></span>
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="@L["Fechar"]"></button>
+            </div>
+            <div class="modal-body">
+                <p class="text-muted mb-3" style="font-size:var(--fs-xs)">@L["Histórico completo do achado crítico, desde o registro pelo médico até a resolução."]</p>
+                <div id="crv-timeline"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">@L["Fechar"]</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,57 @@
+/* Receptionist Tabulator table */
+#reception-table .tabulator-col-title  { font-size: .79rem; font-weight: 600; }
+#reception-table .tabulator-cell       { font-size: .8rem; }
+/* emergency row highlight */
+#reception-table .tabulator-row.row-emergency { background-color: #fff5f5 !important; }
+#reception-table .tabulator-row.row-emergency .tabulator-cell { color: #7f1d1d; }
+/* Ações cell must not clip buttons */
+#reception-table .tabulator-cell { overflow: visible; }
+/* normalize code elements — same face as surrounding text */
+#reception-table .tabulator-cell code { font-family: inherit; font-weight: 600; }
+/* uniform row font weight */
+#reception-table .tabulator-cell { font-weight: 400; }
+/* flex-wrap on rows allows inline detail panel below cells */
+#reception-table .tabulator-row { flex-wrap: wrap !important; }
+#reception-table .rx-detail { flex: 0 0 100%; width: 100%; display: none; flex-wrap: wrap; }
+#reception-table .rx-detail.open { display: flex; }
+#reception-table .rx-detail-row {
+    flex: 0 0 100%; width: 100%;
+    display: flex; flex-wrap: wrap; align-items: center;
+    gap: 0 1.5rem; padding: 4px 12px 4px 40px;
+    font-size: .75rem; color: var(--clr-navy-800); background: #f0f4fa;
+}
+#reception-table .rx-detail-row + .rx-detail-row { border-top: 1px dashed #d0d7e2; }
+#reception-table .rx-detail b { font-weight: 600; }
+/* expand toggle chevron */
+#reception-table .rx-toggle-icon {
+    display: inline-block; margin-right: 8px; cursor: pointer;
+    font-size: .85rem; color: var(--clr-navy-600); transition: transform .15s;
+}
+#reception-table .row-open .rx-toggle-icon { transform: rotate(90deg); }
+/* pagination: compact size */
+#reception-table .tabulator-footer { font-size: .78rem; }
+#reception-table .tabulator-footer .tabulator-paginator label { font-size: .78rem; }
+#reception-table .tabulator-footer .tabulator-page-size { font-size: .78rem; padding: 1px 4px; height: auto; }
+#reception-table .tabulator-footer .tabulator-page { padding: 2px 8px; font-size: .78rem; line-height: 1.4; }
+/* external loading overlay */
+#rx-loading-overlay {
+    position: absolute; inset: 0; z-index: 10;
+    background: rgba(255,255,255,.88);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center; gap: .6rem;
+    font-size: .83rem; font-weight: 500; color: var(--clr-navy-700);
+}
+#rx-loading-overlay.rx-op {
+    flex-direction: row; justify-content: flex-start;
+    padding: .5rem .75rem; inset: auto 0 0 0;
+    height: 2.4rem; background: rgba(240,244,250,.95);
+    border-top: 1px solid #d0d7e2; font-size: .8rem; font-weight: 400;
+}
+#rx-loading-overlay.hidden { display: none; }
+/* block column resize handles */
+#reception-table .tabulator-col-resize-handle { display: none !important; pointer-events: none !important; }
+/* center Sexo and Situação columns (header + body) — Melhorias item 2 */
+#reception-table .tabulator-cell[tabulator-field="sexRaw"],
+#reception-table .tabulator-cell[tabulator-field="statusLabel"] { text-align: center !important; }
+#reception-table .tabulator-col[tabulator-field="sexRaw"] .tabulator-col-title,
+#reception-table .tabulator-col[tabulator-field="statusLabel"] .tabulator-col-title { text-align: center !important; }

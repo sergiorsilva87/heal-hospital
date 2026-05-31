@@ -1,0 +1,21 @@
+@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer L
+@* Filter warning banner + Tabulator table container *@
+<div id="rx-filter-warning" class="alert alert-warning d-none py-2 px-3 mb-2 d-flex align-items-center"
+     style="font-size:var(--fs-xs)">
+    <i class="bi bi-funnel-fill me-2"></i>
+    <span>
+        <strong>@L["Atenção:"]</strong> @L["a lista abaixo está filtrada — alguns exames podem estar ocultos. Expanda o painel de filtros acima para revisar ou limpar os critérios aplicados."]
+    </span>
+</div>
+
+<div class="card anim-fade-in anim-delay-2 p-2">
+    <div id="reception-table-wrap" style="overflow-x:auto;position:relative">
+        <div id="reception-table"></div>
+        <div id="rx-loading-overlay">
+            <div class="spinner-border" role="status" style="width:2.25rem;height:2.25rem;color:var(--clr-navy-600)">
+                <span class="visually-hidden">@L["Carregando..."]</span>
+            </div>
+            <span>@L["Carregando dados do servidor…"]</span>
+        </div>
+    </div>
+</div>

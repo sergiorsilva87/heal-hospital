@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <data name="Alteração" xml:space="preserve"><value>Alteração</value></data>
+  <data name="Alterações são propagadas para os dados do paciente, tags DICOM e cabeçalho do laudo." xml:space="preserve"><value>Alterações são propagadas para os dados do paciente, tags DICOM e cabeçalho do laudo.</value></data>
+  <data name="Atenção:" xml:space="preserve"><value>Atenção:</value></data>
+  <data name="Cancelar" xml:space="preserve"><value>Cancelar</value></data>
+  <data name="Cargo" xml:space="preserve"><value>Cargo</value></data>
+  <data name="Código de 6 dígitos para o paciente baixar o laudo no portal." xml:space="preserve"><value>Código de 6 dígitos para o paciente baixar o laudo no portal.</value></data>
+  <data name="Código de download do laudo" xml:space="preserve"><value>Código de download do laudo</value></data>
+  <data name="Dados do Paciente" xml:space="preserve"><value>Dados do Paciente</value></data>
+  <data name="Data e hora" xml:space="preserve"><value>Data e hora</value></data>
+  <data name="Data e hora do estudo (exame)" xml:space="preserve"><value>Data e hora do estudo (exame)</value></data>
+  <data name="Editar dados do paciente" xml:space="preserve"><value>Editar dados do paciente</value></data>
+  <data name="E-mail" xml:space="preserve"><value>E-mail</value></data>
+  <data name="Fechar" xml:space="preserve"><value>Fechar</value></data>
+  <data name="Gerar" xml:space="preserve"><value>Gerar</value></data>
+  <data name="Gerar novo código de 6 dígitos" xml:space="preserve"><value>Gerar novo código de 6 dígitos</value></data>
+  <data name="Histórico de alteração" xml:space="preserve"><value>Histórico de alteração</value></data>
+  <data name="Nascimento (data/hora)" xml:space="preserve"><value>Nascimento (data/hora)</value></data>
+  <data name="Nome completo" xml:space="preserve"><value>Nome completo</value></data>
+  <data name="Nome da mãe" xml:space="preserve"><value>Nome da mãe</value></data>
+  <data name="Nome social" xml:space="preserve"><value>Nome social</value></data>
+  <data name="os dados alterados aqui passam a constar no laudo do paciente. O paciente será notificado de que houve alteração no laudo, e o sistema registra o momento e o usuário responsável. A alteração dos dados do paciente e do estudo é de responsabilidade de quem a realiza." xml:space="preserve"><value>os dados alterados aqui passam a constar no laudo do paciente. O paciente será notificado de que houve alteração no laudo, e o sistema registra o momento e o usuário responsável. A alteração dos dados do paciente e do estudo é de responsabilidade de quem a realiza.</value></data>
+  <data name="Outro" xml:space="preserve"><value>Outro</value></data>
+  <data name="Quem alterou" xml:space="preserve"><value>Quem alterou</value></data>
+  <data name="Salvar alterações" xml:space="preserve"><value>Salvar alterações</value></data>
+  <data name="Sexo" xml:space="preserve"><value>Sexo</value></data>
+  <data name="Telefone" xml:space="preserve"><value>Telefone</value></data>
+  <data name="Todas as alterações feitas no cadastro deste paciente ficam registradas abaixo." xml:space="preserve"><value>Todas as alterações feitas no cadastro deste paciente ficam registradas abaixo.</value></data>
+  <data name="Unidade" xml:space="preserve"><value>Unidade</value></data>
+</root>

@@ -1,0 +1,31 @@
+@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer L
+@* Download code lookup modal *@
+<div class="modal fade" id="downloadCodeModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    <i class="bi bi-key-fill me-2" style="color:#f9a825"></i>@L["Código de download do laudo"]
+                    <span id="dc-study" class="text-muted ms-2" style="font-size:var(--fs-sm)"></span>
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="@L["Fechar"]"></button>
+            </div>
+            <div class="modal-body">
+                <p class="text-muted mb-2" style="font-size:var(--fs-xs)">@L["Consulta rápida do código que o paciente usa para baixar os laudos no portal."]</p>
+                <div id="dc-has" class="text-center">
+                    <div class="d-inline-flex align-items-center gap-2 my-2">
+                        <code id="dc-code" style="font-size:1.6rem;letter-spacing:.25rem;color:var(--clr-navy-800)"></code>
+                        <button type="button" class="btn btn-sm btn-outline-secondary" id="dc-copy" title="@L["Copiar"]"><i class="bi bi-clipboard"></i></button>
+                    </div>
+                    <div class="text-muted" style="font-size:var(--fs-xs)">@L["Gerado em"] <span id="dc-generated"></span></div>
+                </div>
+                <div class="alert alert-secondary mt-3 mb-0" style="font-size:var(--fs-xs)">
+                    <i class="bi bi-info-circle me-1"></i>@L["Para gerar um novo código, utilize a tela de edição do exame."]
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">@L["Fechar"]</button>
+            </div>
+        </div>
+    </div>
+</div>

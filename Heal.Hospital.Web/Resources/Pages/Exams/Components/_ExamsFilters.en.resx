@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <data name="Achado crítico não resolvido" xml:space="preserve"><value>Unresolved critical finding</value></data>
+  <data name="Achado crítico resolvido" xml:space="preserve"><value>Resolved critical finding</value></data>
+  <data name="aplicados" xml:space="preserve"><value>applied</value></data>
+  <data name="Aprovado" xml:space="preserve"><value>Approved</value></data>
+  <data name="Arquivados" xml:space="preserve"><value>Archived</value></data>
+  <data name="Assinatura" xml:space="preserve"><value>Signature</value></data>
+  <data name="Cancelado" xml:space="preserve"><value>Cancelled</value></data>
+  <data name="Digite o nome..." xml:space="preserve"><value>Type the name...</value></data>
+  <data name="Disponível" xml:space="preserve"><value>Available</value></data>
+  <data name="Eletivo" xml:space="preserve"><value>Elective</value></data>
+  <data name="Emergências" xml:space="preserve"><value>Emergencies</value></data>
+  <data name="Estudo — fim" xml:space="preserve"><value>Study — end</value></data>
+  <data name="Estudo — início" xml:space="preserve"><value>Study — start</value></data>
+  <data name="Filtrar" xml:space="preserve"><value>Filter</value></data>
+  <data name="Filtros" xml:space="preserve"><value>Filters</value></data>
+  <data name="Finalização — fim" xml:space="preserve"><value>Completion — end</value></data>
+  <data name="Finalização — início" xml:space="preserve"><value>Completion — start</value></data>
+  <data name="ID Paciente" xml:space="preserve"><value>Patient ID</value></data>
+  <data name="Laudando" xml:space="preserve"><value>Reporting</value></data>
+  <data name="Liberação" xml:space="preserve"><value>Release</value></data>
+  <data name="Limpar" xml:space="preserve"><value>Clear</value></data>
+  <data name="Médico executor" xml:space="preserve"><value>Performing physician</value></data>
+  <data name="Modalidade" xml:space="preserve"><value>Modality</value></data>
+  <data name="Nº Acesso" xml:space="preserve"><value>Accession No.</value></data>
+  <data name="Nome do paciente" xml:space="preserve"><value>Patient name</value></data>
+  <data name="Pendência" xml:space="preserve"><value>Pending</value></data>
+  <data name="Pendências" xml:space="preserve"><value>Pending items</value></data>
+  <data name="Procedimento" xml:space="preserve"><value>Procedure</value></data>
+  <data name="Revisão" xml:space="preserve"><value>Review</value></data>
+  <data name="Situação" xml:space="preserve"><value>Status</value></data>
+  <data name="Tipo" xml:space="preserve"><value>Type</value></data>
+  <data name="Todas" xml:space="preserve"><value>All</value></data>
+  <data name="Todos" xml:space="preserve"><value>All</value></data>
+  <data name="Unidade" xml:space="preserve"><value>Unit</value></data>
+</root>
