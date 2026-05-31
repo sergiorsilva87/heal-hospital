@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <data name="% do prazo consumido" xml:space="preserve"><value>% of SLA consumed</value></data>
+  <data name="Cada etapa posicionada na linha do tempo." xml:space="preserve"><value>Each stage placed on the timeline.</value></data>
+  <data name="Data do estudo" xml:space="preserve"><value>Study date</value></data>
+  <data name="Datas &amp; SLA" xml:space="preserve"><value>Dates &amp; SLA</value></data>
+  <data name="Duração de cada etapa do exame até a finalização do laudo." xml:space="preserve"><value>Duration of each exam stage until the report is finalized.</value></data>
+  <data name="Fechar" xml:space="preserve"><value>Close</value></data>
+  <data name="Finalização do laudo" xml:space="preserve"><value>Report finalization</value></data>
+  <data name="Fluxo entre etapas" xml:space="preserve"><value>Flow between stages</value></data>
+  <data name="Início do laudo" xml:space="preserve"><value>Report start</value></data>
+  <data name="Liberação para laudo" xml:space="preserve"><value>Release for reporting</value></data>
+  <data name="Linha do tempo" xml:space="preserve"><value>Timeline</value></data>
+  <data name="SLA do laudo" xml:space="preserve"><value>Report SLA</value></data>
+  <data name="Última imagem enviada" xml:space="preserve"><value>Last image sent</value></data>
+</root>

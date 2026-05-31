@@ -87,50 +87,10 @@
                 <li class="hosp-sidebar-section">@L["Perfil"]</li>
 
                 <li>
-                    <a class="hosp-sidebar-link @(activePage == "Profile.ChangePassword" ? "active" : "")"
-                       asp-page="/Profile/ChangePassword">
-                        <i class="bi bi-key"></i>
-                        <span>@L["Alterar senha"]</span>
-                    </a>
-                </li>
-
-                <li>
-                    <a class="hosp-sidebar-link @(activePage == "Profile.AccountData" ? "active" : "")"
-                       asp-page="/Profile/AccountData">
-                        <i class="bi bi-person-badge"></i>
-                        <span>@L["Dados da conta"]</span>
-                    </a>
-                </li>
-
-                <li>
-                    <a class="hosp-sidebar-link @(activePage == "Profile.MfaSetup" ? "active" : "")"
-                       asp-page="/Profile/MfaSetup">
-                        <i class="bi bi-shield-lock"></i>
-                        <span>@L["Configurar MFA"]</span>
-                    </a>
-                </li>
-
-                <li>
-                    <a class="hosp-sidebar-link @(activePage == "Profile.AccessHistory" ? "active" : "")"
-                       asp-page="/Profile/AccessHistory">
-                        <i class="bi bi-clock-history"></i>
-                        <span>@L["Histórico de acessos"]</span>
-                    </a>
-                </li>
-
-                <li>
-                    <a class="hosp-sidebar-link @(activePage == "Profile.Photo" ? "active" : "")"
-                       asp-page="/Profile/Photo">
-                        <i class="bi bi-camera"></i>
-                        <span>@L["Foto do perfil"]</span>
-                    </a>
-                </li>
-
-                <li>
-                    <a class="hosp-sidebar-link @(activePage == "Profile.PersonalData" ? "active" : "")"
-                       asp-page="/Profile/PersonalData">
-                        <i class="bi bi-person-lines-fill"></i>
-                        <span>@L["Dados pessoais"]</span>
+                    <a class="hosp-sidebar-link @(activePage == "Profile.Index" ? "active" : "")"
+                       asp-page="/Profile/Index">
+                        <i class="bi bi-person-circle"></i>
+                        <span>@L["Meu Perfil"]</span>
                     </a>
                 </li>
 
@@ -186,10 +146,8 @@
                                     <li>
                                         <hr class="dropdown-divider" />
                                     </li>
-                                    <li><a class="dropdown-item" asp-page="/Profile/AccountData"><i
-                                        class="bi bi-person me-2"></i>@L["Dados da conta"]</a></li>
-                                        <li><a class="dropdown-item" asp-page="/Profile/ChangePassword"><i
-                                            class="bi bi-key me-2"></i>@L["Alterar senha"]</a></li>
+                                    <li><a class="dropdown-item" asp-page="/Profile/Index"><i
+                                        class="bi bi-person-circle me-2"></i>@L["Meu Perfil"]</a></li>
                                             <li>
                                                 <hr class="dropdown-divider" />
                                             </li>

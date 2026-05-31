@@ -55,7 +55,7 @@
         ['f-executor','f-unit','f-modality','f-procedure','f-study-from','f-study-to','f-date-from','f-date-to','f-type','f-status'].forEach(function (id) {
             if (document.getElementById(id).value) count++;
         });
-        ['f-emergency','f-pendency','f-critical-unnotified','f-critical-notified','f-archived'].forEach(function (id) {
+        ['f-emergency','f-pendency','f-critical-unnotified','f-critical-notified','f-archived','f-overdue','f-near'].forEach(function (id) {
             if (document.getElementById(id).checked) count++;
         });
         var badge = document.getElementById('rx-filter-badge');
@@ -86,6 +86,8 @@
         var cun    = document.getElementById('f-critical-unnotified').checked;
         var cno    = document.getElementById('f-critical-notified').checked;
         var arch   = document.getElementById('f-archived').checked;
+        var over   = document.getElementById('f-overdue').checked;
+        var near   = document.getElementById('f-near').checked;
         table.setFilter(function (d) {
             if (pid    && d.patientId.toLowerCase().indexOf(pid) === -1)    return false;
             if (pname  && d.patientName.toLowerCase().indexOf(pname) === -1) return false;
@@ -106,6 +108,9 @@
             if (cno && !cun && d.criticalFinding !== 'notified')             return false;
             if (cun && cno && !d.criticalFinding)                            return false;
             if (arch  && !d.isArchived)                                      return false;
+            if (over && !near && (!d.delay || d.delay.state !== 'overdue'))  return false;
+            if (near && !over && (!d.delay || d.delay.state !== 'near'))     return false;
+            if (over && near && (!d.delay || (d.delay.state !== 'overdue' && d.delay.state !== 'near'))) return false;
             return true;
         });
         updateFilterBadge();
@@ -120,7 +125,7 @@
             document.getElementById(id).value = '';
         });
         buildProcs('');
-        ['f-emergency','f-pendency','f-critical-unnotified','f-critical-notified','f-archived'].forEach(function (id) {
+        ['f-emergency','f-pendency','f-critical-unnotified','f-critical-notified','f-archived','f-overdue','f-near'].forEach(function (id) {
             document.getElementById(id).checked = false;
         });
         table.clearFilter();

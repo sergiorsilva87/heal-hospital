@@ -1,0 +1,67 @@
+@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer L
+@* Delay / SLA modal — 3 tabs: dates+gauge, sankey flow, timeline *@
+<div class="modal fade" id="delayModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    <i class="bi bi-stopwatch me-2"></i>@L["SLA do laudo"]
+                    <span id="dly-study" class="text-muted ms-2" style="font-size:var(--fs-sm)"></span>
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="@L["Fechar"]"></button>
+            </div>
+            <div class="modal-body">
+                <ul class="nav nav-tabs mb-3" id="dly-tabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#dly-dates"
+                                type="button" role="tab"><i class="bi bi-calendar-range me-1"></i>@L["Datas & SLA"]</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#dly-flow"
+                                type="button" role="tab"><i class="bi bi-diagram-3 me-1"></i>@L["Fluxo entre etapas"]</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#dly-timeline"
+                                type="button" role="tab"><i class="bi bi-bar-chart-steps me-1"></i>@L["Linha do tempo"]</button>
+                    </li>
+                </ul>
+                <div class="tab-content" style="min-height:340px">
+                    @* ── Tab 1: Datas & SLA ── *@
+                    <div class="tab-pane fade show active" id="dly-dates" role="tabpanel">
+                        <div class="row g-3">
+                            <div class="col-md-7">
+                                <table class="table table-sm align-middle dly-dates-table" style="font-size:var(--fs-sm)">
+                                    <tbody>
+                                        <tr><th><i class="bi bi-camera-reels me-1 text-muted"></i>@L["Data do estudo"]</th><td id="dly-study-at" class="text-end fw-semibold"></td></tr>
+                                        <tr><th><i class="bi bi-images me-1 text-muted"></i>@L["Última imagem enviada"]</th><td id="dly-lastimg-at" class="text-end fw-semibold"></td></tr>
+                                        <tr><th><i class="bi bi-unlock me-1 text-muted"></i>@L["Liberação para laudo"]</th><td id="dly-lib-at" class="text-end fw-semibold"></td></tr>
+                                        <tr><th><i class="bi bi-pencil me-1 text-muted"></i>@L["Início do laudo"]</th><td id="dly-start-at" class="text-end fw-semibold"></td></tr>
+                                        <tr><th><i class="bi bi-check2-circle me-1 text-muted"></i>@L["Finalização do laudo"]</th><td id="dly-finish-at" class="text-end fw-semibold"></td></tr>
+                                    </tbody>
+                                </table>
+                                <div id="dly-sla-summary" class="mt-2" style="font-size:var(--fs-xs)"></div>
+                            </div>
+                            <div class="col-md-5 text-center">
+                                <div id="dly-gauge" class="dly-chart"></div>
+                                <div class="text-muted" style="font-size:var(--fs-xs)">@L["% do prazo consumido"]</div>
+                            </div>
+                        </div>
+                    </div>
+                    @* ── Tab 2: Sankey ── *@
+                    <div class="tab-pane fade" id="dly-flow" role="tabpanel">
+                        <p class="text-muted" style="font-size:var(--fs-xs)">@L["Duração de cada etapa do exame até a finalização do laudo."]</p>
+                        <div id="dly-sankey" class="dly-chart"></div>
+                    </div>
+                    @* ── Tab 3: Timeline ── *@
+                    <div class="tab-pane fade" id="dly-timeline" role="tabpanel">
+                        <p class="text-muted" style="font-size:var(--fs-xs)">@L["Cada etapa posicionada na linha do tempo."]</p>
+                        <div id="dly-timeline-chart" class="dly-chart"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">@L["Fechar"]</button>
+            </div>
+        </div>
+    </div>
+</div>

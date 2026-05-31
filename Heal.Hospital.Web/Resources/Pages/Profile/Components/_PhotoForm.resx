@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter</value></resheader>
+  <data name="Foto do perfil" xml:space="preserve"><value>Foto do perfil</value></data>
+  <data name="Foto atual" xml:space="preserve"><value>Foto atual</value></data>
+  <data name="Nenhuma foto personalizada. Usando iniciais." xml:space="preserve"><value>Nenhuma foto personalizada. Usando iniciais.</value></data>
+  <data name="Enviar nova foto" xml:space="preserve"><value>Enviar nova foto</value></data>
+  <data name="JPG, PNG ou WEBP. Máximo 2 MB. Proporção 1:1 recomendada." xml:space="preserve"><value>JPG, PNG ou WEBP. Máximo 2 MB. Proporção 1:1 recomendada.</value></data>
+  <data name="Enviar foto" xml:space="preserve"><value>Enviar foto</value></data>
+  <data name="Remover" xml:space="preserve"><value>Remover</value></data>
+  <data name="Salvo com sucesso." xml:space="preserve"><value>Salvo com sucesso.</value></data>
+</root>

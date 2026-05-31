@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter</value></resheader>
+  <data name="De" xml:space="preserve"><value>From</value></data>
+  <data name="Até" xml:space="preserve"><value>To</value></data>
+  <data name="Status" xml:space="preserve"><value>Status</value></data>
+  <data name="Todos" xml:space="preserve"><value>All</value></data>
+  <data name="Bem-sucedido" xml:space="preserve"><value>Successful</value></data>
+  <data name="Falhou" xml:space="preserve"><value>Failed</value></data>
+  <data name="Filtrar" xml:space="preserve"><value>Filter</value></data>
+  <data name="Limpar" xml:space="preserve"><value>Clear</value></data>
+</root>

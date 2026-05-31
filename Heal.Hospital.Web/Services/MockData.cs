@@ -346,10 +346,10 @@ public static class MockData
         new("STD-100005", "PAC-00103", "Fernanda Costa",     "Nanda Costa",              "F", new DateTime(1980,2,14,3,0,0),   "740.118.302-55", "fernanda.c@email.com",    "Mamografia",      "Mamografia bilateral",        new DateTime(2026,1,29,6,30,0),   new DateTime(2026,1,29,8,15,0),  "Patrícia Aoki",  "Dra. Camila Rocha",     "Dra. Lúcia Rangel",       ExamReportStatus.Approved,              ExamType.Elective,  false, "Unidade Pinheiros",       new DateTime(2026,1,29,6,50,0),  null,         false,   6,  1, "190348", false),
         new("STD-100006", "PAC-00114", "Roberto Souza",      null,                       "M", new DateTime(1955,7,8,17,30,0),  "228.514.770-09", "rsouza@email.com",        "PET-CT",          "PET-CT oncológico",           new DateTime(2026,1,28,16,0,0),   new DateTime(2026,1,29,7,40,0),  "Patrícia Aoki",  "Dra. Camila Rocha",     "Dr. Eduardo Nicolau",     ExamReportStatus.Approved,              ExamType.Inpatient, false, "Unidade Santana",         new DateTime(2026,1,28,16,30,0), null,         false, 524,  1, "552108", false),
         new("STD-100007", "PAC-00127", "Luciana Ferreira",   null,                       "F", new DateTime(1993,12,1,9,10,0),  "609.330.481-66", "lu.ferreira@email.com",   "Radiografia",     "RX Coluna Lombar AP+P",       new DateTime(2026,1,28,15,20,0),  null,                            "Carlos Mendes",  null,                    "Dr. Roberto Alves",       ExamReportStatus.AwaitingRelease,       ExamType.Elective,  false, "Unidade Mooca",           null,                            null,         false,   3,  0, null, false),
-        new("STD-100008", "PAC-00138", "Eduardo Martins",    null,                       "M", new DateTime(1970,4,18,12,55,0), "337.815.220-43", "eduardo.m@email.com",     "Tomografia",      "TC Tórax HR",                 new DateTime(2026,1,28,14,10,0),  null,                            "Patrícia Aoki",  "Dra. Camila Rocha",     "Dra. Helena Prado",       ExamReportStatus.Pending,               ExamType.Inpatient, false, "Unidade Santo André",      new DateTime(2026,1,28,14,35,0), "unnotified", true,  278,  0, null, false),
+        new("STD-100008", "PAC-00138", "Eduardo Martins",    null,                       "M", new DateTime(1970,4,18,12,55,0), "337.815.220-43", "eduardo.m@email.com",     "Tomografia",      "TC Tórax HR",                 new DateTime(2026,1,28,14,10,0),  null,                            "Patrícia Aoki",  "Dra. Camila Rocha",     "Dra. Helena Prado",       ExamReportStatus.Pending,               ExamType.Inpatient, false, "Unidade Santo André",      new DateTime(2026,1,29,6,54,0),  "unnotified", true,  278,  0, null, false),
         new("STD-100009", "PAC-00145", "Patrícia Alves",     null,                       "F", new DateTime(1986,8,25,5,40,0),  "812.460.137-78", null,                       "Ressonância",     "RM Coluna Lombar",            new DateTime(2026,1,28,11,30,0),  new DateTime(2026,1,28,18,20,0), "Carlos Mendes",  "Dr. Paulo Ferreira",    "Dr. Marcelo Tavares",     ExamReportStatus.Approved,              ExamType.Elective,  false, "Unidade Liberdade",       new DateTime(2026,1,28,11,55,0), null,         false, 220,  1, "603927", false),
         new("STD-100010", "PAC-00156", "Bruno Gomes",        null,                       "M", new DateTime(1998,1,3,19,15,0),  "445.901.668-12", "bruno.g@email.com",       "Ultrassonografia","USG Tireoide com Doppler",    new DateTime(2026,1,28,10,0,0),   new DateTime(2026,1,28,13,45,0), "Patrícia Aoki",  "Dra. Camila Rocha",     "Dra. Lúcia Rangel",       ExamReportStatus.Approved,              ExamType.Elective,  false, "Unidade Tatuapé",          new DateTime(2026,1,28,10,20,0), null,         false,  24,  0, "778214", false),
-        new("STD-100011", "PAC-00163", "Camila Torres",      null,                       "F", new DateTime(2026,1,28,23,52,0), "—",              null,                       "Radiografia",     "RX Tórax neonato AP",         new DateTime(2026,1,29,2,10,0),   null,                            "Carlos Mendes",  null,                    "Dra. Helena Prado",       ExamReportStatus.AvailableForReporting, ExamType.Emergency, true,  "Unidade Sé",               new DateTime(2026,1,29,2,40,0),  "unnotified", false,   2,  0, null, false),
+        new("STD-100011", "PAC-00163", "Camila Torres",      null,                       "F", new DateTime(2026,1,28,23,52,0), "—",              null,                       "Radiografia",     "RX Tórax neonato AP",         new DateTime(2026,1,29,2,10,0),   null,                            "Carlos Mendes",  null,                    "Dra. Helena Prado",       ExamReportStatus.AvailableForReporting, ExamType.Emergency, true,  "Unidade Sé",               new DateTime(2026,1,29,9,37,0),  "unnotified", false,   2,  0, null, false),
         new("STD-100012", "PAC-00170", "Diego Rocha",        null,                       "M", new DateTime(1962,10,12,8,0,0),  "115.804.227-31", "diego.r@email.com",       "Tomografia",      "TC Abdome com contraste",     new DateTime(2026,1,28,9,30,0),   new DateTime(2026,1,28,16,0,0),  "Carlos Mendes",  "Dr. Paulo Ferreira",    "Dr. Eduardo Nicolau",     ExamReportStatus.Approved,              ExamType.Elective,  false, "Unidade Pinheiros",       new DateTime(2026,1,28,9,55,0),  null,         false, 445,  1, "224680", false),
         new("STD-100013", "PAC-00181", "Tereza Nobre",       null,                       "F", new DateTime(1947,5,9,16,25,0),  "660.108.452-90", "tereza.n@email.com",      "Ressonância",     "RM Crânio",                   new DateTime(2026,1,27,17,40,0),  new DateTime(2026,1,28,10,30,0), "Patrícia Aoki",  "Dra. Camila Rocha",     "Dr. Marcelo Tavares",     ExamReportStatus.RevisionRequested,     ExamType.Emergency, true,  "Unidade Lapa",            new DateTime(2026,1,27,18,5,0),  "unnotified", false, 195,  2, "390712", false),
         new("STD-100014", "PAC-00198", "Marcos Vieira",      null,                       "M", new DateTime(1979,11,22,6,50,0), "228.901.665-04", "m.vieira@email.com",      "Tomografia",      "TC Crânio sem contraste",     new DateTime(2026,1,27,15,0,0),   new DateTime(2026,1,28,9,0,0),   "Carlos Mendes",  "Dr. Paulo Ferreira",    "Dra. Helena Prado",       ExamReportStatus.Reviewing,             ExamType.Emergency, true,  "Unidade Lapa",            new DateTime(2026,1,27,15,20,0), null,         false, 298,  1, null, false),
@@ -750,5 +750,83 @@ public static class MockData
         if (!WasDownloadCodeGenerated(e)) return null;
         var seed = Math.Abs((e.StudyId + "code").GetHashCode());
         return (e.ReportDateTime ?? e.StudyDateTime).AddMinutes(10 + seed % 120);
+    }
+
+    // ─────────────────────────────────────────────────────────
+    // SLA / REPORT DELAY (timeline + targets)
+    // ─────────────────────────────────────────────────────────
+
+    /// <summary>Report SLA state relative to the type-based deadline.</summary>
+    public enum SlaState { OnTime, Near, Overdue }
+
+    /// <summary>Computed SLA timeline for an exam (liberation → report finalization).</summary>
+    public record ExamTimeline(
+        DateTime StudyDateTime,
+        DateTime LastImageDateTime,
+        DateTime? LiberationDateTime,
+        DateTime? ReportStartDateTime,
+        DateTime? ReportFinishDateTime,
+        int TargetMinutes,
+        int ElapsedMinutes,
+        double ConsumedPct,
+        SlaState State);
+
+    /// <summary>SLA target (minutes), liberation → finalization, by exam type.</summary>
+    public static int GetSlaTargetMinutes(ExamType type) => type switch
+    {
+        ExamType.Emergency => 60,    // PS — 1h
+        ExamType.Inpatient => 240,   // Internação — 4h
+        ExamType.Elective => 1440,   // Eletivo — 24h
+        _ => 1440,
+    };
+
+    /// <summary>Deterministic mock: last DICOM image uploaded (between study and liberation).</summary>
+    public static DateTime GetLastImageDateTime(ReceptionExam e)
+    {
+        var seed = Math.Abs((e.StudyId + "img").GetHashCode());
+        var t = e.StudyDateTime.AddMinutes(5 + seed % 25); // 5..29 min of acquisition
+        if (e.LiberationDateTime is { } lib && t > lib) t = lib.AddMinutes(-1);
+        return t;
+    }
+
+    /// <summary>Deterministic mock: when the physician started writing the report (after liberation).</summary>
+    public static DateTime? GetReportStartDateTime(ReceptionExam e)
+    {
+        if (e.LiberationDateTime is not { } lib) return null;
+        if (e.Status is ExamReportStatus.AwaitingRelease or ExamReportStatus.AvailableForReporting)
+            return null; // not started yet
+        var seed = Math.Abs((e.StudyId + "start").GetHashCode());
+        var start = lib.AddMinutes(10 + seed % 90); // 10..99 min after liberation
+        if (e.ReportDateTime is { } fin && start > fin) start = fin.AddMinutes(-5);
+        return start;
+    }
+
+    /// <summary>Deterministic SLA timeline + state for an exam.</summary>
+    public static ExamTimeline GetExamTimeline(ReceptionExam e)
+    {
+        var target = GetSlaTargetMinutes(e.Type);
+        var lastImg = GetLastImageDateTime(e);
+        var start = GetReportStartDateTime(e);
+        var lib = e.LiberationDateTime;
+        var fin = e.ReportDateTime;
+
+        var elapsed = lib is { } l
+            ? (int)Math.Max(0, ((fin ?? _now) - l).TotalMinutes)
+            : 0; // clock starts at liberation
+
+        var consumed = target > 0 ? (double)elapsed / target * 100.0 : 0;
+
+        SlaState state;
+        if (lib is null || e.Status == ExamReportStatus.Cancelled)
+            state = SlaState.OnTime;          // clock not running / cancelled
+        else if (elapsed > target)
+            state = SlaState.Overdue;
+        else if (consumed >= 80.0)
+            state = SlaState.Near;
+        else
+            state = SlaState.OnTime;
+
+        return new ExamTimeline(e.StudyDateTime, lastImg, lib, start, fin,
+            target, elapsed, Math.Round(consumed, 1), state);
     }
 }

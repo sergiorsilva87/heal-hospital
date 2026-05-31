@@ -125,6 +125,18 @@
                         <label for="f-archived" class="form-check-label" style="font-size:var(--fs-xs)"><i class="bi bi-archive-fill rx-flag-archived" style="font-size:.82rem"></i> @L["Arquivados"]</label>
                     </div>
                 </div>
+                <div class="col-auto">
+                    <div class="form-check form-switch mb-0">
+                        <input type="checkbox" id="f-overdue" class="form-check-input" role="switch">
+                        <label for="f-overdue" class="form-check-label" style="font-size:var(--fs-xs)"><i class="bi bi-stopwatch-fill rx-flag-overdue" style="font-size:.82rem"></i> @L["Atrasados"]</label>
+                    </div>
+                </div>
+                <div class="col-auto">
+                    <div class="form-check form-switch mb-0">
+                        <input type="checkbox" id="f-near" class="form-check-input" role="switch">
+                        <label for="f-near" class="form-check-label" style="font-size:var(--fs-xs)"><i class="bi bi-stopwatch-fill rx-flag-near" style="font-size:.82rem"></i> @L["Próximos da expiração"]</label>
+                    </div>
+                </div>
                 <div class="ms-auto col-auto d-flex gap-2">
                     <button type="button" id="f-clear" class="btn btn-outline-secondary rx-btn-xs"><i class="bi bi-x-circle me-1"></i>@L["Limpar"]</button>
                     <button type="button" id="f-apply" class="btn btn-primary rx-btn-xs"><i class="bi bi-funnel me-1"></i>@L["Filtrar"]</button>

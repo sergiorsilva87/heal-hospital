@@ -53,6 +53,8 @@
   <data name="Processando…" xml:space="preserve"><value>Processing…</value></data>
   <data name="Recuperação solicitada" xml:space="preserve"><value>Recovery requested</value></data>
   <data name="Recuperar" xml:space="preserve"><value>Recover</value></data>
+  <data name="Imagens do exame (DICOM)" xml:space="preserve"><value>Exam images (DICOM)</value></data>
+  <data name="Ver imagens" xml:space="preserve"><value>View images</value></data>
   <data name="Responsável" xml:space="preserve"><value>Responsible</value></data>
   <data name="Resposta enviada para a pendência." xml:space="preserve"><value>Reply sent for the pending issue.</value></data>
   <data name="Restauração solicitada. Você será avisado quando os arquivos estiverem disponíveis (pode levar algumas horas)." xml:space="preserve"><value>Restoration requested. You will be notified when the files are available (it may take a few hours).</value></data>
@@ -66,4 +68,24 @@
   <data name="Todos" xml:space="preserve"><value>All</value></data>
   <data name="Unidade:" xml:space="preserve"><value>Unit:</value></data>
   <data name="Upload" xml:space="preserve"><value>Upload</value></data>
+  <data name="Laudo atrasado" xml:space="preserve"><value>Overdue report</value></data>
+  <data name="Laudo próximo da expiração" xml:space="preserve"><value>Report nearing expiration</value></data>
+  <data name="min" xml:space="preserve"><value>min</value></data>
+  <data name="Atrasado" xml:space="preserve"><value>Overdue</value></data>
+  <data name="Próximo da expiração" xml:space="preserve"><value>Nearing expiration</value></data>
+  <data name="No prazo" xml:space="preserve"><value>On time</value></data>
+  <data name="Prazo" xml:space="preserve"><value>SLA</value></data>
+  <data name="Alvo" xml:space="preserve"><value>Target</value></data>
+  <data name="Consumido" xml:space="preserve"><value>Consumed</value></data>
+  <data name="Estudo" xml:space="preserve"><value>Study</value></data>
+  <data name="Última imagem" xml:space="preserve"><value>Last image</value></data>
+  <data name="Liberação" xml:space="preserve"><value>Release</value></data>
+  <data name="Início do laudo" xml:space="preserve"><value>Report start</value></data>
+  <data name="Finalização" xml:space="preserve"><value>Finalization</value></data>
+  <data name="Em andamento" xml:space="preserve"><value>In progress</value></data>
+  <data name="De" xml:space="preserve"><value>From</value></data>
+  <data name="Para" xml:space="preserve"><value>To</value></data>
+  <data name="Minutos" xml:space="preserve"><value>Minutes</value></data>
+  <data name="Sem dados suficientes para o fluxo." xml:space="preserve"><value>Not enough data for the flow.</value></data>
+  <data name="Sem dados suficientes para a linha do tempo." xml:space="preserve"><value>Not enough data for the timeline.</value></data>
 </root>

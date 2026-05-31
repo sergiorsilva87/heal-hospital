@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter</value></resheader>
+  <data name="Data / Hora" xml:space="preserve"><value>Date / Time</value></data>
+  <data name="Endereço IP" xml:space="preserve"><value>IP Address</value></data>
+  <data name="Dispositivo" xml:space="preserve"><value>Device</value></data>
+  <data name="Status" xml:space="preserve"><value>Status</value></data>
+  <data name="Bem-sucedido" xml:space="preserve"><value>Successful</value></data>
+  <data name="Falhou" xml:space="preserve"><value>Failed</value></data>
+  <data name="Nenhum registro encontrado." xml:space="preserve"><value>No records found.</value></data>
+  <data name="Paginação do histórico" xml:space="preserve"><value>History pagination</value></data>
+  <data name="Página" xml:space="preserve"><value>Page</value></data>
+  <data name="de" xml:space="preserve"><value>of</value></data>
+  <data name="registro(s)" xml:space="preserve"><value>record(s)</value></data>
+</root>

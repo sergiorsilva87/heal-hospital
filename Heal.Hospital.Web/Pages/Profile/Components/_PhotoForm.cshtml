@@ -1,0 +1,29 @@
+@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer L
+@model Heal.Hospital.Web.Pages.Profile.IndexModel
+@{
+    var initials = string.Join("", Model.FullName.Split(' ', System.StringSplitOptions.RemoveEmptyEntries).Take(2).Select(p => char.ToUpper(p[0])));
+}
+<div class="prof-card">
+    <div class="prof-card-title"><i class="bi bi-camera"></i>@L["Foto do perfil"]</div>
+    @if (Model.PhotoSuccess) {
+        <div class="alert alert-success mb-3"><i class="bi bi-check-circle me-2"></i>@L["Salvo com sucesso."]</div>
+    }
+    <div class="d-flex align-items-center gap-3 mb-3">
+        <div class="hosp-avatar hosp-avatar-lg" style="font-size:1.4rem">@initials</div>
+        <div>
+            <p class="fw-semibold mb-0" style="font-size:var(--fs-xs)">@L["Foto atual"]</p>
+            <p class="text-muted mb-0" style="font-size:var(--fs-xs)">@L["Nenhuma foto personalizada. Usando iniciais."]</p>
+        </div>
+    </div>
+    <form method="post" enctype="multipart/form-data" asp-page-handler="photo" asp-antiforgery="true">
+        <div class="mb-3">
+            <label class="form-label fw-semibold" style="font-size:var(--fs-xs)">@L["Enviar nova foto"]</label>
+            <input type="file" class="form-control form-control-sm" accept="image/png,image/jpeg,image/webp" name="Photo" />
+            <div class="form-text" style="font-size:var(--fs-xs)">@L["JPG, PNG ou WEBP. Máximo 2 MB. Proporção 1:1 recomendada."]</div>
+        </div>
+        <div class="d-flex gap-2">
+            <button type="submit" class="btn btn-primary btn-sm"><i class="bi bi-upload me-1"></i>@L["Enviar foto"]</button>
+            <button type="button" class="btn btn-outline-danger btn-sm"><i class="bi bi-trash me-1"></i>@L["Remover"]</button>
+        </div>
+    </form>
+</div>

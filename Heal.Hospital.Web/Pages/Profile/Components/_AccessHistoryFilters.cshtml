@@ -1,0 +1,29 @@
+@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer L
+@model Heal.Hospital.Web.Pages.Profile.IndexModel
+<div class="prof-card">
+    <form method="get" action="/Profile">
+        <input type="hidden" name="tab" value="history" />
+        <div class="row g-2 align-items-end">
+            <div class="col-md-3">
+                <label class="form-label fw-semibold" style="font-size:var(--fs-xs)">@L["De"]</label>
+                <input type="date" name="dateFrom" class="form-control form-control-sm" value="@Model.FilterDateFrom" />
+            </div>
+            <div class="col-md-3">
+                <label class="form-label fw-semibold" style="font-size:var(--fs-xs)">@L["Até"]</label>
+                <input type="date" name="dateTo" class="form-control form-control-sm" value="@Model.FilterDateTo" />
+            </div>
+            <div class="col-md-3">
+                <label class="form-label fw-semibold" style="font-size:var(--fs-xs)">@L["Status"]</label>
+                <select name="status" class="form-select form-select-sm">
+                    <option value="" selected="@(string.IsNullOrEmpty(Model.FilterStatus))">@L["Todos"]</option>
+                    <option value="success" selected="@(Model.FilterStatus == "success")">@L["Bem-sucedido"]</option>
+                    <option value="fail" selected="@(Model.FilterStatus == "fail")">@L["Falhou"]</option>
+                </select>
+            </div>
+            <div class="col-md-3 d-flex gap-2">
+                <button type="submit" class="btn btn-primary btn-sm flex-fill"><i class="bi bi-funnel me-1"></i>@L["Filtrar"]</button>
+                <a href="/Profile#tab-history" class="btn btn-outline-secondary btn-sm">@L["Limpar"]</a>
+            </div>
+        </div>
+    </form>
+</div>

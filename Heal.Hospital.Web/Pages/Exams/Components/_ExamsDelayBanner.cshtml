@@ -1,0 +1,18 @@
+@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer L
+@* SLA delay chips — compact pill indicators above the table. Filled/toggled by delay.js *@
+<div id="rx-delay-chips" class="rx-sla-chips mb-2">
+    <span id="rx-delay-chip-overdue" class="rx-sla-chip rx-sla-chip-overdue d-none"
+          role="button" tabindex="0" data-rx-delay-filter="overdue"
+          title="@L["Ver somente atrasados"]">
+        <i class="bi bi-stopwatch-fill"></i>
+        <strong id="rx-delay-overdue-count">0</strong>
+        <span>@L["atrasados"]</span>
+    </span>
+    <span id="rx-delay-chip-near" class="rx-sla-chip rx-sla-chip-near d-none"
+          role="button" tabindex="0" data-rx-delay-filter="near"
+          title="@L["Ver somente próximos"]">
+        <i class="bi bi-stopwatch"></i>
+        <strong id="rx-delay-near-count">0</strong>
+        <span>@L["próximos da expiração"]</span>
+    </span>
+</div>

@@ -1,0 +1,47 @@
+/* Exams screen — SLA delay indicator, chips and modal charts. */
+
+/* Column-1 indicator icon */
+.rx-flag-overdue { color: #c62828; }       /* atrasado — vermelho */
+.rx-flag-near    { color: #ef6c00; }        /* próximo da expiração — âmbar */
+
+/* SLA delay chips — compact pill indicators */
+.rx-sla-chips { display: flex; gap: 0.45rem; flex-wrap: wrap; align-items: center; }
+.rx-sla-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.2rem 0.7rem;
+    border-radius: 999px;
+    font-size: var(--fs-xs);
+    font-weight: 500;
+    cursor: pointer;
+    user-select: none;
+    border: 1.5px solid transparent;
+    transition: filter .15s, transform .1s, box-shadow .15s;
+    line-height: 1.5;
+}
+.rx-sla-chip:hover  { filter: brightness(0.92); transform: translateY(-1px); box-shadow: 0 2px 6px rgba(0,0,0,.14); }
+.rx-sla-chip:active { transform: translateY(0); box-shadow: none; }
+.rx-sla-chip strong { font-size: .8rem; font-weight: 700; }
+.rx-sla-chip-overdue { background: #fff1f0; border-color: #ff4d4f; color: #a8071a; }
+.rx-sla-chip-near    { background: #fffbe6; border-color: #faad14; color: #874d00; }
+
+/* Chart containers */
+.dly-chart { width: 100%; min-height: 300px; }
+#dly-gauge { min-height: 220px; display: flex; justify-content: center; }
+
+/* Dates table */
+.dly-dates-table th { font-weight: 500; color: var(--clr-navy-800); white-space: nowrap; }
+.dly-dates-table td { white-space: nowrap; }
+
+/* SLA state pills used in the summary line */
+.dly-pill {
+    display: inline-block;
+    padding: 1px 9px;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: var(--fs-xs);
+}
+.dly-pill.ontime  { background: #e8f5e9; color: #1b5e20; }
+.dly-pill.near    { background: #fff3e0; color: #ef6c00; }
+.dly-pill.overdue { background: #ffebee; color: #c62828; }

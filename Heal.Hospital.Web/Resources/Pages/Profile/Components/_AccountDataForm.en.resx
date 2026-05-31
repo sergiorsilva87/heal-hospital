@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter</value></resheader>
+  <data name="Dados da conta" xml:space="preserve"><value>Account data</value></data>
+  <data name="Usuário" xml:space="preserve"><value>Username</value></data>
+  <data name="Perfil" xml:space="preserve"><value>Role</value></data>
+  <data name="Nome completo" xml:space="preserve"><value>Full name</value></data>
+  <data name="E-mail de contato" xml:space="preserve"><value>Contact email</value></data>
+  <data name="Salvar" xml:space="preserve"><value>Save</value></data>
+  <data name="Salvo com sucesso." xml:space="preserve"><value>Saved successfully.</value></data>
+</root>

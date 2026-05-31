@@ -1,0 +1,30 @@
+@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer L
+@model Heal.Hospital.Web.Pages.Profile.IndexModel
+<div class="prof-card">
+    <div class="prof-card-title"><i class="bi bi-person-badge"></i>@L["Dados da conta"]</div>
+    @if (Model.AccountDataSuccess) {
+        <div class="alert alert-success mb-3"><i class="bi bi-check-circle me-2"></i>@L["Salvo com sucesso."]</div>
+    }
+    <div class="row g-3 mb-3">
+        <div class="col-sm-6">
+            <label class="form-label fw-semibold" style="font-size:var(--fs-xs)">@L["Usuário"]</label>
+            <input class="form-control form-control-sm" value="@Model.Username" readonly />
+        </div>
+        <div class="col-sm-6">
+            <label class="form-label fw-semibold" style="font-size:var(--fs-xs)">@L["Perfil"]</label>
+            <input class="form-control form-control-sm" value="@Model.Role" readonly />
+        </div>
+        <div class="col-12">
+            <label class="form-label fw-semibold" style="font-size:var(--fs-xs)">@L["Nome completo"]</label>
+            <input class="form-control form-control-sm" value="@Model.FullName" readonly />
+        </div>
+    </div>
+    <hr class="divider" />
+    <form method="post" asp-page-handler="accountdata" asp-antiforgery="true">
+        <div class="mb-3">
+            <label asp-for="Email" class="form-label fw-semibold" style="font-size:var(--fs-xs)">@L["E-mail de contato"]</label>
+            <input asp-for="Email" type="email" class="form-control form-control-sm" />
+        </div>
+        <button type="submit" class="btn btn-primary btn-sm"><i class="bi bi-floppy me-1"></i>@L["Salvar"]</button>
+    </form>
+</div>

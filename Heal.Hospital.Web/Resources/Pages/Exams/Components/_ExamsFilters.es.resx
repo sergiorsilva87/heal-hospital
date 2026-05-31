@@ -9,6 +9,8 @@
   <data name="aplicados" xml:space="preserve"><value>aplicados</value></data>
   <data name="Aprovado" xml:space="preserve"><value>Aprobado</value></data>
   <data name="Arquivados" xml:space="preserve"><value>Archivados</value></data>
+  <data name="Atrasados" xml:space="preserve"><value>Atrasados</value></data>
+  <data name="Próximos da expiração" xml:space="preserve"><value>Próximos a expirar</value></data>
   <data name="Assinatura" xml:space="preserve"><value>Firma</value></data>
   <data name="Cancelado" xml:space="preserve"><value>Cancelado</value></data>
   <data name="Digite o nome..." xml:space="preserve"><value>Escriba el nombre...</value></data>

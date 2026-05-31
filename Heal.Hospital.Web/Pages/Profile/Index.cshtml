@@ -1,0 +1,54 @@
+@page "/Profile"
+@model Heal.Hospital.Web.Pages.Profile.IndexModel
+@using Heal.Hospital.Web.Services
+@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer L
+@{
+    Layout = "_AuthLayout";
+    ViewData["Title"] = L["Meu Perfil"].Value;
+    var activeTab = ViewData["ActiveTab"]?.ToString() ?? "profile";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/profile/profile.css" asp-append-version="true"/>
+}
+
+<div class="anim-fade-in">
+    <partial name="Components/_ProfileHeader" model="Model"/>
+
+    <ul class="nav nav-tabs mt-2 mb-3" id="profile-tabs" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link @(activeTab == "profile" ? "active" : "")"
+                    id="tab-profile-btn" data-bs-toggle="tab" data-bs-target="#tab-profile"
+                    type="button" role="tab">
+                <i class="bi bi-person me-1"></i>@L["Meu Perfil"]
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link @(activeTab == "history" ? "active" : "")"
+                    id="tab-history-btn" data-bs-toggle="tab" data-bs-target="#tab-history"
+                    type="button" role="tab">
+                <i class="bi bi-clock-history me-1"></i>@L["Histórico de acessos"]
+            </button>
+        </li>
+    </ul>
+
+    <div class="tab-content">
+        <div id="tab-profile" class="tab-pane fade @(activeTab == "profile" ? "show active" : "")" role="tabpanel">
+            <div class="row g-4">
+                <div class="col-lg-6">
+                    <partial name="Components/_AccountDataForm" model="Model"/>
+                    <partial name="Components/_PhotoForm" model="Model"/>
+                    <partial name="Components/_MfaSetupSection" model="Model"/>
+                </div>
+                <div class="col-lg-6">
+                    <partial name="Components/_PersonalDataForm" model="Model"/>
+                    <partial name="Components/_ChangePasswordForm" model="Model"/>
+                </div>
+            </div>
+        </div>
+        <div id="tab-history" class="tab-pane fade @(activeTab == "history" ? "show active" : "")" role="tabpanel">
+            <partial name="Components/_AccessHistoryFilters" model="Model"/>
+            <partial name="Components/_AccessHistoryTable" model="Model"/>
+        </div>
+    </div>
+</div>

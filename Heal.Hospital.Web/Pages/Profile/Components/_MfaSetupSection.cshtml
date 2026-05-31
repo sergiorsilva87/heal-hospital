@@ -1,0 +1,44 @@
+@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer L
+@model Heal.Hospital.Web.Pages.Profile.IndexModel
+<div class="prof-card">
+    <div class="prof-card-title"><i class="bi bi-shield-lock"></i>@L["Configurar MFA"]</div>
+    <p class="text-muted mb-3" style="font-size:var(--fs-xs)">@L["Autenticação multifator adiciona uma camada extra de segurança ao seu acesso."]</p>
+    @if (Model.MfaEnabled) {
+        <div class="alert alert-success d-flex align-items-center gap-2 mb-3 py-2">
+            <i class="bi bi-shield-check-fill"></i>
+            <span style="font-size:var(--fs-xs)">@L["MFA está"] <strong>@L["ativo"]</strong> @L["em sua conta."]</span>
+        </div>
+    }
+    <div class="row g-3 align-items-start mb-3">
+        <div class="col-auto">
+            <div class="p-2 border rounded" style="background:var(--bg-subtle)">
+                <div style="width:100px;height:100px;display:grid;grid-template-columns:repeat(7,1fr);gap:2px;">
+                    @for (int i = 0; i < 49; i++) {
+                        var dark = ((i % 3 == 0) || (i < 7) || (i > 42) || (i % 7 == 0) || (i % 7 == 6)) ? "var(--clr-navy-900)" : "transparent";
+                        <div style="background:@dark;border-radius:1px"></div>
+                    }
+                </div>
+            </div>
+            <p class="text-muted text-center mt-1 mb-0" style="font-size:var(--fs-xs)">@L["QR Code (mock)"]</p>
+        </div>
+        <div class="col">
+            <p class="fw-semibold mb-1" style="font-size:var(--fs-xs)">@L["Como configurar:"]</p>
+            <ol class="text-muted mb-2" style="font-size:var(--fs-xs);padding-left:1.2rem">
+                <li class="mb-1">@L["Instale Google Authenticator ou Microsoft Authenticator"]</li>
+                <li class="mb-1">@L["Escaneie o QR code ao lado"]</li>
+                <li>@L["Informe o código de 6 dígitos gerado para confirmar"]</li>
+            </ol>
+            <label class="form-label fw-semibold mb-1" style="font-size:var(--fs-xs)">@L["Chave manual (TOTP)"]</label>
+            <div class="input-group input-group-sm" style="max-width:240px">
+                <input class="form-control font-monospace" value="JBSWY3DPEHPK3PXP" readonly style="font-size:var(--fs-xs)" />
+                <button class="btn btn-outline-secondary" type="button"><i class="bi bi-clipboard"></i></button>
+            </div>
+        </div>
+    </div>
+    <div class="d-flex gap-2">
+        <button class="btn btn-primary btn-sm" type="button"><i class="bi bi-shield-plus me-1"></i>@L["Reconfigurar MFA"]</button>
+        @if (Model.MfaEnabled) {
+            <button class="btn btn-outline-danger btn-sm" type="button"><i class="bi bi-shield-x me-1"></i>@L["Desativar MFA"]</button>
+        }
+    </div>
+</div>

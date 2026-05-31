@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter</value></resheader>
+  <data name="Dados pessoais" xml:space="preserve"><value>Datos personales</value></data>
+  <data name="Nome de exibição" xml:space="preserve"><value>Nombre de exhibición</value></data>
+  <data name="Telefone" xml:space="preserve"><value>Teléfono</value></data>
+  <data name="Departamento" xml:space="preserve"><value>Departamento</value></data>
+  <data name="ex: 123456/SP" xml:space="preserve"><value>ej: 123456/SP</value></data>
+  <data name="Salvar" xml:space="preserve"><value>Guardar</value></data>
+  <data name="Salvo com sucesso." xml:space="preserve"><value>Guardado con éxito.</value></data>
+</root>

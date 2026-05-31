@@ -128,7 +128,12 @@
                     var f6 = d.reportDownloaded
                         ? '<i class="bi bi-cloud-arrow-down-fill rx-flag-downloaded rx-icon-btn" data-rx-act="download" data-std="' + std + '" title="' + escH(t("Laudo já baixado pelo paciente")) + '"></i>'
                         : '<i class="rx-flag-placeholder"></i>';
-                    return '<span class="rx-flags-slot">' + f1 + f2 + f3 + f4 + f5 + f6 + '</span>'
+                    var f7 = (d.delay && d.delay.state === 'overdue')
+                        ? '<i class="bi bi-stopwatch-fill rx-flag-overdue rx-icon-btn" data-rx-act="delay" data-std="' + std + '" title="' + escH(t("Laudo atrasado")) + '"></i>'
+                        : (d.delay && d.delay.state === 'near')
+                        ? '<i class="bi bi-stopwatch-fill rx-flag-near rx-icon-btn" data-rx-act="delay" data-std="' + std + '" title="' + escH(t("Laudo próximo da expiração")) + '"></i>'
+                        : '<i class="rx-flag-placeholder"></i>';
+                    return '<span class="rx-flags-slot">' + f1 + f2 + f3 + f4 + f5 + f6 + f7 + '</span>'
                          + '<i class="bi bi-chevron-right rx-toggle-icon" title="' + escH(t("Detalhes")) + '"></i>'
                          + '<code style="color:var(--clr-navy-700)">' + escH(d.patientId) + '</code>';
                 },
@@ -274,5 +279,6 @@
         else if (act === 'archived')  E.openArchivedModal(rec);
         else if (act === 'code')      E.openCodeModal(rec);
         else if (act === 'download')  E.openDownloadHistoryModal(rec);
+        else if (act === 'delay')     E.openDelayModal(rec);
     });
 })();

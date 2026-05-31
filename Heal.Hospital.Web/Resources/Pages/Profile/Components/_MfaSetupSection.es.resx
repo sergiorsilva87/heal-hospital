@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter</value></resheader>
+  <data name="Configurar MFA" xml:space="preserve"><value>Configurar MFA</value></data>
+  <data name="Autenticação multifator adiciona uma camada extra de segurança ao seu acesso." xml:space="preserve"><value>La autenticación multifactor agrega una capa extra de seguridad a tu acceso.</value></data>
+  <data name="MFA está" xml:space="preserve"><value>MFA está</value></data>
+  <data name="ativo" xml:space="preserve"><value>activo</value></data>
+  <data name="em sua conta." xml:space="preserve"><value>en tu cuenta.</value></data>
+  <data name="QR Code (mock)" xml:space="preserve"><value>QR Code (mock)</value></data>
+  <data name="Como configurar:" xml:space="preserve"><value>Cómo configurar:</value></data>
+  <data name="Instale Google Authenticator ou Microsoft Authenticator" xml:space="preserve"><value>Instala Google Authenticator o Microsoft Authenticator</value></data>
+  <data name="Escaneie o QR code ao lado" xml:space="preserve"><value>Escanea el QR code de al lado</value></data>
+  <data name="Informe o código de 6 dígitos gerado para confirmar" xml:space="preserve"><value>Ingresa el código de 6 dígitos generado para confirmar</value></data>
+  <data name="Chave manual (TOTP)" xml:space="preserve"><value>Clave manual (TOTP)</value></data>
+  <data name="Reconfigurar MFA" xml:space="preserve"><value>Reconfigurar MFA</value></data>
+  <data name="Desativar MFA" xml:space="preserve"><value>Desactivar MFA</value></data>
+</root>

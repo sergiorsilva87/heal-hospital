@@ -62,8 +62,11 @@ public class IndexModel : PageModel
             TotalCount = all.Length;
 
             ReceptionExamsJson = System.Text.Json.JsonSerializer.Serialize(
-                all.Select(e => new
+                all.Select(e =>
                 {
+                    var tl = MockData.GetExamTimeline(e);
+                    return new
+                    {
                     patientId     = e.PatientId,
                     patientName   = e.PatientName,
                     socialNameRaw = e.SocialName ?? "",
@@ -179,7 +182,26 @@ public class IndexModel : PageModel
                         at     = d.At.ToString("dd/MM/yyyy HH:mm"),
                         device = d.Device,
                         ip     = d.IpAddress
-                    })
+                    }),
+                    delay = new
+                    {
+                        studyAt        = tl.StudyDateTime.ToString("dd/MM/yyyy HH:mm"),
+                        lastImageAt    = tl.LastImageDateTime.ToString("dd/MM/yyyy HH:mm"),
+                        liberationAt   = tl.LiberationDateTime?.ToString("dd/MM/yyyy HH:mm") ?? "\u2014",
+                        reportStartAt  = tl.ReportStartDateTime?.ToString("dd/MM/yyyy HH:mm") ?? "\u2014",
+                        reportFinishAt = tl.ReportFinishDateTime?.ToString("dd/MM/yyyy HH:mm") ?? "\u2014",
+                        targetMin      = tl.TargetMinutes,
+                        elapsedMin     = tl.ElapsedMinutes,
+                        consumedPct    = tl.ConsumedPct,
+                        state          = tl.State.ToString().ToLowerInvariant(), // ontime|near|overdue
+                        studyMs        = new DateTimeOffset(tl.StudyDateTime).ToUnixTimeMilliseconds(),
+                        lastImageMs    = new DateTimeOffset(tl.LastImageDateTime).ToUnixTimeMilliseconds(),
+                        liberationMs   = tl.LiberationDateTime.HasValue ? new DateTimeOffset(tl.LiberationDateTime.Value).ToUnixTimeMilliseconds() : (long?)null,
+                        reportStartMs  = tl.ReportStartDateTime.HasValue ? new DateTimeOffset(tl.ReportStartDateTime.Value).ToUnixTimeMilliseconds() : (long?)null,
+                        reportFinishMs = tl.ReportFinishDateTime.HasValue ? new DateTimeOffset(tl.ReportFinishDateTime.Value).ToUnixTimeMilliseconds() : (long?)null,
+                        nowMs          = new DateTimeOffset(MockData.ReceptionNow).ToUnixTimeMilliseconds()
+                    }
+                    };
                 })
             );
         }

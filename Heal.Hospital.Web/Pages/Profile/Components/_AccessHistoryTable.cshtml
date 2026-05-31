@@ -1,0 +1,67 @@
+@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer L
+@model Heal.Hospital.Web.Pages.Profile.IndexModel
+@functions {
+    string PageLink(int page) {
+        var qs = new System.Collections.Generic.Dictionary<string, string?>();
+        if (!string.IsNullOrEmpty(Model.FilterDateFrom)) qs["dateFrom"] = Model.FilterDateFrom;
+        if (!string.IsNullOrEmpty(Model.FilterDateTo))   qs["dateTo"]   = Model.FilterDateTo;
+        if (!string.IsNullOrEmpty(Model.FilterStatus))   qs["status"]   = Model.FilterStatus;
+        qs["historyPage"] = page.ToString();
+        qs["tab"] = "history";
+        var q = string.Join("&", qs.Select(kv => $"{kv.Key}={Uri.EscapeDataString(kv.Value ?? "")}"));
+        return "/Profile?" + q + "#tab-history";
+    }
+}
+<div class="prof-card">
+    <div class="table-responsive">
+        <table class="hosp-table">
+            <thead>
+                <tr>
+                    <th>@L["Data / Hora"]</th>
+                    <th>@L["Endereço IP"]</th>
+                    <th>@L["Dispositivo"]</th>
+                    <th>@L["Status"]</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.PagedHistory.Length == 0) {
+                    <tr><td colspan="4" class="text-center text-muted py-3" style="font-size:var(--fs-sm)">@L["Nenhum registro encontrado."]</td></tr>
+                }
+                @foreach (var entry in Model.PagedHistory) {
+                    <tr>
+                        <td style="white-space:nowrap;font-size:var(--fs-xs)">@entry.At.ToLocalTime().ToString("dd/MM/yyyy HH:mm")</td>
+                        <td><code style="font-size:var(--fs-xs)">@entry.Ip</code></td>
+                        <td class="text-muted" style="font-size:var(--fs-xs)">@entry.Device</td>
+                        <td>
+                            @if (entry.Success) {
+                                <span class="badge-status completed">@L["Bem-sucedido"]</span>
+                            } else {
+                                <span class="badge-status urgent">@L["Falhou"]</span>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    @if (Model.HistoryTotalPages > 1) {
+        <nav class="mt-3" aria-label="@L["Paginação do histórico"]">
+            <ul class="pagination pagination-sm justify-content-center mb-0">
+                <li class="page-item @(Model.HistoryPage == 1 ? "disabled" : "")">
+                    <a class="page-link" href="@PageLink(Math.Max(1, Model.HistoryPage - 1))"><i class="bi bi-chevron-left"></i></a>
+                </li>
+                @for (int p = 1; p <= Model.HistoryTotalPages; p++) {
+                    <li class="page-item @(p == Model.HistoryPage ? "active" : "")">
+                        <a class="page-link" href="@PageLink(p)">@p</a>
+                    </li>
+                }
+                <li class="page-item @(Model.HistoryPage == Model.HistoryTotalPages ? "disabled" : "")">
+                    <a class="page-link" href="@PageLink(Math.Min(Model.HistoryTotalPages, Model.HistoryPage + 1))"><i class="bi bi-chevron-right"></i></a>
+                </li>
+            </ul>
+            <p class="text-center text-muted mt-2 mb-0" style="font-size:var(--fs-xs)">
+                @L["Página"] @Model.HistoryPage @L["de"] @Model.HistoryTotalPages · @Model.HistoryTotal @L["registro(s)"]
+            </p>
+        </nav>
+    }
+</div>

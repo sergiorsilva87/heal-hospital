@@ -28,6 +28,7 @@
         <link rel="stylesheet" href="~/css/exams/table.css" asp-append-version="true"/>
         <link rel="stylesheet" href="~/css/exams/filters.css" asp-append-version="true"/>
         <link rel="stylesheet" href="~/css/exams/legend.css" asp-append-version="true"/>
+        <link rel="stylesheet" href="~/css/exams/delay.css" asp-append-version="true"/>
     }
 }
 
@@ -47,6 +48,7 @@
     @* ── Receptionist screen: filters + legend + Tabulator table + modals ── *@
     <partial name="Components/_ExamsFilters"/>
     <partial name="Components/_ExamsLegend"/>
+    <partial name="Components/_ExamsDelayBanner"/>
     <partial name="Components/_ExamsTable"/>
 
     <partial name="Components/_EditPatientModal"/>
@@ -57,6 +59,7 @@
     <partial name="Components/_ArchivedModal"/>
     <partial name="Components/_DownloadCodeModal"/>
     <partial name="Components/_DownloadHistoryModal"/>
+    <partial name="Components/_DelayModal"/>
     <partial name="Components/_Toast"/>
 }
 else
@@ -100,6 +103,26 @@ else
                     "Exame arquivado (cold storage)": @J("Exame arquivado (cold storage)"),
                     "Código de download do laudo gerado": @J("Código de download do laudo gerado"),
                     "Laudo já baixado pelo paciente": @J("Laudo já baixado pelo paciente"),
+                    "Laudo atrasado": @J("Laudo atrasado"),
+                    "Laudo próximo da expiração": @J("Laudo próximo da expiração"),
+                    "min": @J("min"),
+                    "Atrasado": @J("Atrasado"),
+                    "Próximo da expiração": @J("Próximo da expiração"),
+                    "No prazo": @J("No prazo"),
+                    "Prazo": @J("Prazo"),
+                    "Alvo": @J("Alvo"),
+                    "Consumido": @J("Consumido"),
+                    "Estudo": @J("Estudo"),
+                    "Última imagem": @J("Última imagem"),
+                    "Liberação": @J("Liberação"),
+                    "Início do laudo": @J("Início do laudo"),
+                    "Finalização": @J("Finalização"),
+                    "Em andamento": @J("Em andamento"),
+                    "De": @J("De"),
+                    "Para": @J("Para"),
+                    "Minutos": @J("Minutos"),
+                    "Sem dados suficientes para o fluxo.": @J("Sem dados suficientes para o fluxo."),
+                    "Sem dados suficientes para a linha do tempo.": @J("Sem dados suficientes para a linha do tempo."),
                     "Detalhes": @J("Detalhes"),
                     "Paciente": @J("Paciente"),
                     "Sexo": @J("Sexo"),
@@ -138,7 +161,9 @@ else
                     "Restauração solicitada. Você será avisado quando os arquivos estiverem disponíveis (pode levar algumas horas).": @J("Restauração solicitada. Você será avisado quando os arquivos estiverem disponíveis (pode levar algumas horas)."),
                     "Código copiado.": @J("Código copiado."),
                     "O paciente ainda não baixou os laudos.": @J("O paciente ainda não baixou os laudos."),
-                    "Recuperação solicitada": @J("Recuperação solicitada")
+                    "Recuperação solicitada": @J("Recuperação solicitada"),
+                    "Imagens do exame (DICOM)": @J("Imagens do exame (DICOM)"),
+                    "Ver imagens": @J("Ver imagens")
                 };
                 E.t = function (k) {
                     var v = E.i18n[k];
@@ -158,5 +183,6 @@ else
         <script src="~/js/exams/archived-modal.js" asp-append-version="true"></script>
         <script src="~/js/exams/download-code-modal.js" asp-append-version="true"></script>
         <script src="~/js/exams/download-history-modal.js" asp-append-version="true"></script>
+        <script src="~/js/exams/delay.js" asp-append-version="true"></script>
     }
 }

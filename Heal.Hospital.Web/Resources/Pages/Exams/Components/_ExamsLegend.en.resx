@@ -15,7 +15,9 @@
   <data name="Documentos" xml:space="preserve"><value>Documents</value></data>
   <data name="Indicadores:" xml:space="preserve"><value>Indicators:</value></data>
   <data name="Laudando" xml:space="preserve"><value>Reporting</value></data>
+  <data name="Laudo atrasado" xml:space="preserve"><value>Overdue report</value></data>
   <data name="Laudo baixado pelo paciente" xml:space="preserve"><value>Report downloaded by patient</value></data>
+  <data name="Laudo próximo da expiração" xml:space="preserve"><value>Report nearing expiration</value></data>
   <data name="Liberação" xml:space="preserve"><value>Release</value></data>
   <data name="Pendência" xml:space="preserve"><value>Pending</value></data>
   <data name="Revisão" xml:space="preserve"><value>Review</value></data>
