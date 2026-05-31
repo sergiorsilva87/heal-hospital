@@ -96,7 +96,55 @@ public class IndexModel : PageModel
                     liberationDateOnly  = e.LiberationDateTime?.ToString("yyyy-MM-dd") ?? "",
                     imageCount          = e.ImageCount,
                     attachmentCount     = e.AttachmentCount,
-                    isArchived          = e.IsArchived
+                    isArchived          = e.IsArchived,
+                    downloadCodeGenerated = MockData.WasDownloadCodeGenerated(e),
+                    reportDownloaded      = MockData.WasReportDownloaded(e),
+                    phoneRaw            = MockData.GetMockPhone(e.PatientId),
+                    motherNameRaw       = MockData.GetMockMotherName(e.PatientId),
+                    studyForInput       = e.StudyDateTime.ToString("yyyy-MM-ddTHH:mm:ss"),
+                    changeLogs = MockData.GetChangeLogs(e.PatientId).Select(c => new
+                    {
+                        userName = c.UserName,
+                        userRole = c.UserRole,
+                        unit     = c.Unit,
+                        at       = c.At.ToString("dd/MM/yyyy HH:mm"),
+                        initials = string.Join("", c.UserName
+                                        .Replace("Dr. ", "").Replace("Dra. ", "")
+                                        .Split(' ', StringSplitOptions.RemoveEmptyEntries)
+                                        .Take(2).Select(p => p[0])),
+                        summary  = c.Summary
+                    }),
+                    reports = MockData.GetExamReports(e).Select(r => new
+                    {
+                        title  = r.Title,
+                        isCold = r.IsCold
+                    }),
+                    attachments = MockData.GetAttachments(e).Select(a => new
+                    {
+                        fileName   = a.FileName,
+                        uploadedAt = a.UploadedAt.ToString("dd/MM/yyyy HH:mm"),
+                        type       = MockData.AttachmentTypeLabel(a.FileName),
+                        size       = MockData.FormatFileSize(a.SizeBytes),
+                        uploadedBy = a.UploadedBy,
+                        isCold     = a.IsCold
+                    }),
+                    priorExams = MockData.GetPriorExams(e).Select(p => new
+                    {
+                        studyId       = p.StudyId,
+                        accessNumber  = p.AccessNumber,
+                        when          = p.When.ToString("dd/MM/yyyy HH:mm"),
+                        title         = p.Title,
+                        isCold        = p.IsCold,
+                        attachments   = p.Attachments.Select(a => new
+                        {
+                            fileName   = a.FileName,
+                            uploadedAt = a.UploadedAt.ToString("dd/MM/yyyy HH:mm"),
+                            type       = MockData.AttachmentTypeLabel(a.FileName),
+                            size       = MockData.FormatFileSize(a.SizeBytes),
+                            uploadedBy = a.UploadedBy,
+                            isCold     = a.IsCold
+                        })
+                    })
                 })
             );
         }

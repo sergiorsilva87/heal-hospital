@@ -15,7 +15,7 @@
 </div>
 
 <h2 class="fw-semibold mb-1" style="font-size:var(--fs-xl)">@L["Entrar"]</h2>
-<p class="text-muted mb-4" style="font-size:var(--fs-sm)">Acesse o sistema interno St. Mungus.</p>
+<p class="text-muted mb-4" style="font-size:var(--fs-sm)">@L["Acesse o sistema interno St. Mungus."]</p>
 
 @if (!string.IsNullOrEmpty(Model.ErrorMessage))
 {
@@ -31,7 +31,7 @@
         <div class="input-group">
             <span class="input-group-text bg-white"><i class="bi bi-person" style="color:var(--txt-muted)"></i></span>
             <input asp-for="Username" class="form-control" autocomplete="username"
-                   placeholder="ex: gerente" autofocus />
+                   placeholder="@L["ex: gerente"]" autofocus />
         </div>
         <span asp-validation-for="Username" class="text-danger small"></span>
     </div>
@@ -41,7 +41,7 @@
         <div class="input-group">
             <span class="input-group-text bg-white"><i class="bi bi-lock" style="color:var(--txt-muted)"></i></span>
             <input asp-for="Password" class="form-control" type="password" autocomplete="current-password" />
-            <button class="btn btn-outline-secondary" type="button" id="toggle-password" aria-label="Mostrar senha">
+            <button class="btn btn-outline-secondary" type="button" id="toggle-password" aria-label="@L["Mostrar senha"]">
                 <i class="bi bi-eye" id="eye-icon"></i>
             </button>
         </div>
@@ -64,7 +64,7 @@
 <hr class="divider mt-4" />
 <p class="text-muted text-center mb-0" style="font-size:var(--fs-xs)">
     <i class="bi bi-info-circle me-1"></i>
-    Credenciais de demonstração: <strong>gerente / Heal@2026</strong>
+    @L["Credenciais de demonstração:"] <strong>gerente / Heal@2026</strong>
 </p>
 
 @section Scripts {

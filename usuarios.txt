@@ -1,5 +1,5 @@
 Usuários de acesso — St. Mungus Hospital
-Senha padrão para todos: Heal@2026
+Senha padrão para todos: mti
 Código MFA (mock): 123456
 
 Usuário           Perfil

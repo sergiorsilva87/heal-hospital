@@ -519,6 +519,17 @@ a:hover { color: var(--clr-navy-900); }
 .badge-status.urgent     { background: var(--clr-danger-100);  color: var(--clr-danger-700); }
 .badge-status.cancelled  { background: #f0f0f0;                color: #6c757d; }
 
+/* Per-status colors for the Reception exams screen (Melhorias item 1)
+   Liberação=roxo · Disponível=azul · Laudando/Revisão/Assinatura=laranja
+   Pendência=vermelho · Aprovado=verde · Cancelado=cinza */
+.badge-status.release    { background: #f3e5f5; color: #6a1b9a; }
+.badge-status.available  { background: #e3f2fd; color: #0d47a1; }
+.badge-status.reporting  { background: #fff3e0; color: #bf360c; }
+.badge-status.pendency   { background: #fdecea; color: #b71c1c; }
+.badge-status.revision   { background: #fff3e0; color: #bf360c; }
+.badge-status.signature  { background: #fff3e0; color: #bf360c; }
+.badge-status.approved   { background: #e8f5e9; color: #1b5e20; }
+
 /* ─────────────────────────────────────────────────────────────
    9. ALERT CARD
    ───────────────────────────────────────────────────────────── */

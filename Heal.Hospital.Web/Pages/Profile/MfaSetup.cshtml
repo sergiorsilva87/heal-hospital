@@ -10,13 +10,13 @@
     <div class="col-md-9">
         <div class="card p-4">
             <h5 class="fw-semibold mb-1"><i class="bi bi-shield-lock me-2" style="color:var(--clr-navy-700)"></i>@L["Configurar MFA"]</h5>
-            <p class="text-muted mb-4" style="font-size:var(--fs-sm)">Autenticação multifator adiciona uma camada extra de segurança ao seu acesso.</p>
+            <p class="text-muted mb-4" style="font-size:var(--fs-sm)">@L["Autenticação multifator adiciona uma camada extra de segurança ao seu acesso."]</p>
 
             @if (Model.MfaEnabled)
             {
                 <div class="alert alert-success d-flex align-items-center gap-2 mb-4">
                     <i class="bi bi-shield-check-fill fs-5"></i>
-                    <span>MFA está <strong>ativo</strong> em sua conta.</span>
+                    <span>@L["MFA está"] <strong>@L["ativo"]</strong> @L["em sua conta."]</span>
                 </div>
             }
 
@@ -32,20 +32,20 @@
                             }
                         </div>
                     </div>
-                    <p class="text-muted text-center mt-2 mb-0" style="font-size:var(--fs-xs)">QR Code (mock)</p>
+                    <p class="text-muted text-center mt-2 mb-0" style="font-size:var(--fs-xs)">@L["QR Code (mock)"]</p>
                 </div>
                 <div class="col">
-                    <p class="fw-semibold mb-2" style="font-size:var(--fs-sm)">Como configurar:</p>
+                    <p class="fw-semibold mb-2" style="font-size:var(--fs-sm)">@L["Como configurar:"]</p>
                     <ol class="text-muted" style="font-size:var(--fs-sm);padding-left:1.2rem">
-                        <li class="mb-1">Instale Google Authenticator ou Microsoft Authenticator</li>
-                        <li class="mb-1">Escaneie o QR code ao lado</li>
-                        <li class="mb-1">Informe o código de 6 dígitos gerado para confirmar</li>
+                        <li class="mb-1">@L["Instale Google Authenticator ou Microsoft Authenticator"]</li>
+                        <li class="mb-1">@L["Escaneie o QR code ao lado"]</li>
+                        <li class="mb-1">@L["Informe o código de 6 dígitos gerado para confirmar"]</li>
                     </ol>
                     <div class="mt-3">
-                        <label class="form-label fw-semibold" style="font-size:var(--fs-xs)">Chave manual (TOTP)</label>
+                        <label class="form-label fw-semibold" style="font-size:var(--fs-xs)">@L["Chave manual (TOTP)"]</label>
                         <div class="input-group input-group-sm" style="max-width:280px">
                             <input class="form-control font-monospace" value="JBSWY3DPEHPK3PXP" readonly />
-                            <button class="btn btn-outline-secondary" type="button" title="Copiar">
+                            <button class="btn btn-outline-secondary" type="button" title="@L["Copiar"]">
                                 <i class="bi bi-clipboard"></i>
                             </button>
                         </div>
@@ -56,12 +56,12 @@
             <hr class="divider" />
             <div class="d-flex gap-2">
                 <button class="btn btn-primary" type="button">
-                    <i class="bi bi-shield-plus me-1"></i>Reconfigurar MFA
+                    <i class="bi bi-shield-plus me-1"></i>@L["Reconfigurar MFA"]
                 </button>
                 @if (Model.MfaEnabled)
                 {
                     <button class="btn btn-outline-danger" type="button">
-                        <i class="bi bi-shield-x me-1"></i>Desativar MFA
+                        <i class="bi bi-shield-x me-1"></i>@L["Desativar MFA"]
                     </button>
                 }
             </div>

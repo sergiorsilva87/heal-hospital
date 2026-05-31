@@ -22,11 +22,11 @@
                     <input class="form-control" value="@Model.Username" readonly />
                 </div>
                 <div class="col-sm-6">
-                    <label class="form-label fw-semibold" style="font-size:var(--fs-xs)">Perfil</label>
+                    <label class="form-label fw-semibold" style="font-size:var(--fs-xs)">@L["Perfil"]</label>
                     <input class="form-control" value="@Model.Role" readonly />
                 </div>
                 <div class="col-sm-6">
-                    <label class="form-label fw-semibold" style="font-size:var(--fs-xs)">Nome completo</label>
+                    <label class="form-label fw-semibold" style="font-size:var(--fs-xs)">@L["Nome completo"]</label>
                     <input class="form-control" value="@Model.FullName" readonly />
                 </div>
             </div>
@@ -34,7 +34,7 @@
             <!-- Editable -->
             <form method="post" asp-antiforgery="true" style="max-width:400px">
                 <div class="mb-4">
-                    <label asp-for="Email" class="form-label fw-semibold" style="font-size:var(--fs-sm)">E-mail de contato</label>
+                    <label asp-for="Email" class="form-label fw-semibold" style="font-size:var(--fs-sm)">@L["E-mail de contato"]</label>
                     <input asp-for="Email" type="email" class="form-control" />
                 </div>
                 <div class="d-flex gap-2">

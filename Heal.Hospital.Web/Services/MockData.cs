@@ -389,17 +389,17 @@ public static class MockData
     /// <summary>Maps status to the <c>.badge-status</c> CSS modifier used in hospital.css.</summary>
     public static string GetStatusBadgeCss(ExamReportStatus status) => status switch
     {
-        ExamReportStatus.AwaitingRelease => "scheduled",
-        ExamReportStatus.AvailableForReporting => "scheduled",
-        ExamReportStatus.Reporting => "in-progress",
-        ExamReportStatus.Pending => "pending",
-        ExamReportStatus.AwaitingSignature => "in-progress",
-        ExamReportStatus.Approved => "issued",
-        ExamReportStatus.RevisionRequested => "pending",
-        ExamReportStatus.Reviewing => "in-progress",
-        ExamReportStatus.ApprovedAfterRevision => "issued",
+        ExamReportStatus.AwaitingRelease => "release",
+        ExamReportStatus.AvailableForReporting => "available",
+        ExamReportStatus.Reporting => "reporting",
+        ExamReportStatus.Pending => "pendency",
+        ExamReportStatus.AwaitingSignature => "signature",
+        ExamReportStatus.Approved => "approved",
+        ExamReportStatus.RevisionRequested => "revision",
+        ExamReportStatus.Reviewing => "reporting",
+        ExamReportStatus.ApprovedAfterRevision => "approved",
         ExamReportStatus.Cancelled => "cancelled",
-        _ => "scheduled",
+        _ => "available",
     };
 
     public static string GetExamTypeLabel(ExamType type) => type switch
@@ -437,4 +437,183 @@ public static class MockData
 
     /// <summary>Reference "now" used by FormatDicomAge in views (kept fixed for deterministic wireframe display).</summary>
     public static DateTime ReceptionNow => _now;
+
+    // ─────────────────────────────────────────────────────────
+    // RECEPTION — Editable extra fields (deterministic mock)
+    // ─────────────────────────────────────────────────────────
+
+    private static readonly string[] _motherFirstNames =
+        ["Maria", "Ana", "Joana", "Teresa", "Lúcia", "Rosa", "Cláudia", "Sônia", "Vera", "Cristina"];
+    private static readonly string[] _motherLastNames =
+        ["Santos", "Oliveira", "Lima", "Pereira", "Costa", "Souza", "Ferreira", "Alves", "Gomes", "Rocha"];
+
+    /// <summary>Deterministic mock phone number derived from the patient id.</summary>
+    public static string GetMockPhone(string patientId)
+    {
+        var seed = Math.Abs(patientId.GetHashCode());
+        var ddd = 11 + seed % 89;
+        var part1 = 90000 + seed / 7 % 10000;
+        var part2 = 1000 + seed / 13 % 9000;
+        return $"({ddd}) 9{part1:D4}-{part2:D4}";
+    }
+
+    /// <summary>True when a patient-portal download code has been generated for the exam.</summary>
+    public static bool WasDownloadCodeGenerated(ReceptionExam e) =>
+        !string.IsNullOrEmpty(e.DownloadAccessCode);
+
+    /// <summary>Deterministic mock: whether the patient already downloaded the report(s).</summary>
+    public static bool WasReportDownloaded(ReceptionExam e)
+    {
+        if (!WasDownloadCodeGenerated(e))
+            return false;
+        var seed = Math.Abs((e.PatientId + e.StudyId).GetHashCode());
+        return seed % 5 != 0; // ~80% of generated codes were already used by the patient
+    }
+
+    /// <summary>Deterministic mock mother's name derived from the patient id.</summary>
+    public static string GetMockMotherName(string patientId)
+    {
+        var seed = Math.Abs(patientId.GetHashCode());
+        var first = _motherFirstNames[seed % _motherFirstNames.Length];
+        var last = _motherLastNames[seed / 3 % _motherLastNames.Length];
+        return $"{first} {last}";
+    }
+
+    // ─────────────────────────────────────────────────────────
+    // PATIENT CHANGE HISTORY (Tab "Histórico de alteração")
+    // ─────────────────────────────────────────────────────────
+    public record PatientChangeLog(
+        string UserName, string UserRole, string Unit, DateTime At, string Summary);
+
+    /// <summary>Deterministic mock change history for a given patient.</summary>
+    public static PatientChangeLog[] GetChangeLogs(string patientId)
+    {
+        var seed = Math.Abs(patientId.GetHashCode());
+        var count = 2 + seed % 4; // 2..5 entries
+        var users = new (string Name, string Role, string Unit)[]
+        {
+            ("Carlos Mendes",   "Recepcionista",          "Unidade Sé"),
+            ("Patrícia Aoki",   "Técnica de Radiologia",  "Unidade Pinheiros"),
+            ("Dra. Camila Rocha","Médica Radiologista",   "Unidade Liberdade"),
+            ("Renata Lopes",    "Supervisora",            "Unidade Tatuapé"),
+            ("Bruno Tavares",   "Recepcionista",          "Unidade Mooca"),
+        };
+        var summaries = new[]
+        {
+            "Atualizou o nome social do paciente.",
+            "Corrigiu o CPF do paciente.",
+            "Alterou o e-mail de contato.",
+            "Ajustou a data e hora do estudo.",
+            "Atualizou o telefone de contato.",
+            "Corrigiu o nome da mãe.",
+            "Gerou novo código de download do laudo.",
+        };
+        var list = new List<PatientChangeLog>();
+        for (var i = 0; i < count; i++)
+        {
+            var u = users[(seed + i) % users.Length];
+            var s = summaries[(seed / 2 + i) % summaries.Length];
+            var at = _now.AddDays(-(i + 1)).AddHours(-(seed % 9)).AddMinutes(-(seed % 47));
+            list.Add(new PatientChangeLog(u.Name, u.Role, u.Unit, at, s));
+        }
+        return list.ToArray();
+    }
+
+    // ─────────────────────────────────────────────────────────
+    // DOWNLOAD — Reports, attachments and prior exams
+    // ─────────────────────────────────────────────────────────
+    public record ExamReportFile(string Title, bool IsCold);
+
+    public record ExamAttachment(
+        string FileName, DateTime UploadedAt, long SizeBytes, string UploadedBy, bool IsCold);
+
+    public record PriorExamEntry(
+        string StudyId, string AccessNumber, DateTime When, string Title, bool IsCold,
+        ExamAttachment[] Attachments);
+
+    /// <summary>Formats a byte count as B / KB / MB (pt-BR friendly).</summary>
+    public static string FormatFileSize(long bytes)
+    {
+        if (bytes < 1024) return $"{bytes} B";
+        if (bytes < 1024 * 1024) return $"{bytes / 1024.0:0.#} KB".Replace('.', ',');
+        return $"{bytes / (1024.0 * 1024.0):0.#} MB".Replace('.', ',');
+    }
+
+    private static string ExtOf(string fileName)
+    {
+        var ext = System.IO.Path.GetExtension(fileName).TrimStart('.').ToUpperInvariant();
+        return string.IsNullOrEmpty(ext) ? "Arquivo" : ext;
+    }
+
+    public static string AttachmentTypeLabel(string fileName) => ExtOf(fileName) switch
+    {
+        "PDF" => "PDF",
+        "JPG" or "JPEG" or "PNG" => "Imagem",
+        "DOC" or "DOCX" => "Documento",
+        "DCM" => "DICOM",
+        "ZIP" => "Compactado",
+        _ => ExtOf(fileName),
+    };
+
+    /// <summary>Mock list of report files generated by an exam (an exam may produce 1..N reports).</summary>
+    public static ExamReportFile[] GetExamReports(ReceptionExam exam)
+    {
+        var seed = Math.Abs(exam.StudyId.GetHashCode());
+        var n = 1 + seed % 2; // 1..2 reports
+        var list = new List<ExamReportFile>
+        {
+            new($"Laudo — {exam.Procedure}", exam.IsArchived),
+        };
+        if (n > 1)
+            list.Add(new ExamReportFile($"Laudo complementar — {exam.Modality}", exam.IsArchived));
+        return list.ToArray();
+    }
+
+    /// <summary>Mock list of files attached to an exam by the radiology technician.</summary>
+    public static ExamAttachment[] GetAttachments(ReceptionExam exam)
+    {
+        if (exam.AttachmentCount <= 0) return [];
+        var seed = Math.Abs(exam.StudyId.GetHashCode());
+        var names = new[] { "termo_consentimento.pdf", "guia_convenio.jpg", "pedido_medico.pdf", "exame_anterior.dcm", "relatorio.docx" };
+        var people = new[] { "Carlos Mendes", "Patrícia Aoki", "Bruno Tavares" };
+        var list = new List<ExamAttachment>();
+        for (var i = 0; i < exam.AttachmentCount; i++)
+        {
+            var name = names[(seed + i) % names.Length];
+            var size = 24_000L + (seed * (i + 3) % 4_500_000);
+            var who = people[(seed + i) % people.Length];
+            var at = exam.StudyDateTime.AddMinutes(15 * (i + 1));
+            list.Add(new ExamAttachment(name, at, size, who, exam.IsArchived));
+        }
+        return list.ToArray();
+    }
+
+    /// <summary>Mock list of prior exams of the same patient.</summary>
+    public static PriorExamEntry[] GetPriorExams(ReceptionExam exam)
+    {
+        var seed = Math.Abs(exam.PatientId.GetHashCode());
+        var n = 2 + seed % 2; // 2..3 prior exams (sempre preenchido)
+        var titles = new[] { "RX Tórax PA", "TC Crânio", "USG Abdome", "RM Coluna", "Mamografia bilateral" };
+        var people = new[] { "Carlos Mendes", "Patrícia Aoki" };
+        var list = new List<PriorExamEntry>();
+        for (var i = 0; i < n; i++)
+        {
+            var when = exam.StudyDateTime.AddMonths(-(i + 1) * 3).AddDays(-(seed % 20));
+            var title = titles[(seed + i) % titles.Length];
+            var cold = (seed + i) % 2 == 0;
+            var studyId = $"STD-0{90000 + (seed + i) % 9000}";
+            var an = $"{100000 + (seed * (i + 2)) % 900000}";
+            var atts = new List<ExamAttachment>();
+            var attCount = 1 + (seed + i) % 2; // 1..2 anexos por exame anterior
+            var names = new[] { "laudo_anterior.pdf", "guia_convenio.jpg", "termo_consentimento.pdf", "comparativo.dcm" };
+            for (var a = 0; a < attCount; a++)
+            {
+                var size = 18_000L + (seed * (a + 2) % 3_000_000);
+                atts.Add(new ExamAttachment(names[(seed + a + i) % names.Length], when.AddMinutes(10 * (a + 1)),
+                    size, people[(seed + a) % people.Length], cold));
+            }
+            list.Add(new PriorExamEntry(studyId, an, when, title, cold, atts.ToArray()));
+        }
+        return list.ToArray();
+    }
 }

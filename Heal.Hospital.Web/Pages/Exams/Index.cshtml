@@ -9,6 +9,11 @@
 @functions {
     string PageLink(int page) =>
         Url.Page(null, new { Search = Model.Search, StatusFilter = Model.StatusFilter, page })!;
+
+    // JSON-encoded localized string for safe embedding inside JS. Returns IHtmlContent so Razor
+    // does not HTML-encode the quotes; System.Text.Json still escapes <, >, & and non-ASCII.
+    Microsoft.AspNetCore.Html.IHtmlContent J(string key) =>
+        new Microsoft.AspNetCore.Html.HtmlString(System.Text.Json.JsonSerializer.Serialize(L[key].Value));
 }
 
 <!-- Toolbar -->
@@ -30,91 +35,91 @@
              aria-expanded="false" aria-controls="rx-filter-body"
              style="cursor:pointer;user-select:none">
             <i class="bi bi-funnel me-2" style="font-size:.82rem;color:var(--clr-navy-700)"></i>
-            <span class="fw-semibold" style="font-size:.82rem;color:var(--clr-navy-900)">Filtros</span>
+            <span class="fw-semibold" style="font-size:.82rem;color:var(--clr-navy-900)">@L["Filtros"]</span>
             <span id="rx-filter-badge" class="badge rounded-pill ms-2 d-none"
-                  style="background:var(--clr-navy-600);font-size:.6rem;padding:2px 7px">0 aplicados</span>
+                  style="background:var(--clr-navy-600);font-size:.6rem;padding:2px 7px">0 @L["aplicados"]</span>
             <i class="bi bi-chevron-down ms-auto rx-filter-chevron"></i>
         </div>
         <div id="rx-filter-body" class="collapse">
             <div class="px-3 pb-3 pt-1" id="rx-filter-panel">
                 <div class="row g-2 mb-2">
                     <div class="col-md-2">
-                        <label class="form-label fw-semibold" style="font-size:var(--fs-xs)">ID Paciente</label>
+                        <label class="form-label fw-semibold" style="font-size:var(--fs-xs)">@L["ID Paciente"]</label>
                         <input type="text" id="f-patient-id" class="form-control form-control-sm" placeholder="PAC-00012">
                     </div>
                     <div class="col-md-3">
-                        <label class="form-label fw-semibold" style="font-size:var(--fs-xs)">Nome do paciente</label>
-                        <input type="text" id="f-patient-name" class="form-control form-control-sm" placeholder="Digite o nome...">
+                        <label class="form-label fw-semibold" style="font-size:var(--fs-xs)">@L["Nome do paciente"]</label>
+                        <input type="text" id="f-patient-name" class="form-control form-control-sm" placeholder="@L["Digite o nome..."]">
                     </div>
                     <div class="col-md-2">
-                        <label class="form-label fw-semibold" style="font-size:var(--fs-xs)">Nº Acesso</label>
+                        <label class="form-label fw-semibold" style="font-size:var(--fs-xs)">@L["Nº Acesso"]</label>
                         <input type="text" id="f-access-code" class="form-control form-control-sm" placeholder="847291">
                     </div>
                     <div class="col-md-3">
-                        <label class="form-label fw-semibold" style="font-size:var(--fs-xs)">Médico executor</label>
+                        <label class="form-label fw-semibold" style="font-size:var(--fs-xs)">@L["Médico executor"]</label>
                         <select id="f-executor" class="form-select form-select-sm">
-                            <option value="">Todos</option>
+                            <option value="">@L["Todos"]</option>
                         </select>
                     </div>
                     <div class="col-md-2">
-                        <label class="form-label fw-semibold" style="font-size:var(--fs-xs)">Unidade</label>
+                        <label class="form-label fw-semibold" style="font-size:var(--fs-xs)">@L["Unidade"]</label>
                         <select id="f-unit" class="form-select form-select-sm">
-                            <option value="">Todas</option>
+                            <option value="">@L["Todas"]</option>
                         </select>
                     </div>
                 </div>
                 <div class="row g-2 mb-2">
                     <div class="col-md-2">
-                        <label class="form-label fw-semibold" style="font-size:var(--fs-xs)">Modalidade</label>
+                        <label class="form-label fw-semibold" style="font-size:var(--fs-xs)">@L["Modalidade"]</label>
                         <select id="f-modality" class="form-select form-select-sm">
-                            <option value="">Todas</option>
+                            <option value="">@L["Todas"]</option>
                         </select>
                     </div>
                     <div class="col-md-3">
-                        <label class="form-label fw-semibold" style="font-size:var(--fs-xs)">Procedimento</label>
+                        <label class="form-label fw-semibold" style="font-size:var(--fs-xs)">@L["Procedimento"]</label>
                         <select id="f-procedure" class="form-select form-select-sm" disabled>
-                            <option value="">Todos</option>
+                            <option value="">@L["Todos"]</option>
                         </select>
                     </div>
                     <div class="col-md-1">
-                        <label class="form-label fw-semibold" style="font-size:var(--fs-xs)">Tipo</label>
+                        <label class="form-label fw-semibold" style="font-size:var(--fs-xs)">@L["Tipo"]</label>
                         <select id="f-type" class="form-select form-select-sm">
-                            <option value="">Todos</option>
+                            <option value="">@L["Todos"]</option>
                             <option value="PS">PS</option>
                             <option value="Int.">Int.</option>
-                            <option value="Eletivo">Eletivo</option>
+                            <option value="Eletivo">@L["Eletivo"]</option>
                         </select>
                     </div>
                     <div class="col-md-2">
-                        <label class="form-label fw-semibold" style="font-size:var(--fs-xs)">Situação</label>
+                        <label class="form-label fw-semibold" style="font-size:var(--fs-xs)">@L["Situação"]</label>
                         <select id="f-status" class="form-select form-select-sm">
-                            <option value="">Todas</option>
-                            <option value="Liberação">Liberação</option>
-                            <option value="Disponível">Disponível</option>
-                            <option value="Laudando">Laudando</option>
-                            <option value="Pendência">Pendência</option>
-                            <option value="Assinatura">Assinatura</option>
-                            <option value="Revisão">Revisão</option>
-                            <option value="Aprovado">Aprovado</option>
-                            <option value="Cancelado">Cancelado</option>
+                            <option value="">@L["Todas"]</option>
+                            <option value="Liberação">@L["Liberação"]</option>
+                            <option value="Disponível">@L["Disponível"]</option>
+                            <option value="Laudando">@L["Laudando"]</option>
+                            <option value="Pendência">@L["Pendência"]</option>
+                            <option value="Assinatura">@L["Assinatura"]</option>
+                            <option value="Revisão">@L["Revisão"]</option>
+                            <option value="Aprovado">@L["Aprovado"]</option>
+                            <option value="Cancelado">@L["Cancelado"]</option>
                         </select>
                     </div>
                 </div>
                 <div class="row g-2 mb-2">
                     <div class="col-auto">
-                        <label class="form-label fw-semibold" style="font-size:var(--fs-xs)">Estudo &mdash; início</label>
+                        <label class="form-label fw-semibold" style="font-size:var(--fs-xs)">@L["Estudo"] &mdash; @L["início"]</label>
                         <input type="date" id="f-study-from" class="form-control form-control-sm">
                     </div>
                     <div class="col-auto">
-                        <label class="form-label fw-semibold" style="font-size:var(--fs-xs)">Estudo &mdash; fim</label>
+                        <label class="form-label fw-semibold" style="font-size:var(--fs-xs)">@L["Estudo"] &mdash; @L["fim"]</label>
                         <input type="date" id="f-study-to" class="form-control form-control-sm">
                     </div>
                     <div class="col-auto" style="border-left:1px solid #d0d7e2;padding-left:1rem">
-                        <label class="form-label fw-semibold" style="font-size:var(--fs-xs)">Finalização &mdash; início</label>
+                        <label class="form-label fw-semibold" style="font-size:var(--fs-xs)">@L["Finalização"] &mdash; @L["início"]</label>
                         <input type="date" id="f-date-from" class="form-control form-control-sm">
                     </div>
                     <div class="col-auto">
-                        <label class="form-label fw-semibold" style="font-size:var(--fs-xs)">Finalização &mdash; fim</label>
+                        <label class="form-label fw-semibold" style="font-size:var(--fs-xs)">@L["Finalização"] &mdash; @L["fim"]</label>
                         <input type="date" id="f-date-to" class="form-control form-control-sm">
                     </div>
                 </div>
@@ -122,36 +127,36 @@
                     <div class="col-auto">
                         <div class="form-check form-switch mb-0">
                             <input type="checkbox" id="f-emergency" class="form-check-input" role="switch">
-                            <label for="f-emergency" class="form-check-label" style="font-size:var(--fs-xs)">Emergências</label>
+                            <label for="f-emergency" class="form-check-label" style="font-size:var(--fs-xs)">@L["Emergências"]</label>
                         </div>
                     </div>
                     <div class="col-auto">
                         <div class="form-check form-switch mb-0">
                             <input type="checkbox" id="f-pendency" class="form-check-input" role="switch">
-                            <label for="f-pendency" class="form-check-label" style="font-size:var(--fs-xs)">Pendências</label>
+                            <label for="f-pendency" class="form-check-label" style="font-size:var(--fs-xs)">@L["Pendências"]</label>
                         </div>
                     </div>
                     <div class="col-auto">
                         <div class="form-check form-switch mb-0">
                             <input type="checkbox" id="f-critical-unnotified" class="form-check-input" role="switch">
-                            <label for="f-critical-unnotified" class="form-check-label" style="font-size:var(--fs-xs)"><i class="bi bi-exclamation-triangle-fill rx-flag-critical-unnotified" style="font-size:.82rem"></i> Achado crítico não resolvido</label>
+                            <label for="f-critical-unnotified" class="form-check-label" style="font-size:var(--fs-xs)"><i class="bi bi-exclamation-triangle-fill rx-flag-critical-unnotified" style="font-size:.82rem"></i> @L["Achado crítico não resolvido"]</label>
                         </div>
                     </div>
                     <div class="col-auto">
                         <div class="form-check form-switch mb-0">
                             <input type="checkbox" id="f-critical-notified" class="form-check-input" role="switch">
-                            <label for="f-critical-notified" class="form-check-label" style="font-size:var(--fs-xs)"><i class="bi bi-patch-check-fill rx-flag-critical-notified" style="font-size:.82rem"></i> Achado crítico resolvido</label>
+                            <label for="f-critical-notified" class="form-check-label" style="font-size:var(--fs-xs)"><i class="bi bi-patch-check-fill rx-flag-critical-notified" style="font-size:.82rem"></i> @L["Achado crítico resolvido"]</label>
                         </div>
                     </div>
                     <div class="col-auto">
                         <div class="form-check form-switch mb-0">
                             <input type="checkbox" id="f-archived" class="form-check-input" role="switch">
-                            <label for="f-archived" class="form-check-label" style="font-size:var(--fs-xs)"><i class="bi bi-archive-fill rx-flag-archived" style="font-size:.82rem"></i> Arquivados</label>
+                            <label for="f-archived" class="form-check-label" style="font-size:var(--fs-xs)"><i class="bi bi-archive-fill rx-flag-archived" style="font-size:.82rem"></i> @L["Arquivados"]</label>
                         </div>
                     </div>
                     <div class="ms-auto col-auto d-flex gap-2">
-                        <button type="button" id="f-clear" class="btn btn-outline-secondary rx-btn-xs"><i class="bi bi-x-circle me-1"></i>Limpar</button>
-                        <button type="button" id="f-apply" class="btn btn-primary rx-btn-xs"><i class="bi bi-funnel me-1"></i>Filtrar</button>
+                        <button type="button" id="f-clear" class="btn btn-outline-secondary rx-btn-xs"><i class="bi bi-x-circle me-1"></i>@L["Limpar"]</button>
+                        <button type="button" id="f-apply" class="btn btn-primary rx-btn-xs"><i class="bi bi-funnel me-1"></i>@L["Filtrar"]</button>
                     </div>
                 </div>
             </div>
@@ -166,7 +171,7 @@ else
                 <label class="form-label fw-semibold" style="font-size:var(--fs-xs)">@L["Buscar"]</label>
                 <div class="input-group input-group-sm">
                     <span class="input-group-text"><i class="bi bi-search"></i></span>
-                    <input name="Search" value="@Model.Search" class="form-control" placeholder="Paciente ou nº do exame…" />
+                    <input name="Search" value="@Model.Search" class="form-control" placeholder="@L["Paciente ou nº do exame…"]" />
                 </div>
             </div>
             <div class="col-md-4">
@@ -175,7 +180,7 @@ else
                     <option value="">@L["Todos"]</option>
                     @foreach (var s in new[] { "Agendado", "Em andamento", "Concluído", "Laudo pendente", "Laudo emitido" })
                     {
-                        <option value="@s" selected="@(Model.StatusFilter == s)">@s</option>
+                        <option value="@s" selected="@(Model.StatusFilter == s)">@L[s]</option>
                     }
                 </select>
             </div>
@@ -233,7 +238,7 @@ else
         /* flag icons */
         .rx-flags-slot {
             display: inline-flex; align-items: center; gap: 2px;
-            width: 5.8rem; min-width: 5.8rem;
+            width: 8.4rem; min-width: 8.4rem;
             vertical-align: middle; margin-right: 2px;
         }
         .rx-flag-placeholder        { display: inline-block; width: 1rem; height: 1rem; }
@@ -246,6 +251,8 @@ else
         .rx-badge-count              { font-size: .58rem; font-weight: 700; color: var(--clr-navy-700); margin-left: 1px; line-height: 1; }
         .mod-img-count               { font-size: .6rem; color: #888; font-weight: 600; margin-left: 3px; vertical-align: super; }
         .rx-flag-archived            { color: #546e7a; font-size: .9rem; cursor: default; }
+        .rx-flag-code-generated      { color: #f9a825; font-size: .9rem; cursor: default; }
+        .rx-flag-downloaded          { color: #00897b; font-size: .9rem; cursor: default; }
         /* external loading overlay */
         #rx-loading-overlay {
             position: absolute; inset: 0; z-index: 10;
@@ -263,39 +270,57 @@ else
         #rx-loading-overlay.hidden { display: none; }
         /* block column resize handles */
         #reception-table .tabulator-col-resize-handle { display: none !important; pointer-events: none !important; }
+        /* center Sexo and Situação columns (header + body) — Melhorias item 2 */
+        #reception-table .tabulator-cell[tabulator-field="sexRaw"],
+        #reception-table .tabulator-cell[tabulator-field="statusLabel"] { text-align: center !important; }
+        #reception-table .tabulator-col[tabulator-field="sexRaw"] .tabulator-col-title,
+        #reception-table .tabulator-col[tabulator-field="statusLabel"] .tabulator-col-title { text-align: center !important; }
         /* filter panel: chevron animation + compact buttons */
         #rx-filter-header .rx-filter-chevron { font-size: .8rem; color: var(--clr-navy-600); transition: transform .25s ease; }
         #rx-filter-header[aria-expanded="false"] .rx-filter-chevron { transform: rotate(-90deg); }
         .rx-btn-xs { font-size: .72rem; padding: 2px 10px; line-height: 1.5; }
-        /* legend: distinct color per status group */
-        #reception-legend .badge-status.scheduled   { background: #e3f2fd; color: #0d47a1; }
-        #reception-legend .badge-status.in-progress { background: #fff3e0; color: #bf360c; }
-        #reception-legend .badge-status.pending     { background: #f3e5f5; color: #6a1b9a; }
-        #reception-legend .badge-status.issued      { background: #e8f5e9; color: #1b5e20; }
-        #reception-legend .badge-status.cancelled   { background: #f0f0f0; color: #6c757d; }
+        /* legend: distinct color per status (Melhorias item 1) */
+        #reception-legend .badge-status.release    { background: #f3e5f5; color: #6a1b9a; }
+        #reception-legend .badge-status.available  { background: #e3f2fd; color: #0d47a1; }
+        #reception-legend .badge-status.reporting  { background: #fff3e0; color: #bf360c; }
+        #reception-legend .badge-status.pendency   { background: #fdecea; color: #b71c1c; }
+        #reception-legend .badge-status.revision   { background: #fff3e0; color: #bf360c; }
+        #reception-legend .badge-status.signature  { background: #fff3e0; color: #bf360c; }
+        #reception-legend .badge-status.approved   { background: #e8f5e9; color: #1b5e20; }
+        #reception-legend .badge-status.cancelled  { background: #f0f0f0; color: #6c757d; }
     </style>
 
     @* Status legend *@
     <div id="reception-legend" class="mb-2" style="font-size:.68rem">
         <div class="d-flex flex-wrap gap-2 align-items-center">
-            <span class="text-muted fw-semibold me-1">Situação:</span>
-            <span class="badge-status scheduled">Liberação</span>
-            <span class="badge-status scheduled">Disponível</span>
-            <span class="badge-status in-progress">Laudando</span>
-            <span class="badge-status pending">Pendência</span>
-            <span class="badge-status pending">Revisão</span>
-            <span class="badge-status pending">Assinatura</span>
-            <span class="badge-status issued">Aprovado</span>
-            <span class="badge-status cancelled">Cancelado</span>
+            <span class="text-muted fw-semibold me-1">@L["Situação:"]</span>
+            <span class="badge-status release">@L["Liberação"]</span>
+            <span class="badge-status available">@L["Disponível"]</span>
+            <span class="badge-status reporting">@L["Laudando"]</span>
+            <span class="badge-status pendency">@L["Pendência"]</span>
+            <span class="badge-status revision">@L["Revisão"]</span>
+            <span class="badge-status signature">@L["Assinatura"]</span>
+            <span class="badge-status approved">@L["Aprovado"]</span>
+            <span class="badge-status cancelled">@L["Cancelado"]</span>
         </div>
         <div class="d-flex flex-wrap gap-2 align-items-center mt-1">
-            <span class="text-muted fw-semibold me-1">Indicadores:</span>
-            <span style="white-space:nowrap"><i class="bi bi-exclamation-triangle-fill rx-flag-critical-unnotified"></i> Achado crítico não resolvido</span>
-            <span style="white-space:nowrap"><i class="bi bi-patch-check-fill rx-flag-critical-notified"></i> Achado crítico resolvido</span>
-            <span style="white-space:nowrap"><i class="bi bi-flag-fill rx-flag-pendency"></i> Pendência</span>
-            <span style="white-space:nowrap"><i class="bi bi-paperclip rx-flag-attach"></i> Documentos</span>
-            <span style="white-space:nowrap"><i class="bi bi-archive-fill rx-flag-archived"></i> Arquivado</span>
+            <span class="text-muted fw-semibold me-1">@L["Indicadores:"]</span>
+            <span style="white-space:nowrap"><i class="bi bi-exclamation-triangle-fill rx-flag-critical-unnotified"></i> @L["Achado crítico não resolvido"]</span>
+            <span style="white-space:nowrap"><i class="bi bi-patch-check-fill rx-flag-critical-notified"></i> @L["Achado crítico resolvido"]</span>
+            <span style="white-space:nowrap"><i class="bi bi-flag-fill rx-flag-pendency"></i> @L["Pendência"]</span>
+            <span style="white-space:nowrap"><i class="bi bi-paperclip rx-flag-attach"></i> @L["Documentos"]</span>
+            <span style="white-space:nowrap"><i class="bi bi-archive-fill rx-flag-archived"></i> @L["Arquivado"]</span>
+            <span style="white-space:nowrap"><i class="bi bi-key-fill rx-flag-code-generated"></i> @L["Código de download gerado"]</span>
+            <span style="white-space:nowrap"><i class="bi bi-cloud-arrow-down-fill rx-flag-downloaded"></i> @L["Laudo baixado pelo paciente"]</span>
         </div>
+    </div>
+
+    <div id="rx-filter-warning" class="alert alert-warning d-none py-2 px-3 mb-2 d-flex align-items-center"
+         style="font-size:var(--fs-xs)">
+        <i class="bi bi-funnel-fill me-2"></i>
+        <span>
+            <strong>@L["Atenção:"]</strong> @L["a lista abaixo está filtrada — alguns exames podem estar ocultos. Expanda o painel de filtros acima para revisar ou limpar os critérios aplicados."]
+        </span>
     </div>
 
     <div class="card anim-fade-in anim-delay-2 p-2">
@@ -303,9 +328,9 @@ else
             <div id="reception-table"></div>
             <div id="rx-loading-overlay">
                 <div class="spinner-border" role="status" style="width:2.25rem;height:2.25rem;color:var(--clr-navy-600)">
-                    <span class="visually-hidden">Carregando...</span>
+                    <span class="visually-hidden">@L["Carregando..."]</span>
                 </div>
-                <span>Carregando dados do servidor&hellip;</span>
+                <span>@L["Carregando dados do servidor…"]</span>
             </div>
         </div>
     </div>
@@ -316,69 +341,212 @@ else
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">
-                        <i class="bi bi-pencil-square me-2"></i>Editar dados do paciente
+                        <i class="bi bi-pencil-square me-2"></i>@L["Editar dados do paciente"]
                     </h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="@L["Fechar"]"></button>
                 </div>
                 <form method="post" asp-antiforgery="true">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" id="ep-patient-id" name="PatientId" />
+
+                    <ul class="nav nav-tabs px-3 pt-2" id="ep-tabs" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="ep-tab-data-btn" data-bs-toggle="tab"
+                                    data-bs-target="#ep-tab-data" type="button" role="tab">
+                                <i class="bi bi-person-vcard me-1"></i>@L["Dados do Paciente"]
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="ep-tab-history-btn" data-bs-toggle="tab"
+                                    data-bs-target="#ep-tab-history" type="button" role="tab">
+                                <i class="bi bi-clock-history me-1"></i>@L["Histórico de alteração"]
+                            </button>
+                        </li>
+                    </ul>
+
                     <div class="modal-body">
-                        <p class="text-muted mb-3" style="font-size:var(--fs-xs)">
-                            <i class="bi bi-info-circle me-1"></i>
-                            Alterações são propagadas para os dados do paciente, tags DICOM e cabeçalho do laudo.
-                        </p>
-                        <input type="hidden" id="ep-patient-id" name="PatientId" />
-                        <div class="row g-3">
-                            <div class="col-md-6">
-                                <label class="form-label">Nome completo</label>
-                                <input type="text" id="ep-name" name="PatientName" class="form-control" />
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">Nome social</label>
-                                <input type="text" id="ep-social" name="SocialName" class="form-control" />
-                            </div>
-                            <div class="col-md-3">
-                                <label class="form-label">Sexo</label>
-                                <select id="ep-sex" name="Sex" class="form-select">
-                                    <option value="M">M</option>
-                                    <option value="F">F</option>
-                                    <option value="O">Outro</option>
-                                </select>
-                            </div>
-                            <div class="col-md-5">
-                                <label class="form-label">Nascimento (data/hora)</label>
-                                <input type="datetime-local" step="1" id="ep-birth" name="BirthDateTime" class="form-control" />
-                            </div>
-                            <div class="col-md-4">
-                                <label class="form-label">CPF</label>
-                                <input type="text" id="ep-cpf" name="Cpf" class="form-control" placeholder="000.000.000-00" />
-                            </div>
-                            <div class="col-md-8">
-                                <label class="form-label">E-mail</label>
-                                <input type="email" id="ep-email" name="Email" class="form-control" />
-                            </div>
-                            <div class="col-md-4">
-                                <label class="form-label">Código de download do laudo</label>
-                                <div class="input-group">
-                                    <input type="text" id="ep-access-code" name="DownloadAccessCode"
-                                           class="form-control" maxlength="6" readonly />
-                                    <button type="button" id="ep-gen-code" class="btn btn-outline-primary"
-                                            title="Gerar novo código de 6 dígitos">
-                                        <i class="bi bi-key"></i> Gerar
-                                    </button>
+                        <div class="tab-content">
+                            @* ── Tab 1: Dados do Paciente ── *@
+                            <div class="tab-pane fade show active" id="ep-tab-data" role="tabpanel">
+                                <p class="text-muted mb-3" style="font-size:var(--fs-xs)">
+                                    <i class="bi bi-info-circle me-1"></i>
+                                    @L["Alterações são propagadas para os dados do paciente, tags DICOM e cabeçalho do laudo."]
+                                </p>
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <label class="form-label">@L["Nome completo"]</label>
+                                        <input type="text" id="ep-name" name="PatientName" class="form-control" />
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">@L["Nome social"]</label>
+                                        <input type="text" id="ep-social" name="SocialName" class="form-control" />
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">@L["Nome da mãe"]</label>
+                                        <input type="text" id="ep-mother" name="MotherName" class="form-control" />
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label class="form-label">@L["Sexo"]</label>
+                                        <select id="ep-sex" name="Sex" class="form-select">
+                                            <option value="M">M</option>
+                                            <option value="F">F</option>
+                                            <option value="O">@L["Outro"]</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label class="form-label">@L["Telefone"]</label>
+                                        <input type="tel" id="ep-phone" name="Phone" class="form-control" placeholder="(11) 90000-0000" />
+                                    </div>
+                                    <div class="col-md-5">
+                                        <label class="form-label">@L["Nascimento (data/hora)"]</label>
+                                        <input type="datetime-local" step="1" id="ep-birth" name="BirthDateTime" class="form-control" />
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="form-label">CPF</label>
+                                        <input type="text" id="ep-cpf" name="Cpf" class="form-control" placeholder="000.000.000-00" />
+                                    </div>
+                                    <div class="col-md-7">
+                                        <label class="form-label">@L["E-mail"]</label>
+                                        <input type="email" id="ep-email" name="Email" class="form-control" />
+                                    </div>
+                                    <div class="col-md-5">
+                                        <label class="form-label">@L["Data e hora do estudo (exame)"]</label>
+                                        <input type="datetime-local" id="ep-study" name="StudyDateTime" class="form-control" />
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="form-label">@L["Código de download do laudo"]</label>
+                                        <div class="input-group">
+                                            <input type="text" id="ep-access-code" name="DownloadAccessCode"
+                                                   class="form-control" maxlength="6" readonly />
+                                            <button type="button" id="ep-gen-code" class="btn btn-outline-primary"
+                                                    title="@L["Gerar novo código de 6 dígitos"]">
+                                                <i class="bi bi-key"></i> @L["Gerar"]
+                                            </button>
+                                        </div>
+                                        <div class="form-text" style="font-size:var(--fs-xs)">
+                                            @L["Código de 6 dígitos para o paciente baixar o laudo no portal."]
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="form-text" style="font-size:var(--fs-xs)">
-                                    Código de 6 dígitos para o paciente baixar o laudo no portal.
+                            </div>
+
+                            @* ── Tab 2: Histórico de alteração ── *@
+                            <div class="tab-pane fade" id="ep-tab-history" role="tabpanel">
+                                <p class="text-muted mb-2" style="font-size:var(--fs-xs)">
+                                    <i class="bi bi-info-circle me-1"></i>
+                                    @L["Todas as alterações feitas no cadastro deste paciente ficam registradas abaixo."]
+                                </p>
+                                <div id="ep-history-wrap" style="max-height:320px;overflow-y:auto">
+                                    <table class="table table-sm align-middle mb-0" style="font-size:var(--fs-xs)">
+                                        <thead class="table-light" style="position:sticky;top:0;z-index:1">
+                                            <tr>
+                                                <th>@L["Quem alterou"]</th>
+                                                <th>@L["Cargo"]</th>
+                                                <th>@L["Unidade"]</th>
+                                                <th>@L["Alteração"]</th>
+                                                <th class="text-nowrap">@L["Data e hora"]</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="ep-history-body"></tbody>
+                                    </table>
                                 </div>
                             </div>
                         </div>
                     </div>
+
+                    <div class="alert alert-warning mx-3 mb-2 py-2" style="font-size:var(--fs-xs)">
+                        <i class="bi bi-shield-exclamation me-1"></i>
+                        <strong>@L["Atenção:"]</strong> @L["os dados alterados aqui passam a constar no laudo do paciente. O paciente será notificado de que houve alteração no laudo, e o sistema registra o momento e o usuário responsável. A alteração dos dados do paciente e do estudo é de responsabilidade de quem a realiza."]
+                    </div>
+
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
-                        <button type="submit" class="btn btn-primary">
-                            <i class="bi bi-check2 me-1"></i>Salvar alterações
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">@L["Cancelar"]</button>
+                        <button type="submit" class="btn btn-danger">
+                            <i class="bi bi-check2 me-1"></i>@L["Salvar alterações"]
                         </button>
                     </div>
                 </form>
+            </div>
+        </div>
+    </div>
+
+    @* Recovery request modal (cold storage) *@
+    <div class="modal fade" id="recoveryModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><i class="bi bi-snow me-2"></i>@L["Recuperação de arquivo"]</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="@L["Fechar"]"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="text-center mb-3">
+                        <i class="bi bi-cloud-arrow-down" style="font-size:2.4rem;color:var(--clr-info-700)"></i>
+                    </div>
+                    <p class="mb-2">
+                        @L["O arquivo"] <strong id="rec-file-name">—</strong> @L["está armazenado em camada fria (cold storage) e não pode ser baixado imediatamente."]
+                    </p>
+                    <p class="text-muted mb-0" style="font-size:var(--fs-xs)">
+                        @L["Ao solicitar a recuperação, o arquivo é movido para a camada quente e ficará disponível para download em alguns minutos. Você será notificado quando estiver pronto."]
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">@L["Cancelar"]</button>
+                    <button type="button" id="rec-confirm" class="btn btn-primary">
+                        <i class="bi bi-arrow-clockwise me-1"></i>@L["Solicitar recuperação"]
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @* Download modal *@
+    <div class="modal fade" id="downloadModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <i class="bi bi-download me-2"></i>@L["Download do exame"]
+                        <span id="dl-study" class="text-muted ms-2" style="font-size:var(--fs-sm)"></span>
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="@L["Fechar"]"></button>
+                </div>
+                <div class="modal-body">
+                    <ul class="nav nav-tabs mb-3" id="dl-tabs" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#dl-current"
+                                    type="button" role="tab"><i class="bi bi-file-earmark-medical me-1"></i>@L["Exame atual"]</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#dl-prior"
+                                    type="button" role="tab"><i class="bi bi-clock-history me-1"></i>@L["Exames anteriores"]</button>
+                        </li>
+                    </ul>
+                    <div class="tab-content" style="max-height:60vh;overflow-y:auto">
+                        @* ── Tab 1: Exame atual selecionado ── *@
+                        <div class="tab-pane fade show active" id="dl-current" role="tabpanel">
+                            <h6 class="fw-semibold mb-2"><i class="bi bi-file-earmark-medical me-1 text-danger"></i>@L["Laudos do exame"]</h6>
+                            <table class="table table-sm align-middle" style="font-size:var(--fs-xs)">
+                                <thead class="table-light"><tr><th>@L["Laudo"]</th><th class="text-end" style="width:130px">@L["Ação"]</th></tr></thead>
+                                <tbody id="dl-reports-body"></tbody>
+                            </table>
+                            <h6 class="fw-semibold mb-2 mt-3"><i class="bi bi-paperclip me-1"></i>@L["Arquivos anexados"]</h6>
+                            <table class="table table-sm align-middle" style="font-size:var(--fs-xs)">
+                                <thead class="table-light"><tr>
+                                    <th>@L["Arquivo"]</th><th>@L["Upload"]</th><th>@L["Tipo"]</th><th>@L["Tamanho"]</th><th>@L["Responsável"]</th>
+                                    <th class="text-end" style="width:130px">@L["Ação"]</th>
+                                </tr></thead>
+                                <tbody id="dl-attachments-body"></tbody>
+                            </table>
+                        </div>
+                        @* ── Tab 2: Exames anteriores ── *@
+                        <div class="tab-pane fade" id="dl-prior" role="tabpanel">
+                            <div id="dl-prior-body"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">@L["Fechar"]</button>
+                </div>
             </div>
         </div>
     </div>
@@ -418,22 +586,24 @@ else
                     BDUS: { bg: '#f1f8e9', c: '#558b2f' }
                 };
 
-                /* ── Status dot colors (must match #reception-legend CSS) ── */
+                /* ── Status dot colors — keyed by stable PT label (must match #reception-legend) ── */
                 var _statusDotClr = {
-                    'scheduled':   '#0d47a1',
-                    'in-progress': '#bf360c',
-                    'pending':     '#6a1b9a',
-                    'issued':      '#1b5e20',
-                    'urgent':      '#b71c1c',
-                    'cancelled':   '#9e9e9e'
+                    'Liberação':  '#6a1b9a',
+                    'Disponível': '#0d47a1',
+                    'Laudando':   '#bf360c',
+                    'Pendência':  '#b71c1c',
+                    'Revisão':    '#bf360c',
+                    'Assinatura': '#bf360c',
+                    'Aprovado':   '#1b5e20',
+                    'Cancelado':  '#9e9e9e'
                 };
 
                 /* ── Loading overlay (external div, immune to Tabulator lifecycle) ── */
                 var _overlay = document.getElementById('rx-loading-overlay');
                 var _spinnerSmHtml =
                     '<div class="spinner-border spinner-border-sm" role="status" style="color:var(--clr-navy-600)">'
-                    + '<span class="visually-hidden">Processando...</span></div>'
-                    + '<span>Processando…</span>';
+                    + '<span class="visually-hidden">' + @J("Processando...") + '</span></div>'
+                    + '<span>' + @J("Processando…") + '</span>';
 
                 var _initialLoading = true;
                 var _opTimer = null;
@@ -468,20 +638,20 @@ else
                         detail.className = 'rx-detail';
 
                         var r1 = '<div class="rx-detail-row">';
-                        if (d.socialNameRaw) r1 += '<span><b>Nome social:</b> ' + escH(d.socialNameRaw) + '</span>';
-                        r1 += '<span><b>Nasc.:</b> '      + escH(d.birthStr)          + '</span>';
-                        r1 += '<span><b>Idade:</b> '       + escH(d.ageFormatted)      + '</span>';
-                        r1 += '<span><b>ID Estudo:</b> '   + escH(d.studyId)           + '</span>';
-                        r1 += '<span><b>Data Estudo:</b> '   + escH(d.studyDateTime)     + '</span>';
-                        r1 += '<span><b>Liberação:</b> '        + escH(d.liberationDateStr) + '</span>';
-                        r1 += '<span><b>Data Laudo:</b> '    + escH(d.reportDateTimeStr) + '</span>';
+                        if (d.socialNameRaw) r1 += '<span><b>' + @J("Nome social:") + '</b> ' + escH(d.socialNameRaw) + '</span>';
+                        r1 += '<span><b>' + @J("Nasc.:") + '</b> '      + escH(d.birthStr)          + '</span>';
+                        r1 += '<span><b>' + @J("Idade:") + '</b> '       + escH(d.ageFormatted)      + '</span>';
+                        r1 += '<span><b>' + @J("ID Estudo:") + '</b> '   + escH(d.studyId)           + '</span>';
+                        r1 += '<span><b>' + @J("Data Estudo:") + '</b> '   + escH(d.studyDateTime)     + '</span>';
+                        r1 += '<span><b>' + @J("Liberação:") + '</b> '        + escH(d.liberationDateStr) + '</span>';
+                        r1 += '<span><b>' + @J("Data Laudo:") + '</b> '    + escH(d.reportDateTimeStr) + '</span>';
                         r1 += '</div>';
 
                         var r2 = '<div class="rx-detail-row">';
-                        r2 += '<span><b>Unidade:</b> '     + escH(d.unit)               + '</span>';
-                        r2 += '<span><b>T\u00e9cnico:</b> '   + escH(d.technicianName)     + '</span>';
-                        r2 += '<span><b>Executor:</b> '    + escH(d.executingPhysician)  + '</span>';
-                        r2 += '<span><b>Solicitante:</b> ' + escH(d.requestingPhysician) + '</span>';
+                        r2 += '<span><b>' + @J("Unidade:") + '</b> '     + escH(d.unit)               + '</span>';
+                        r2 += '<span><b>' + @J("Técnico:") + '</b> '   + escH(d.technicianName)     + '</span>';
+                        r2 += '<span><b>' + @J("Executor:") + '</b> '    + escH(d.executingPhysician)  + '</span>';
+                        r2 += '<span><b>' + @J("Solicitante:") + '</b> ' + escH(d.requestingPhysician) + '</span>';
                         r2 += '</div>';
 
                         detail.innerHTML = r1 + r2;
@@ -530,25 +700,31 @@ else
                     columns: [
                         /* ── Col 1: ID Paciente ─────────────────────────────── */
                         {
-                            title: "ID Paciente", field: "patientId", widthGrow: 1, minWidth: 220,
+                            title: @J("ID Paciente"), field: "patientId", widthGrow: 1, minWidth: 220,
                             formatter: function (cell) {
                                 var d = cell.getRow().getData();
                                 var f1 = d.criticalFinding === 'unnotified'
-                                    ? '<i class="bi bi-exclamation-triangle-fill rx-flag-critical-unnotified" title="Achado cr\u00edtico n\u00e3o resolvido"></i>'
+                                    ? '<i class="bi bi-exclamation-triangle-fill rx-flag-critical-unnotified" title=' + @J("Achado crítico não resolvido") + '></i>'
                                     : d.criticalFinding === 'notified'
-                                    ? '<i class="bi bi-patch-check-fill rx-flag-critical-notified" title="Achado cr\u00edtico resolvido"></i>'
+                                    ? '<i class="bi bi-patch-check-fill rx-flag-critical-notified" title=' + @J("Achado crítico resolvido") + '></i>'
                                     : '<i class="rx-flag-placeholder"></i>';
                                 var f2 = d.hasPendency
-                                    ? '<i class="bi bi-flag-fill rx-flag-pendency" title="Exame com pend\u00eancias"></i>'
+                                    ? '<i class="bi bi-flag-fill rx-flag-pendency" title=' + @J("Exame com pendências") + '></i>'
                                     : '<i class="rx-flag-placeholder"></i>';
                                 var f3 = d.attachmentCount > 0
-                                    ? '<span class="rx-attach-item"><i class="bi bi-paperclip rx-flag-attach" title="' + d.attachmentCount + ' doc(s) anexado(s)"></i><span class="rx-badge-count">' + d.attachmentCount + '</span></span>'
-                                    : '<i class="bi bi-paperclip rx-flag-attach-empty" title="Sem documentos"></i>';
+                                    ? '<span class="rx-attach-item"><i class="bi bi-paperclip rx-flag-attach" title="' + d.attachmentCount + ' ' + @J("doc(s) anexado(s)") + '"></i><span class="rx-badge-count">' + d.attachmentCount + '</span></span>'
+                                    : '<i class="bi bi-paperclip rx-flag-attach-empty" title=' + @J("Sem documentos") + '></i>';
                                 var f4 = d.isArchived
-                                    ? '<i class="bi bi-archive-fill rx-flag-archived" title="Exame arquivado (cold storage)"></i>'
+                                    ? '<i class="bi bi-archive-fill rx-flag-archived" title=' + @J("Exame arquivado (cold storage)") + '></i>'
                                     : '<i class="rx-flag-placeholder"></i>';
-                                return '<span class="rx-flags-slot">' + f1 + f2 + f3 + f4 + '</span>'
-                                     + '<i class="bi bi-chevron-right rx-toggle-icon" title="Detalhes"></i>'
+                                var f5 = d.downloadCodeGenerated
+                                    ? '<i class="bi bi-key-fill rx-flag-code-generated" title=' + @J("Código de download do laudo gerado") + '></i>'
+                                    : '<i class="rx-flag-placeholder"></i>';
+                                var f6 = d.reportDownloaded
+                                    ? '<i class="bi bi-cloud-arrow-down-fill rx-flag-downloaded" title=' + @J("Laudo já baixado pelo paciente") + '></i>'
+                                    : '<i class="rx-flag-placeholder"></i>';
+                                return '<span class="rx-flags-slot">' + f1 + f2 + f3 + f4 + f5 + f6 + '</span>'
+                                     + '<i class="bi bi-chevron-right rx-toggle-icon" title=' + @J("Detalhes") + '></i>'
                                      + '<code style="color:var(--clr-navy-700)">' + escH(d.patientId) + '</code>';
                             },
                             cellClick: function (e, cell) {
@@ -561,7 +737,7 @@ else
                         },
                         /* ── Col 2: Paciente (pai) | child: handled by rowFormatter */
                         {
-                            title: "Paciente", field: "patientName", widthGrow: 2, minWidth: 140,
+                            title: @J("Paciente"), field: "patientName", widthGrow: 2, minWidth: 140,
                             formatter: function (cell) {
                                 var d = cell.getRow().getData();
                                 if (d._isChild) return '';
@@ -570,7 +746,7 @@ else
                         },
                         /* ── Col 3: Gênero (pai) | vazio (filho) ────────────── */
                         {
-                            title: "Sexo", field: "sexRaw", width: 90, hozAlign: "center",
+                            title: @J("Sexo"), field: "sexRaw", width: 90, hozAlign: "center", headerHozAlign: "center",
                             formatter: function (cell) {
                                 var d = cell.getRow().getData();
                                 if (d._isChild) return '';
@@ -579,7 +755,7 @@ else
                         },
                         /* ── Col 4: AN = Nº Acesso (pai) | vazio (filho) ───────── */
                         {
-                            title: "AN", field: "accessCodeRaw", width: 82, headerTooltip: "Número de Acesso",
+                            title: "AN", field: "accessCodeRaw", width: 82, headerTooltip: @J("Número de Acesso"),
                             formatter: function (cell) {
                                 var d = cell.getRow().getData();
                                 if (d._isChild) return '';
@@ -588,19 +764,19 @@ else
                         },
                         /* ── Col 5: Mod. (pai) | child: handled by rowFormatter */
                         {
-                            title: "Mod.", field: "modality", width: 120,
+                            title: @J("Mod."), field: "modality", width: 120,
                             formatter: function (cell) {
                                 var d = cell.getRow().getData();
                                 if (d._isChild) return '';
                                 var abbr = _modAbbr[d.modality] || d.modality;
                                 var clr  = _modClr[abbr] || { bg: '#f0f0f0', c: '#444' };
                                 return '<span style="display:inline-block;padding:1px 9px;border-radius:20px;font-weight:600;white-space:nowrap;background:' + clr.bg + ';color:' + clr.c + '">' + escH(abbr) + '</span>'
-                                     + '<span class="mod-img-count" title="' + d.imageCount + ' imagem(ns)">' + d.imageCount + '<i class="bi bi-images" style="font-size:.55rem;margin-left:1px"></i></span>';
+                                     + '<span class="mod-img-count" title="' + d.imageCount + ' ' + @J("imagem(ns)") + '">' + d.imageCount + '<i class="bi bi-images" style="font-size:.55rem;margin-left:1px"></i></span>';
                             }
                         },
                         /* ── Col 6: Procedimento (pai) | child: handled by rowFormatter */
                         {
-                            title: "Procedimento", field: "procedure", widthGrow: 1, minWidth: 120,
+                            title: @J("Procedimento"), field: "procedure", widthGrow: 1, minWidth: 120,
                             formatter: function (cell) {
                                 var d = cell.getRow().getData();
                                 if (d._isChild) return '';
@@ -609,17 +785,17 @@ else
                         },
                         /* ── Col 7: Situação (pai) | child: handled by rowFormatter */
                         {
-                            title: "Situação", field: "statusLabel", width: 140, hozAlign: "center",
+                            title: @J("Situação"), field: "statusLabel", width: 140, hozAlign: "center", headerHozAlign: "center",
                             formatter: function (cell) {
                                 var d = cell.getRow().getData();
                                 if (d._isChild) return '';
-                                var clr = _statusDotClr[d.statusCss] || '#666';
+                                var clr = _statusDotClr[d.statusLabel] || '#666';
                                 return '<span style="display:inline-block;width:14px;height:14px;border-radius:50%;background:' + clr + ';vertical-align:middle;cursor:default" title="' + escH(d.statusLabel) + '"></span>';
                             }
                         },
                         /* ── Col 8: Tipo (pai) | child: handled by rowFormatter */
                         {
-                            title: "Tipo", field: "typeLabel", widthGrow: 1, minWidth: 60,
+                            title: @J("Tipo"), field: "typeLabel", widthGrow: 1, minWidth: 60,
                             formatter: function (cell) {
                                 var d = cell.getRow().getData();
                                 if (d._isChild) return '';
@@ -628,7 +804,7 @@ else
                         },
                         /* ── Col: Ações ───────────────────────────────── */
                         {
-                            title: "Ações", field: "hasReport", width: 140, hozAlign: "right",
+                            title: @J("Ações"), field: "hasReport", width: 140, hozAlign: "right",
                             headerSort: false,
                             formatter: function (cell) {
                                 var d = cell.getRow().getData();
@@ -638,16 +814,21 @@ else
                                       + ' data-id="'     + escH(d.patientId)     + '"'
                                       + ' data-name="'   + escH(d.patientName)   + '"'
                                       + ' data-social="' + escH(d.socialNameRaw) + '"'
+                                      + ' data-mother="' + escH(d.motherNameRaw) + '"'
+                                      + ' data-phone="'  + escH(d.phoneRaw)      + '"'
                                       + ' data-sex="'    + escH(d.sexRaw)        + '"'
                                       + ' data-birth="'  + escH(d.birthForInput) + '"'
+                                      + ' data-study="'  + escH(d.studyForInput) + '"'
                                       + ' data-cpf="'    + escH(d.cpfRaw)        + '"'
                                       + ' data-email="'  + escH(d.emailRaw)      + '"'
                                       + ' data-code="'   + escH(d.accessCodeRaw) + '"'
-                                      + ' title="Editar dados do paciente">'
+                                      + ' title=' + @J("Editar dados do paciente") + '>'
                                       + '<i class="bi bi-pencil-square"></i></button>';
+                                html += '<button class="btn btn-sm btn-outline-primary btn-download-exam py-0"'
+                                      + ' data-study="' + escH(d.studyId) + '"'
+                                      + ' title=' + @J("Baixar laudos e anexos") + '><i class="bi bi-download"></i></button>';
                                 if (d.hasReport) {
-                                    html += '<a href="#" class="btn btn-sm btn-outline-primary py-0" title="Baixar laudo (PDF)"><i class="bi bi-download"></i></a>';
-                                    html += '<a href="#" class="btn btn-sm btn-outline-primary py-0" title="Imprimir laudo" target="_blank"><i class="bi bi-printer"></i></a>';
+                                    html += '<a href="#" class="btn btn-sm btn-outline-primary py-0" title=' + @J("Imprimir laudo") + ' target="_blank"><i class="bi bi-printer"></i></a>';
                                 }
                                 html += '</div>';
                                 return html;
@@ -703,7 +884,7 @@ else
 
                     function buildProcs(mod) {
                         var sel = document.getElementById('f-procedure');
-                        sel.innerHTML = '<option value="">Todos</option>';
+                        sel.innerHTML = '<option value="">' + @J("Todos") + '</option>';
                         if (!mod) { sel.disabled = true; return; }
                         sel.disabled = false;
                         (_procsByMod[mod] || []).forEach(function (v) {
@@ -731,7 +912,7 @@ else
                         });
                         var badge = document.getElementById('rx-filter-badge');
                         if (count > 0) {
-                            badge.textContent = count + (count === 1 ? ' aplicado' : ' aplicados');
+                            badge.textContent = count + (count === 1 ? ' ' + @J("aplicado") : ' ' + @J("aplicados"));
                             badge.classList.remove('d-none');
                         } else {
                             badge.classList.add('d-none');
@@ -810,11 +991,40 @@ else
                     modal.querySelector('#ep-patient-id').value  = btn.dataset.id     || '';
                     modal.querySelector('#ep-name').value        = btn.dataset.name   || '';
                     modal.querySelector('#ep-social').value      = btn.dataset.social || '';
+                    modal.querySelector('#ep-mother').value      = btn.dataset.mother || '';
+                    modal.querySelector('#ep-phone').value       = btn.dataset.phone  || '';
                     modal.querySelector('#ep-sex').value         = btn.dataset.sex    || 'M';
                     modal.querySelector('#ep-birth').value       = btn.dataset.birth  || '';
+                    modal.querySelector('#ep-study').value       = (btn.dataset.study || '').slice(0, 16);
                     modal.querySelector('#ep-cpf').value         = btn.dataset.cpf    || '';
                     modal.querySelector('#ep-email').value       = btn.dataset.email  || '';
                     modal.querySelector('#ep-access-code').value = btn.dataset.code   || '';
+
+                    /* Render change history for this patient */
+                    var rec = tableData.find(function (d) { return d.patientId === btn.dataset.id; });
+                    var body = modal.querySelector('#ep-history-body');
+                    body.innerHTML = '';
+                    var logs = (rec && rec.changeLogs) || [];
+                    if (logs.length === 0) {
+                        body.innerHTML = '<tr><td colspan="5" class="text-center text-muted py-3">'
+                                       + @J("Nenhuma alteração registrada.") + '</td></tr>';
+                    } else {
+                        logs.forEach(function (l) {
+                            body.insertAdjacentHTML('beforeend',
+                                '<tr>'
+                              + '<td><div class="d-flex align-items-center gap-2">'
+                              + '<span class="hosp-avatar" style="width:26px;height:26px;font-size:.6rem">' + escH(l.initials) + '</span>'
+                              + '<span>' + escH(l.userName) + '</span></div></td>'
+                              + '<td>' + escH(l.userRole) + '</td>'
+                              + '<td>' + escH(l.unit) + '</td>'
+                              + '<td>' + escH(l.summary) + '</td>'
+                              + '<td class="text-nowrap">' + escH(l.at) + '</td>'
+                              + '</tr>');
+                        });
+                    }
+                    /* Always reset to first tab on open */
+                    bootstrap.Tab.getOrCreateInstance(modal.querySelector('#ep-tab-data-btn')).show();
+
                     document.body.appendChild(modal);
                     bootstrap.Modal.getOrCreateInstance(modal).show();
                 });
@@ -823,6 +1033,124 @@ else
                     document.getElementById('ep-access-code').value =
                         Math.floor(100000 + Math.random() * 900000).toString();
                 });
+
+                /* ── Download modal ─────────────────────────────── */
+                function dlIcon(isCold, label) {
+                    if (isCold) {
+                        return '<button class="btn btn-sm btn-outline-info py-0 btn-request-recovery" '
+                             + 'data-file="' + escH(label) + '" title=' + @J("Arquivo em cold storage — solicitar recuperação") + '>'
+                             + '<i class="bi bi-snow"></i> ' + @J("Recuperar") + '</button>';
+                    }
+                    return '<a href="#" class="btn btn-sm btn-outline-primary py-0" title=' + @J("Baixar") + '><i class="bi bi-download"></i></a>';
+                }
+
+                document.getElementById('reception-table-wrap').addEventListener('click', function (e) {
+                    var btn = e.target.closest('.btn-download-exam');
+                    if (!btn) return;
+                    var rec = tableData.find(function (d) { return d.studyId === btn.dataset.study; });
+                    if (!rec) return;
+                    var modal = document.getElementById('downloadModal');
+                    modal.querySelector('#dl-study').textContent = rec.studyId + ' · ' + rec.patientName;
+
+                    /* Reports */
+                    var rb = modal.querySelector('#dl-reports-body');
+                    rb.innerHTML = '';
+                    (rec.reports || []).forEach(function (r) {
+                        rb.insertAdjacentHTML('beforeend',
+                            '<tr><td><i class="bi bi-file-earmark-medical me-1 text-danger"></i>' + escH(r.title) + '</td>'
+                          + '<td class="text-end">' + dlIcon(r.isCold, r.title) + '</td></tr>');
+                    });
+                    if (!(rec.reports || []).length)
+                        rb.innerHTML = '<tr><td colspan="2" class="text-center text-muted py-3">' + @J("Nenhum laudo disponível.") + '</td></tr>';
+
+                    /* Attachments */
+                    var ab = modal.querySelector('#dl-attachments-body');
+                    ab.innerHTML = '';
+                    (rec.attachments || []).forEach(function (a) {
+                        ab.insertAdjacentHTML('beforeend',
+                            '<tr><td><i class="bi bi-paperclip me-1"></i>' + escH(a.fileName) + '</td>'
+                          + '<td class="text-nowrap">' + escH(a.uploadedAt) + '</td>'
+                          + '<td>' + escH(a.type) + '</td>'
+                          + '<td class="text-nowrap">' + escH(a.size) + '</td>'
+                          + '<td>' + escH(a.uploadedBy) + '</td>'
+                          + '<td class="text-end">' + dlIcon(a.isCold, a.fileName) + '</td></tr>');
+                    });
+                    if (!(rec.attachments || []).length)
+                        ab.innerHTML = '<tr><td colspan="6" class="text-center text-muted py-3">' + @J("Nenhum arquivo anexado.") + '</td></tr>';
+
+                    /* Prior exams */
+                    var pb = modal.querySelector('#dl-prior-body');
+                    pb.innerHTML = '';
+                    var priors = rec.priorExams || [];
+                    if (!priors.length) {
+                        pb.innerHTML = '<p class="text-center text-muted py-3 mb-0">' + @J("Nenhum exame anterior encontrado.") + '</p>';
+                    } else {
+                        priors.forEach(function (p) {
+                            var html = '<div class="card mb-2"><div class="card-body py-2 px-3">'
+                                + '<div class="d-flex justify-content-between align-items-center">'
+                                + '<div><strong>' + escH(p.title) + '</strong>'
+                                + '<span class="text-muted ms-2" style="font-size:var(--fs-xs)">'
+                                + escH(p.studyId) + ' · AN ' + escH(p.accessNumber) + ' · ' + escH(p.when) + '</span></div>'
+                                + '<div>' + dlIcon(p.isCold, p.title) + '</div></div>';
+                            if ((p.attachments || []).length) {
+                                html += '<table class="table table-sm mt-2 mb-0" style="font-size:var(--fs-xs)">'
+                                     + '<thead class="table-light"><tr><th>' + @J("Anexo") + '</th><th>' + @J("Upload") + '</th><th>' + @J("Tipo") + '</th><th>' + @J("Tamanho") + '</th>'
+                                     + '<th>' + @J("Responsável") + '</th><th>AN</th><th class="text-end">' + @J("Ação") + '</th></tr></thead><tbody>';
+                                p.attachments.forEach(function (a) {
+                                    html += '<tr><td><i class="bi bi-paperclip me-1"></i>' + escH(a.fileName) + '</td>'
+                                          + '<td class="text-nowrap">' + escH(a.uploadedAt) + '</td>'
+                                          + '<td>' + escH(a.type) + '</td><td class="text-nowrap">' + escH(a.size) + '</td>'
+                                          + '<td>' + escH(a.uploadedBy) + '</td><td>' + escH(p.accessNumber) + '</td>'
+                                          + '<td class="text-end">' + dlIcon(a.isCold, a.fileName) + '</td></tr>';
+                                });
+                                html += '</tbody></table>';
+                            }
+                            html += '</div></div>';
+                            pb.insertAdjacentHTML('beforeend', html);
+                        });
+                    }
+
+                    document.body.appendChild(modal);
+                    bootstrap.Modal.getOrCreateInstance(modal).show();
+                });
+
+                /* ── Cold storage recovery request ─────────────── */
+                document.addEventListener('click', function (e) {
+                    var btn = e.target.closest('.btn-request-recovery');
+                    if (!btn) return;
+                    var modal = document.getElementById('recoveryModal');
+                    modal.querySelector('#rec-file-name').textContent = btn.dataset.file || '';
+                    modal._sourceBtn = btn;
+                    document.body.appendChild(modal);
+                    bootstrap.Modal.getOrCreateInstance(modal).show();
+                });
+                document.getElementById('rec-confirm').addEventListener('click', function () {
+                    var modal = document.getElementById('recoveryModal');
+                    var btn = modal._sourceBtn;
+                    if (btn) {
+                        btn.outerHTML = '<span class="badge bg-info-subtle text-info-emphasis">'
+                                      + '<i class="bi bi-hourglass-split me-1"></i>' + @J("Recuperação solicitada") + '</span>';
+                    }
+                    bootstrap.Modal.getOrCreateInstance(modal).hide();
+                });
+
+                /* ── Filter warning banner ─────────────────────── */
+                (function () {
+                    var header = document.getElementById('rx-filter-header');
+                    var warn = document.getElementById('rx-filter-warning');
+                    if (!header || !warn) return;
+                    function refresh() {
+                        var badge = document.getElementById('rx-filter-badge');
+                        var hasFilters = badge && !badge.classList.contains('d-none');
+                        var collapsed = header.getAttribute('aria-expanded') !== 'true';
+                        warn.classList.toggle('d-none', !(hasFilters && collapsed));
+                    }
+                    document.getElementById('f-apply').addEventListener('click', function () { setTimeout(refresh, 0); });
+                    document.getElementById('f-clear').addEventListener('click', function () { setTimeout(refresh, 0); });
+                    document.getElementById('rx-filter-body').addEventListener('shown.bs.collapse', refresh);
+                    document.getElementById('rx-filter-body').addEventListener('hidden.bs.collapse', refresh);
+                    refresh();
+                })();
             })();
         </script>
     }
@@ -849,7 +1177,7 @@ else
                             <th>ID</th>
                             <th>@L["Paciente"]</th>
                             <th>@L["Modalidade"]</th>
-                            <th>Médico</th>
+                            <th>@L["Médico"]</th>
                             <th>@L["Data"]</th>
                             <th>@L["Status"]</th>
                             <th>@L["Ações"]</th>
@@ -879,15 +1207,15 @@ else
                                 <td>@exam.Modality</td>
                                 <td class="text-muted" style="font-size:var(--fs-xs)">@exam.Physician</td>
                                 <td style="white-space:nowrap">@exam.Date.ToString("dd/MM/yyyy")</td>
-                                <td><span class="badge-status @statusCss">@exam.Status</span></td>
+                                <td><span class="badge-status @statusCss">@L[exam.Status]</span></td>
                                 <td>
                                     <div class="d-flex gap-1">
-                                        <button class="btn btn-sm btn-outline-secondary" title="Ver detalhes">
+                                        <button class="btn btn-sm btn-outline-secondary" title="@L["Ver detalhes"]">
                                             <i class="bi bi-eye"></i>
                                         </button>
                                         @if (exam.ReportUrl is not null)
                                         {
-                                            <a href="@exam.ReportUrl" class="btn btn-sm btn-outline-primary" title="Ver laudo">
+                                            <a href="@exam.ReportUrl" class="btn btn-sm btn-outline-primary" title="@L["Ver laudo"]">
                                                 <i class="bi bi-file-earmark-text"></i>
                                             </a>
                                         }
@@ -903,7 +1231,7 @@ else
 
     @if (Model.TotalPages > 1)
     {
-        <nav class="mt-3 anim-fade-in anim-delay-3" aria-label="Paginação de exames">
+        <nav class="mt-3 anim-fade-in anim-delay-3" aria-label="@L["Paginação de exames"]">
             <ul class="pagination pagination-sm justify-content-center mb-0">
                 <li class="page-item @(Model.PageIndex == 1 ? "disabled" : "")">
                     <a class="page-link" href="@PageLink(Math.Max(1, Model.PageIndex - 1))"><i class="bi bi-chevron-left"></i></a>
@@ -919,7 +1247,7 @@ else
                 </li>
             </ul>
             <p class="text-center text-muted mt-2 mb-0" style="font-size:var(--fs-xs)">
-                Página @Model.PageIndex de @Model.TotalPages · @Model.TotalCount exames
+                @L["Página"] @Model.PageIndex @L["de"] @Model.TotalPages · @Model.TotalCount @L["exames"]
             </p>
         </nav>
     }
