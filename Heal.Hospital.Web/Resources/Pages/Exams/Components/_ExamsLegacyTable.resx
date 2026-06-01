@@ -18,4 +18,6 @@
   <data name="Status" xml:space="preserve"><value>Status</value></data>
   <data name="Ver detalhes" xml:space="preserve"><value>Ver detalhes</value></data>
   <data name="Ver laudo" xml:space="preserve"><value>Ver laudo</value></data>
+  <data name="Atualizar exame" xml:space="preserve"><value>Atualizar exame</value></data>
+  <data name="Reencaminhar imagens DICOM" xml:space="preserve"><value>Reencaminhar imagens DICOM</value></data>
 </root>

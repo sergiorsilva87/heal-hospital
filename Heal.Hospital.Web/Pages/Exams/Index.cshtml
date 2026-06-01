@@ -33,14 +33,19 @@
 }
 
 <!-- Toolbar -->
-<div class="section-header anim-fade-in mb-4">
-    <h2 class="section-title">
+<div class="section-header anim-fade-in mb-4 d-flex align-items-center justify-content-between">
+    <h2 class="section-title mb-0">
         <i class="bi bi-file-medical me-2" style="color:var(--clr-navy-700)"></i>
         @L["Lista de Exames"]
         <span class="badge ms-2" style="background:var(--clr-navy-100);color:var(--clr-navy-900);font-size:.75rem;">
             @Model.TotalCount
         </span>
     </h2>
+    <button id="exams-refresh-btn" class="btn btn-outline-secondary btn-sm d-flex align-items-center gap-1"
+            title="@L["Atualizar lista"]">
+        <i class="bi bi-arrow-clockwise"></i>
+        <span style="font-size:var(--fs-xs)">@L["Atualizar lista"]</span>
+    </button>
 </div>
 
 @if (Model.IsReceptionist)
@@ -61,6 +66,7 @@
     <partial name="Components/_DownloadHistoryModal"/>
     <partial name="Components/_DelayModal"/>
     <partial name="Components/_Toast"/>
+    <partial name="Components/_DicomSendModal"/>
 }
 else
 {
@@ -68,6 +74,8 @@ else
     <partial name="Components/_ExamsSearchForm" model="Model"/>
     <partial name="Components/_ExamsLegacyTable" model="Model"/>
     <partial name="Components/_ExamsPagination" model="Model"/>
+    <partial name="Components/_DicomSendModal"/>
+    <partial name="Components/_Toast"/>
 }
 
 @section Scripts {
@@ -79,6 +87,7 @@ else
             (function () {
                 var E = window.Exams = window.Exams || {};
                 E.data = @Html.Raw(Model.ReceptionExamsJson);
+                E.dicomServers = @Html.Raw(Model.DicomServersJson);
                 E.locale = "@_tabLoc";
                 E.i18n = {
                     "Processando...": @J("Processando..."),
@@ -163,7 +172,23 @@ else
                     "O paciente ainda não baixou os laudos.": @J("O paciente ainda não baixou os laudos."),
                     "Recuperação solicitada": @J("Recuperação solicitada"),
                     "Imagens do exame (DICOM)": @J("Imagens do exame (DICOM)"),
-                    "Ver imagens": @J("Ver imagens")
+                    "Ver imagens": @J("Ver imagens"),
+                    "Reencaminhar imagens DICOM": @J("Reencaminhar imagens DICOM"),
+                    "Reencaminhar": @J("Reencaminhar"),
+                    "Servidor Cadastrado": @J("Servidor Cadastrado"),
+                    "Servidor Manual": @J("Servidor Manual"),
+                    "Servidor de destino": @J("Servidor de destino"),
+                    "Selecionar servidor...": @J("Selecionar servidor..."),
+                    "Porta": @J("Porta"),
+                    "Testando conexão...": @J("Testando conexão..."),
+                    "Servidor disponível": @J("Servidor disponível"),
+                    "Servidor indisponível": @J("Servidor indisponível"),
+                    "Imagens reencaminhadas com sucesso.": @J("Imagens reencaminhadas com sucesso."),
+                    "Enviando...": @J("Enviando..."),
+                    "Atualizar lista": @J("Atualizar lista"),
+                    "Atualizar exame": @J("Atualizar exame"),
+                    "Lista atualizada.": @J("Lista atualizada."),
+                    "Exame atualizado.": @J("Exame atualizado.")
                 };
                 E.t = function (k) {
                     var v = E.i18n[k];
@@ -184,5 +209,47 @@ else
         <script src="~/js/exams/download-code-modal.js" asp-append-version="true"></script>
         <script src="~/js/exams/download-history-modal.js" asp-append-version="true"></script>
         <script src="~/js/exams/delay.js" asp-append-version="true"></script>
+        <script src="~/js/exams/dicom-send-modal.js" asp-append-version="true"></script>
+    }
+    else
+    {
+        @* ── Non-receptionist: minimal Exams namespace + DICOM send + row refresh ── *@
+        <script>
+            (function () {
+                var E = window.Exams = window.Exams || {};
+                E.dicomServers = @Html.Raw(Model.DicomServersJson);
+                E.t = function (k) { return k; };
+                E.showToast = function (msg) {
+                    var toast = document.getElementById('rx-toast');
+                    if (!toast) return;
+                    document.getElementById('rx-toast-body').textContent = msg;
+                    bootstrap.Toast.getOrCreateInstance(toast, { delay: 3500 }).show();
+                };
+                E.showModalEl = function (modal) {
+                    document.body.appendChild(modal);
+                    bootstrap.Modal.getOrCreateInstance(modal).show();
+                };
+                /* Row refresh mock */
+                document.addEventListener('click', function (e) {
+                    var btn = e.target.closest('[data-rx-row-refresh]');
+                    if (!btn) return;
+                    var row = btn.closest('tr');
+                    if (!row) return;
+                    var icon = btn.querySelector('i');
+                    if (icon) icon.classList.add('anim-spin');
+                    row.style.opacity = '0.4';
+                    row.style.transition = 'opacity 0.15s';
+                    setTimeout(function () {
+                        row.style.opacity = '';
+                        row.style.transition = '';
+                        if (icon) icon.classList.remove('anim-spin');
+                    }, 800);
+                });
+                /* Global refresh */
+                var rfBtn = document.getElementById('exams-refresh-btn');
+                if (rfBtn) rfBtn.addEventListener('click', function () { window.location.reload(); });
+            })();
+        </script>
+        <script src="~/js/exams/dicom-send-modal.js" asp-append-version="true"></script>
     }
 }

@@ -282,6 +282,19 @@ public static class MockData
     ];
 
     // ─────────────────────────────────────────────────────────
+    // DICOM SERVERS (teleradiology targets)
+    // ─────────────────────────────────────────────────────────
+    public record DicomServer(string Id, string Name, string AeTitle, string Ip, int Port);
+
+    public static readonly DicomServer[] DicomServers =
+    [
+        new("DS-001", "Hospital Central - PACS",    "PACS_CENTRAL", "192.168.1.10",  104),
+        new("DS-002", "Clínica Imagem Norte",        "CLIMG_NORTE",  "192.168.1.25",  11112),
+        new("DS-003", "UPA São José",               "UPA_SJ",       "10.0.0.50",     104),
+        new("DS-004", "Telemedicina BR - Gateway",  "TEMED_BR",     "200.10.5.1",    11112),
+    ];
+
+    // ─────────────────────────────────────────────────────────
     // RECEPTION — Rich exam list (Receptionist screen)
     // ─────────────────────────────────────────────────────────
 

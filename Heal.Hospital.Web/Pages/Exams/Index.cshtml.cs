@@ -18,6 +18,7 @@ public class IndexModel : PageModel
 
     public MockData.ReceptionExam[] ReceptionPageItems { get; private set; } = [];
     public string ReceptionExamsJson { get; private set; } = "[]";
+    public string DicomServersJson { get; private set; } = "[]";
     public int TotalCount { get; private set; }
     public int TotalPages { get; private set; } = 1;
 
@@ -36,6 +37,9 @@ public class IndexModel : PageModel
     {
         Role = User.FindFirstValue(ClaimTypes.Role) ?? "";
         if (PageIndex < 1) PageIndex = 1;
+
+        DicomServersJson = System.Text.Json.JsonSerializer.Serialize(
+            MockData.DicomServers.Select(s => new { id = s.Id, name = s.Name, aeTitle = s.AeTitle, ip = s.Ip, port = s.Port }));
 
         if (IsReceptionist)
         {

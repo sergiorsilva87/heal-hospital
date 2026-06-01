@@ -88,4 +88,20 @@
   <data name="Minutos" xml:space="preserve"><value>Minutos</value></data>
   <data name="Sem dados suficientes para o fluxo." xml:space="preserve"><value>Sem dados suficientes para o fluxo.</value></data>
   <data name="Sem dados suficientes para a linha do tempo." xml:space="preserve"><value>Sem dados suficientes para a linha do tempo.</value></data>
+  <data name="Atualizar lista" xml:space="preserve"><value>Atualizar lista</value></data>
+  <data name="Atualizar exame" xml:space="preserve"><value>Atualizar exame</value></data>
+  <data name="Lista atualizada." xml:space="preserve"><value>Lista atualizada.</value></data>
+  <data name="Exame atualizado." xml:space="preserve"><value>Exame atualizado.</value></data>
+  <data name="Testando conexão..." xml:space="preserve"><value>Testando conexão...</value></data>
+  <data name="Servidor disponível" xml:space="preserve"><value>Servidor disponível</value></data>
+  <data name="Servidor indisponível" xml:space="preserve"><value>Servidor indisponível</value></data>
+  <data name="Imagens reencaminhadas com sucesso." xml:space="preserve"><value>Imagens reencaminhadas com sucesso.</value></data>
+  <data name="Enviando..." xml:space="preserve"><value>Enviando...</value></data>
+  <data name="Reencaminhar" xml:space="preserve"><value>Reencaminhar</value></data>
+  <data name="Reencaminhar imagens DICOM" xml:space="preserve"><value>Reencaminhar imagens DICOM</value></data>
+  <data name="Servidor Cadastrado" xml:space="preserve"><value>Servidor Cadastrado</value></data>
+  <data name="Servidor Manual" xml:space="preserve"><value>Servidor Manual</value></data>
+  <data name="Servidor de destino" xml:space="preserve"><value>Servidor de destino</value></data>
+  <data name="Selecionar servidor..." xml:space="preserve"><value>Selecionar servidor...</value></data>
+  <data name="Porta" xml:space="preserve"><value>Porta</value></data>
 </root>

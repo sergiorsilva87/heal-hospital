@@ -62,4 +62,40 @@
         'Aprovado':   '#1b5e20',
         'Cancelado':  '#9e9e9e'
     };
+
+    /* ── Global refresh ── */
+    E.refreshAll = function () {
+        var btn  = document.getElementById('exams-refresh-btn');
+        var icon = btn ? btn.querySelector('i') : null;
+        if (icon) icon.classList.add('anim-spin');
+        if (E.table) {
+            E.table.replaceData(E.data).then(function () {
+                if (icon) icon.classList.remove('anim-spin');
+                E.showToast(E.t('Lista atualizada.'));
+            });
+        }
+    };
+
+    /* ── Per-row refresh (mock) ── */
+    E.refreshRow = function (rec) {
+        if (!E.table) return;
+        var rows = E.table.getRows();
+        for (var i = 0; i < rows.length; i++) {
+            if (rows[i].getData().studyId === rec.studyId) {
+                var el = rows[i].getElement();
+                el.style.opacity    = '0.35';
+                el.style.transition = 'opacity 0.15s';
+                setTimeout(function (rowEl) {
+                    rowEl.style.opacity    = '';
+                    rowEl.style.transition = '';
+                    E.showToast(E.t('Exame atualizado.'));
+                }.bind(null, el), 800);
+                break;
+            }
+        }
+    };
+
+    /* ── Bind global refresh button ── */
+    var _rfBtn = document.getElementById('exams-refresh-btn');
+    if (_rfBtn) _rfBtn.addEventListener('click', function () { E.refreshAll(); });
 })();

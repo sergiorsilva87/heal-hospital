@@ -1,0 +1,87 @@
+@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer L
+@* DICOM Send modal — forward study images to a DICOM server (C-MOVE / teleradiology) *@
+<div class="modal fade" id="dicomSendModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    <i class="bi bi-hdd-network me-2" style="color:var(--clr-navy-600)"></i>@L["Reencaminhar imagens DICOM"]
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="@L["Fechar"]"></button>
+            </div>
+            <div class="modal-body">
+                @* Patient/study header *@
+                <div class="d-flex align-items-center gap-2 mb-3 p-2 rounded" style="background:var(--bg-subtle)">
+                    <i class="bi bi-person-vcard" style="color:var(--clr-navy-600);font-size:1.2rem"></i>
+                    <div>
+                        <div class="fw-semibold" id="ds-patient">—</div>
+                        <div class="text-muted" style="font-size:var(--fs-xs)">
+                            @L["ID Estudo:"] <code id="ds-study">—</code>
+                        </div>
+                    </div>
+                </div>
+
+                @* Mode toggle *@
+                <div class="mb-3">
+                    <div class="d-flex gap-3">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="dsModeRadio" id="ds-mode-registered" value="registered" checked>
+                            <label class="form-check-label" for="ds-mode-registered">@L["Servidor Cadastrado"]</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="dsModeRadio" id="ds-mode-manual" value="manual">
+                            <label class="form-check-label" for="ds-mode-manual">@L["Servidor Manual"]</label>
+                        </div>
+                    </div>
+                </div>
+
+                @* Registered server section *@
+                <div id="ds-section-registered">
+                    <div class="mb-2">
+                        <label for="ds-server-select" class="form-label fw-semibold" style="font-size:var(--fs-xs)">@L["Servidor de destino"]</label>
+                        <select id="ds-server-select" class="form-select form-select-sm">
+                            <option value="">@L["Selecionar servidor..."]</option>
+                        </select>
+                    </div>
+                    <div id="ds-registered-info" class="text-muted mb-2 d-none" style="font-size:var(--fs-xs)">
+                        <span><b>AE Title:</b> <code id="ds-reg-ae">—</code></span>
+                        <span class="ms-3"><b>IP:</b> <code id="ds-reg-ip">—</code></span>
+                        <span class="ms-3"><b>@L["Porta"]:</b> <code id="ds-reg-port">—</code></span>
+                    </div>
+                </div>
+
+                @* Manual server section *@
+                <div id="ds-section-manual" class="d-none">
+                    <div class="row g-2 mb-2">
+                        <div class="col-sm-5">
+                            <label for="ds-ae" class="form-label fw-semibold" style="font-size:var(--fs-xs)">AE Title</label>
+                            <input type="text" id="ds-ae" class="form-control form-control-sm" placeholder="Ex: PACS_DESTINO" maxlength="16">
+                        </div>
+                        <div class="col-sm-4">
+                            <label for="ds-ip" class="form-label fw-semibold" style="font-size:var(--fs-xs)">IP / Host</label>
+                            <input type="text" id="ds-ip" class="form-control form-control-sm" placeholder="192.168.1.10">
+                        </div>
+                        <div class="col-sm-3">
+                            <label for="ds-port" class="form-label fw-semibold" style="font-size:var(--fs-xs)">@L["Porta"]</label>
+                            <input type="number" id="ds-port" class="form-control form-control-sm" placeholder="104" min="1" max="65535">
+                        </div>
+                    </div>
+                </div>
+
+                @* Ping / C-ECHO *@
+                <div class="d-flex align-items-center gap-2 mt-2 pt-2" style="border-top:1px solid var(--border-subtle)">
+                    <button type="button" id="ds-ping" class="btn btn-sm btn-outline-secondary">
+                        <i class="bi bi-wifi me-1"></i>Ping / C-ECHO
+                    </button>
+                    <span id="ds-ping-status" class="text-muted" style="font-size:var(--fs-xs)"></span>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">@L["Cancelar"]</button>
+                <button type="button" id="ds-send-confirm" class="btn btn-primary">
+                    <i class="bi bi-send me-1"></i>@L["Reencaminhar"]
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

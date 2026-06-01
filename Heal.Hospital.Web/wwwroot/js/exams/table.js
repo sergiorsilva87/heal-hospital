@@ -215,7 +215,7 @@
             },
             /* ── Col: Ações ───────────────────────────────── */
             {
-                title: t("Ações"), field: "hasReport", width: 140, hozAlign: "right",
+                title: t("Ações"), field: "hasReport", width: 200, hozAlign: "right",
                 headerSort: false,
                 formatter: function (cell) {
                     var d = cell.getRow().getData();
@@ -241,6 +241,14 @@
                     if (d.hasReport) {
                         html += '<a href="#" class="btn btn-sm btn-outline-primary py-0" title="' + escH(t("Imprimir laudo")) + '" target="_blank"><i class="bi bi-printer"></i></a>';
                     }
+                    html += '<button class="btn btn-sm btn-outline-warning py-0"'
+                          + ' data-rx-act="dicom-send" data-std="' + escH(d.studyId) + '"'
+                          + ' title="' + escH(t("Reencaminhar imagens DICOM")) + '">'
+                          + '<i class="bi bi-hdd-network"></i></button>';
+                    html += '<button class="btn btn-sm btn-outline-secondary py-0"'
+                          + ' data-rx-act="row-refresh" data-std="' + escH(d.studyId) + '"'
+                          + ' title="' + escH(t("Atualizar exame")) + '">'
+                          + '<i class="bi bi-arrow-clockwise"></i></button>';
                     html += '</div>';
                     return html;
                 }
@@ -280,5 +288,7 @@
         else if (act === 'code')      E.openCodeModal(rec);
         else if (act === 'download')  E.openDownloadHistoryModal(rec);
         else if (act === 'delay')     E.openDelayModal(rec);
+        else if (act === 'dicom-send')  E.openDicomSend(rec);
+        else if (act === 'row-refresh') E.refreshRow(rec);
     });
 })();
